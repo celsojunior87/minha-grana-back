@@ -1,0 +1,45 @@
+# v2 syntax
+version: '3'
+
+# Named volumes
+volumes:
+  # Postgres Data
+  conta-postgres-data:
+    driver: local
+
+services:
+  # Postgres (9.6)
+  postgres:
+    image: postgres:9.6
+    container_name: maria-postgres
+    volumes:
+      - conta-postgres-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=maria
+      - POSTGRES_DB=maria
+      - POSTGRES_USER=maria
+
+  # PHP (with Nginx)
+  app:
+    image: ambientum/php:7.3-nginx
+    container_name: maria-app
+    volumes:
+      - ./:/var/www/app
+    ports:
+      - "8080:8080"
+      - "8083:8083"
+    links:
+      - postgres
+
+
+  # Laravel Queues
+  queue:
+    image: ambientum/php:7.3
+    container_name: maria-queue
+    command: php artisan queue:listen
+    volumes:
+      - .:/var/www/app
+    links:
+      - postgres
