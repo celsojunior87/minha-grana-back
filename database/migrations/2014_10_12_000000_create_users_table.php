@@ -17,15 +17,10 @@ class CreateUsersTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->string('email')->unique();
-            $table->string('respostas')->unique();
+            $table->string('respostas');
             $table->text('link_facebook')->nullable();
             $table->string('rede_social')->nullable();
-            $table->boolean('is_rede_social_publico')->default(false);
-            //$table->string('cpf',11)->unique();
             $table->string('avatar')->nullable();
-            //$table->string('sexo')->nullable();
-            //$table->string('telefone');
-            //$table->string('celular');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password')->nullable();
             $table->rememberToken();

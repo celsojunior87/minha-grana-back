@@ -18,6 +18,10 @@ Route::middleware('auth:api')->get('/auth', function (Request $request) {
     return $request->user();
 });
 
+Route::post('/user/cadastrar', 'UserController@cadastrar');
+Route::post('/user/recuperar-senha', 'Auth\ForgotPasswordController@sendResetLinkEmail');
+
+
 Route::group(['middleware' => 'auth:api'], function () {
 
     /**

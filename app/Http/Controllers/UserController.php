@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\AvatarRequest;
 use App\Http\Requests\UserRequest;
 use App\Services\UserService;
+use Illuminate\Http\Request;
 
 class UserController extends AbstractController
 {
@@ -12,6 +13,7 @@ class UserController extends AbstractController
     protected $with = ['roles'];
     protected $requestValidate = UserRequest::class;
 //
+
     /**
      * UserController constructor.
      * @param UserService $userService
@@ -45,5 +47,25 @@ class UserController extends AbstractController
         } catch (\Exception $e) {
             return $this->error($e->getMessage());
         }
+    }
+
+    /**
+     * Cadastro externo de usuário
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function cadastrar(Request $request)
+    {
+        try {
+            $user = $this->service->cadastrar($request->all());
+            return $this->success('Cadastro efetuado com sucesso', ['user' => $user]);
+        } catch (\Exception $e) {
+            return $this->error($e->getMessage());
+        }
+    }
+
+    public function recuperarSenha(Request $request)
+    {
+        dd($request->all());
     }
 }

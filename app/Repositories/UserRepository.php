@@ -259,6 +259,10 @@ class UserRepository extends AbstractRepository
             $formatted['celular'] = Number::getOnlyNumber($params['celular']);
         }
 
+        if (isset($params['respostas'])) {
+            $formatted['respostas'] = $params['respostas'];
+        }
+
         if ($actionByUser) {
             $formatted['password'] = bcrypt($params['password']);
         }

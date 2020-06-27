@@ -69,16 +69,8 @@ class UserService extends AbstractService
     public function save($params, $actionByUser = false)
     {
         DB::beginTransaction();
-
         $this->validadeOnInsert($params);
-
         $user = $this->repository->create($params);
-        if ($actionByUser) {
-            $role_id = $this->roleRepository->findByName('user')->id;
-        } else {
-            $role_id = isset($params['role_id']) ? $params['role_id'] : $this->roleRepository->findByName('user')->id;
-        }
-        $this->repository->assignRole($user, $role_id);
         DB::commit();
         return $user;
     }
@@ -89,7 +81,7 @@ class UserService extends AbstractService
      */
     public function afterUpdate($entity, $params)
     {
-        if(isset($params['role_id']) && !empty($params['role_id'])) {
+        if (isset($params['role_id']) && !empty($params['role_id'])) {
             $this->repository->assignRole($entity, $params['role_id']);
         }
     }
@@ -131,21 +123,21 @@ class UserService extends AbstractService
      */
     public function validadeOnInsert($params)
     {
-        if($this->repository->existByEmail($params['email'])) {
+        if ($this->repository->existByEmail($params['email'])) {
             $validator = Validator::make([], []);
             $validator->errors()->add('email', 'E-mail já cadastrado');
             throw new ValidationException($validator);
         }
 
-        if(isset($params['cpf'])) {
-            if($this->repository->existByCPF($params['cpf'])) {
+        if (isset($params['cpf'])) {
+            if ($this->repository->existByCPF($params['cpf'])) {
                 $validator = Validator::make([], []);
                 $validator->errors()->add('cpf', 'CPF já cadastrado');
                 throw new ValidationException($validator);
             }
         }
 
-        if(isset($params['username'])) {
+        if (isset($params['username'])) {
             $this->checkIfExistByUsername($params['username']);
         }
     }
@@ -158,7 +150,7 @@ class UserService extends AbstractService
      */
     public function checkIfExistByUsername($username, $id = [])
     {
-        if($this->repository->existByUsername($username, $id)) {
+        if ($this->repository->existByUsername($username, $id)) {
             $validator = Validator::make([], []);
             $validator->errors()->add('username', 'Username já cadastrado');
             throw new ValidationException($validator);
@@ -172,7 +164,7 @@ class UserService extends AbstractService
      */
     public function validadeOnUpdate($id, $params)
     {
-        if(isset($params['username'])) {
+        if (isset($params['username'])) {
             $this->checkIfExistByUsername($params['username'], [$id]);
         }
     }
@@ -195,7 +187,7 @@ class UserService extends AbstractService
      */
     public function loginFacebook($params)
     {
-        if(!$this->repository->existByEmail($params['email'])){
+        if (!$this->repository->existByEmail($params['email'])) {
             $params = $this->formatParamsLoginFacebook($params);
             $user = $this->save($params);
         }
@@ -209,17 +201,17 @@ class UserService extends AbstractService
      */
     public function formatParamsLoginFacebook($params)
     {
-        if(isset($params['sexo'])) {
-            if($params['sexo'] == 'male') {
+        if (isset($params['sexo'])) {
+            if ($params['sexo'] == 'male') {
                 $params['sexo'] = 'M';
             }
-            if($params['sexo'] == 'female') {
+            if ($params['sexo'] == 'female') {
                 $params['sexo'] = 'F';
             }
         }
 
-        if(isset($params['birthday']) && !empty($params['birthday'])) {
-            $params['birthday'] = Carbon::createFromFormat('m/d/Y',$params['birthday'])->toDateString();
+        if (isset($params['birthday']) && !empty($params['birthday'])) {
+            $params['birthday'] = Carbon::createFromFormat('m/d/Y', $params['birthday'])->toDateString();
         }
 
         $params['username'] = strtolower(strstr($params['email'], '@', true));
@@ -246,8 +238,8 @@ class UserService extends AbstractService
     public function verificarCadastroCompletoUser($id)
     {
         $user = $this->find($id);
-        if($user->isEmpresario()) {
-            if(empty($user->cpf) || empty($user->sexo) ) {
+        if ($user->isEmpresario()) {
+            if (empty($user->cpf) || empty($user->sexo)) {
                 throw new \Exception('Cadastro incompleto! Por favor, complete seu cadastro');
             }
         }
@@ -261,10 +253,15 @@ class UserService extends AbstractService
     public function verificarCadastroCompletoEmpresa($id)
     {
         $user = $this->find($id);
-        if($user->isEmpresario()) {
-            if(count($user->usuarioEmpresa()->get()) <1) {
+        if ($user->isEmpresario()) {
+            if (count($user->usuarioEmpresa()->get()) < 1) {
                 throw new \Exception('Cadastro incompleto! Por favor, cadastre sua empresa');
             }
         }
+    }
+
+    public function cadastrar($params)
+    {
+        return $this->repository->createExterno($params);
     }
 }
