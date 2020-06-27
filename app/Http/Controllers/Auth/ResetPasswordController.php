@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\ResetsPasswords;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Auth\Events\PasswordReset;
+use \Illuminate\Http\Request;
 
 class ResetPasswordController extends Controller
 {
@@ -22,9 +24,66 @@ class ResetPasswordController extends Controller
     use ResetsPasswords;
 
     /**
-     * Where to redirect users after resetting their password.
+     * Create a new controller instance.
      *
-     * @var string
+     * @return void
      */
-    protected $redirectTo = RouteServiceProvider::HOME;
+    public function __construct()
+    {
+        $this->middleware('guest');
+    }
+
+    /**
+     * Get the response for a successful password reset.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param string $response
+     * @return \Illuminate\Http\Response
+     */
+    protected function sendResetResponse(Request $request, $response)
+    {
+        return response()->json(['message' => trans($response), 'status' => 'success']);
+
+    }
+
+    /**
+     * Get the response for a failed password reset.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param string $response
+     * @return \Illuminate\Http\Response
+     */
+    protected function sendResetFailedResponse(Request $request, $response)
+    {
+        return response()->json(['message' => trans($response), 'status' => 'error'], 400);
+    }
+
+    /**
+     * Reset the given user's password.
+     *
+     * @param \Illuminate\Contracts\Auth\CanResetPassword $user
+     * @param string $password
+     * @return void
+     */
+    protected function resetPassword($user, $password)
+    {
+        $user->password = Hash::make($password);
+        $user->save();
+
+        event(new PasswordReset($user));
+    }
+
+    /**
+     * Get the password reset validation rules.
+     *
+     * @return array
+     */
+    protected function rules()
+    {
+        return [
+            'token' => 'required',
+            'email' => 'required|email',
+            'password' => 'required|min:3',
+        ];
+    }
 }
