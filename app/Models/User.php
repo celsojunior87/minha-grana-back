@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Notifications\MailResetPasswordNotification;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -62,10 +63,21 @@ class User extends Authenticatable
         }
 
         $disk = Storage::disk('s3');
-        if($disk->exists($this->avatar)) {
+        if ($disk->exists($this->avatar)) {
             $s3 = $disk->getAdapter()->getClient();
-            return $s3->getObjectUrl( env('AWS_BUCKET'), $this->avatar );
+            return $s3->getObjectUrl(env('AWS_BUCKET'), $this->avatar);
         }
         return $this->avatar;
+    }
+
+    /**
+     * Send the password reset notification.
+     *
+     * @param string $token
+     * @return void
+     */
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new MailResetPasswordNotification($token));
     }
 }
