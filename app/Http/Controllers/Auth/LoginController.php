@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
+use App\Services\UserService;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 class LoginController extends Controller
@@ -20,7 +21,7 @@ class LoginController extends Controller
     */
 
     use AuthenticatesUsers;
-
+    public $userService;
     /**
      * Where to redirect users after login.
      *
@@ -33,8 +34,28 @@ class LoginController extends Controller
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(UserService $userService)
     {
+        $this->userService = $userService;
         $this->middleware('guest')->except('logout');
     }
+    /**
+     * Login with facebook
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Exception
+     */
+    public function loginFacebook(Request $request)
+    {
+        $user = $this->userService->loginFacebook($request->all());
+
+        auth()->setUser($user);
+
+        $token = auth()->login($user);
+
+        $auth = $this->userService->fetchUser($request->user()->id);
+
+        return response()->json(compact('token', 'auth'));
+    }
+
 }

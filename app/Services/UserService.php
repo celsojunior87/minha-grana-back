@@ -245,23 +245,11 @@ class UserService extends AbstractService
         }
     }
 
-    /**
-     * Verifica se usuário já tem empresa cadastrada
-     * @param $id
-     * @throws \Exception
-     */
-    public function verificarCadastroCompletoEmpresa($id)
-    {
-        $user = $this->find($id);
-        if ($user->isEmpresario()) {
-            if (count($user->usuarioEmpresa()->get()) < 1) {
-                throw new \Exception('Cadastro incompleto! Por favor, cadastre sua empresa');
-            }
-        }
-    }
 
     public function cadastrar($params)
     {
         return $this->repository->createExterno($params);
     }
+
+
 }

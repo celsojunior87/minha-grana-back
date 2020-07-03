@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\AvatarRequest;
 use App\Http\Requests\UserRequest;
 use App\Services\UserService;
+use http\Message;
 use Illuminate\Http\Request;
 
 class UserController extends AbstractController
@@ -56,7 +57,9 @@ class UserController extends AbstractController
      */
     public function cadastrar(Request $request)
     {
+
         try {
+            dd('cahuhauha');
             $user = $this->service->cadastrar($request->all());
             return $this->success('Cadastro efetuado com sucesso', ['user' => $user]);
         } catch (\Exception $e) {

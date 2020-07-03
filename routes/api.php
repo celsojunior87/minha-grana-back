@@ -22,7 +22,7 @@ Route::post('/user/cadastrar', 'UserController@cadastrar');
 Route::post('/user/recuperar-senha', 'Auth\ForgotPasswordController@sendResetLinkEmail');
 Route::post('/user/resetar-senha', 'Auth\ResetPasswordController@reset');
 
-
+Route::post('/login-facebook', 'Auth\LoginController@loginFacebook');
 Route::group(['middleware' => 'auth:api'], function () {
 
     /**
@@ -71,32 +71,6 @@ Route::group(['middleware' => 'auth:api'], function () {
         Route::get('/{id}')->uses('OrderController@show')->where('id', '[0-9]+');
         Route::get('{id}/details')->uses('OrderController@details')->where('id', '[0-9]+');
     });
-    Route::prefix('categoria')->group(function () {
-        Route::get('/')->uses('CategoriaController@index');
-        Route::post('/')->uses('CategoriaController@store');
-        Route::get('/{id}')->uses('CategoriaController@show');
-        Route::put('/{id}')->uses('CategoriaController@update');
-        Route::delete('/{id}')->uses('CategoriaController@destroy');
-    });
-    Route::prefix('produtos')->group(function () {
-        Route::get('/')->uses('ProdutoController@index');
-        Route::post('/')->uses('ProdutoController@store');
-        Route::put('/{id}')->uses('ProdutoController@update');
-        Route::get('/{id}')->uses('ProdutoController@show');
-        Route::delete('/{id}')->uses('ProdutoController@destroy');
-    });
-    Route::prefix('tipo_produto')->group(function () {
-        Route::get('/')->uses('TipoProdutoController@index');
-        Route::post('/')->uses('TipoProdutoController@store');
-        Route::put('/{id}')->uses('TipoProdutoController@update');
-        Route::get('/{id}')->uses('TipoProdutoController@show');
-        Route::delete('/{id}')->uses('TipoProdutoController@destroy');
-    });
-    Route::prefix('produto')->group(function () {
-        Route::get('/')->uses('ProdutoController@index');
-        Route::post('/')->uses('ProdutoController@store');
-        Route::put('/{id}')->uses('ProdutoController@update');
-        Route::get('/{id}')->uses('ProdutoController@show');
-        Route::delete('/{id}')->uses('ProdutoController@destroy');
-    });
+
+
 });
