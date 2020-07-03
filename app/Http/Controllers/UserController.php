@@ -59,11 +59,10 @@ class UserController extends AbstractController
     {
 
         try {
-            dd('cahuhauha');
             $user = $this->service->cadastrar($request->all());
             return $this->success('Cadastro efetuado com sucesso', ['user' => $user]);
         } catch (\Exception $e) {
-            return $this->error($e->getMessage());
+            return $this->error('O E-mail já existe na nossa base de dados');
         }
     }
 
