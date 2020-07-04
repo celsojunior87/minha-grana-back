@@ -71,7 +71,7 @@
                 </li>
                 <li><a href="#contact">Contact</a></li>
 
-                <li class="get-started"><a href={{ url('/login') }}>Get Started</a></li>
+                <li class="get-started"><a href="http://vps714464.ovh.net/login">Get Started</a></li>
             </ul>
         </nav><!-- .nav-menu -->
 
@@ -88,7 +88,7 @@
                 <h2 data-aos="fade-up" data-aos-delay="400">We are team of talanted designers making websites with
                     Bootstrap</h2>
                 <div data-aos="fade-up" data-aos-delay="800">
-                    <a href="{{ url('/login') }}" class="btn-get-started scrollto">Get Started</a>
+                    <a href="http://vps714464.ovh.net/login" class="btn-get-started scrollto">Get Started</a>
                 </div>
             </div>
             <div class="col-lg-6 order-1 order-lg-2 hero-img" data-aos="fade-left" data-aos-delay="200">
