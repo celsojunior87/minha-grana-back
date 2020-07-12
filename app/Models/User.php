@@ -7,11 +7,10 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, Notifiable, HasRoles;
+    use HasApiTokens, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -19,12 +18,6 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = ['name', 'email', 'password', 'avatar', 'telefone', 'celular'];
-
-    /**
-     * In roles
-     * @var string
-     */
-    protected $guard_name = 'api';
 
     /**
      * The attributes that should be hidden for arrays.

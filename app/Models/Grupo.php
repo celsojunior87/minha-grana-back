@@ -8,8 +8,8 @@ class Grupo extends Model
 {
     public $table = 'grupo';
 
-    public function item()
+    public function items()
     {
-        return $this->hasOne(Grupo::class, 'id', 'id', 'grupo_item');
+        return $this->hasMany(Item::class, 'grupo_id', 'id');
     }
 }

@@ -11,7 +11,6 @@ use Illuminate\Http\Request;
 class UserController extends AbstractController
 {
     protected $service;
-    protected $with = ['roles'];
     protected $requestValidate = UserRequest::class;
 //
 

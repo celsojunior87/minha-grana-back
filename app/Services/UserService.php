@@ -2,10 +2,8 @@
 
 namespace App\Services;
 
-use App\Repositories\RoleRepository;
 use App\Repositories\UserRepository;
 use App\Models\User;
-use App\Models\Role;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
@@ -23,12 +21,10 @@ class UserService extends AbstractService
     protected $roleRepository;
 
     public function __construct(
-        UserRepository $userRepository,
-        RoleRepository $roleRepository
+        UserRepository $userRepository
     )
     {
         $this->repository = $userRepository;
-        $this->roleRepository = $roleRepository;
     }
 
     /**
@@ -91,7 +87,6 @@ class UserService extends AbstractService
      */
     public function preRequisite()
     {
-        $arr['roles'] = generateSelectOption($this->roleRepository->listExceptName());
         $arr['sexo'] = generateSelectOption(['M' => 'Masculino', 'F' => 'Feminino']);
         return $arr;
     }
@@ -102,11 +97,6 @@ class UserService extends AbstractService
     public function getUserAdmin()
     {
         return $this->repository->getUserAdmin();
-    }
-
-    public function getUsersByRole(Role $role)
-    {
-        return $this->repository->getUsersByRole($role);
     }
 
     public function uploadAvatar($data, $id)

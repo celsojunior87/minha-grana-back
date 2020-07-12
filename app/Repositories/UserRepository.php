@@ -3,29 +3,22 @@
 namespace App\Repositories;
 
 use App\Helper\Number;
-use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
-use Spatie\Permission\Traits\HasPermissions;
 
 
 class UserRepository extends AbstractRepository
 {
-    use HasPermissions;
-
     protected $model;
-    protected $roleRepository;
 
     /**
      * UserRepository constructor.
      * @param User $model
-     * @param RoleRepository $roleRepository
      */
-    public function __construct(User $model, RoleRepository $roleRepository)
+    public function __construct(User $model)
     {
         $this->model = $model;
-        $this->roleRepository = $roleRepository;
     }
 
     /**
@@ -34,9 +27,7 @@ class UserRepository extends AbstractRepository
      */
     public function fetchOnlyUser(int $id)
     {
-        return $this->model->with([
-            'roles',
-        ])->where(['id' => $id])->firstOrFail();
+        return $this->model->where(['id' => $id])->firstOrFail();
     }
 
     /**
@@ -46,24 +37,14 @@ class UserRepository extends AbstractRepository
      */
     public function fetchUser(int $id)
     {
-        $user = $this->model->with([
-            'roles',
-        ])->where(['id' => $id])->firstOrFail();
+        $user = $this->model->where(['id' => $id])->firstOrFail();
         if (!$user) {
             throw ValidationException::withMessages(['message' => ' Usuário não encontrado']);
         }
         $auth_user = $user->findOrFail($user->id);
-        $user_roles = $auth_user->getRoleNames();
-        $permissions = $auth_user->getAllPermissions();
-        $roles = $user->roles()->pluck('id')->all();
-        $selected_roles = generateSelectOption($user->roles()->pluck('name', 'id')->all());
 
         return [
             'user' => $user,
-            'user_roles' => $user_roles,
-            'permissions' => $permissions,
-            'roles' => $roles,
-            'selected_roles' => $selected_roles,
             'authenticated' => true
         ];
     }

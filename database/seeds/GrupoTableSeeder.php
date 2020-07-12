@@ -14,7 +14,7 @@ class GrupoTableSeeder extends Seeder
     public function run()
     {
         factory(Grupo::class, 20)->create()->each(function ($grupo) {
-            $grupo->item()->save(factory(Item::class)->make(['grupo_id' => $grupo->id]));
+            $grupo->items()->save(factory(Item::class)->make(['grupo_id' => $grupo->id]));
         });
     }
 }
