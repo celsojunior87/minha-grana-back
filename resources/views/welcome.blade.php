@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-    <title>Sabedoria Financeira</title>
+    <title>Minha Grana</title>
     <meta content="" name="descriptison">
     <meta content="" name="keywords">
 
@@ -39,7 +39,7 @@
     <div class="container d-flex align-items-center">
 
         <div class="logo mr-auto">
-            <h1 class="text-light"><a href="index.html"><span>Sabedoria Financeira</span></a></h1>
+            <h1 class="text-light"><a href="#"><img src="assets/img/logo.png"></a></h1>
             <!-- Uncomment below if you prefer to use an image logo -->
             <!-- <a href="index.html"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
         </div>
@@ -71,7 +71,7 @@
                 </li>
                 <li><a href="#contact">Contact</a></li>
 
-                <li class="get-started"><a href="http://vps714464.ovh.net/login">Get Started</a></li>
+                <li class="get-started"><a href="http://vps714464.ovh.net/login">Acesse Aqui</a></li>
             </ul>
         </nav><!-- .nav-menu -->
 
@@ -88,11 +88,11 @@
                 <h2 data-aos="fade-up" data-aos-delay="400">We are team of talanted designers making websites with
                     Bootstrap</h2>
                 <div data-aos="fade-up" data-aos-delay="800">
-                    <a href="http://vps714464.ovh.net/login" class="btn-get-started scrollto">Get Started</a>
+                    <a href="http://vps714464.ovh.net/login" class="btn-get-started scrollto">Acesse Aqui</a>
                 </div>
             </div>
             <div class="col-lg-6 order-1 order-lg-2 hero-img" data-aos="fade-left" data-aos-delay="200">
-                <img src="assets/img/hero-img.png" class="img-fluid animated" alt="">
+                <img src="assets/img/menina2.png" class="img-fluid animated" alt="">
             </div>
         </div>
     </div>
@@ -184,11 +184,10 @@
     <!-- ======= Counts Section ======= -->
     <section id="counts" class="counts">
         <div class="container">
-
             <div class="row">
                 <div class="image col-xl-5 d-flex align-items-stretch justify-content-center justify-content-xl-start"
                      data-aos="fade-right" data-aos-delay="150">
-                    <img src="assets/img/counts-img.svg" alt="" class="img-fluid">
+                    <img src="assets/img/passo.png" alt="" class="img-fluid">
                 </div>
 
                 <div class="col-xl-7 d-flex align-items-stretch pt-4 pt-xl-0" data-aos="fade-left" data-aos-delay="300">
@@ -196,8 +195,8 @@
                         <div class="row">
                             <div class="col-md-6 d-md-flex align-items-md-stretch">
                                 <div class="count-box">
-                                    <i class="icofont-simple-smile"></i>
-                                    <span data-toggle="counter-up">65</span>
+                                    <i style="color: #01995a;align-items: center" class="icofont-wallet"></i>
+                                    <span style="color: #01995a;font-size: 20px">1.Adicione sua receitas</span>
                                     <p><strong>Happy Clients</strong> consequuntur voluptas nostrum aliquid ipsam
                                         architecto ut.</p>
                                 </div>
@@ -205,8 +204,8 @@
 
                             <div class="col-md-6 d-md-flex align-items-md-stretch">
                                 <div class="count-box">
-                                    <i class="icofont-document-folder"></i>
-                                    <span data-toggle="counter-up">85</span>
+                                    <i style="color: #01995a" class="icofont-attachment"></i>
+                                    <span   style="color: #01995a;font-size: 20px">2.Planeja suas despesas</span>
                                     <p><strong>Projects</strong> adipisci atque cum quia aspernatur totam laudantium et
                                         quia dere tan</p>
                                 </div>
@@ -214,8 +213,8 @@
 
                             <div class="col-md-6 d-md-flex align-items-md-stretch">
                                 <div class="count-box">
-                                    <i class="icofont-clock-time"></i>
-                                    <span data-toggle="counter-up">12</span>
+                                    <i style="color: #01995a" class="icofont-money"></i>
+                                    <span   style="color: #01995a;font-size: 20px">3. Dê um propósito para cada centavo</span>
                                     <p><strong>Years of experience</strong> aut commodi quaerat modi aliquam nam ducimus
                                         aut voluptate non vel</p>
                                 </div>
@@ -223,8 +222,16 @@
 
                             <div class="col-md-6 d-md-flex align-items-md-stretch">
                                 <div class="count-box">
-                                    <i class="icofont-award"></i>
-                                    <span data-toggle="counter-up">15</span>
+                                    <i style="color: #01995a" class="icofont-handshake-deal"></i>
+                                    <span   style="color: #01995a;font-size: 20px">4. Acompanhe suas despesas</span>
+                                    <p><strong>Awards</strong> rerum asperiores dolor alias quo reprehenderit eum et
+                                        nemo pad der</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6 d-md-flex align-items-md-stretch">
+                                <div class="count-box">
+                                    <i style="color: #01995a" class="icofont-brand-target"></i>
+                                    <span   style="color: #01995a;font-size: 20px">5. Alcance seus Objetivos</span>
                                     <p><strong>Awards</strong> rerum asperiores dolor alias quo reprehenderit eum et
                                         nemo pad der</p>
                                 </div>
@@ -233,7 +240,6 @@
                     </div><!-- End .content-->
                 </div>
             </div>
-
         </div>
     </section><!-- End Counts Section -->
 

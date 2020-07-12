@@ -14,11 +14,11 @@ body {
 }
 
 a {
-  color: #3498db;
+  color: white;
 }
 
 a:hover {
-  color: #5faee3;
+  color: white;
   text-decoration: none;
 }
 
@@ -96,7 +96,7 @@ h1, h2, h3, h4, h5, h6 {
 #header .logo img {
   padding: 0;
   margin: 0;
-  max-height: 40px;
+  max-height: 136px;
 }
 
 @media (max-width: 768px) {
@@ -136,23 +136,20 @@ h1, h2, h3, h4, h5, h6 {
   font-family: "Open Sans", sans-serif;
 }
 
-.nav-menu a:hover, .nav-menu .active > a, .nav-menu li:hover > a {
-  color: #3498db;
-  text-decoration: none;
-}
+/*.nav-menu a:hover, .nav-menu .active > a, .nav-menu li:hover > a {*/
+/*  color: #3498db;*/
+/*  text-decoration: none;*/
+/*}*/
 
 .nav-menu .get-started a {
-  background: #3498db;
+  background: #B6D065;
   color: #fff;
   border-radius: 50px;
   margin: 0 0 0 30px;
   padding: 10px 25px;
 }
 
-.nav-menu .get-started a:hover {
-  background: #57aae1;
-  color: #fff;
-}
+
 
 .nav-menu .drop-down ul {
   display: block;
@@ -389,14 +386,10 @@ h1, h2, h3, h4, h5, h6 {
   padding: 10px 30px;
   border-radius: 50px;
   transition: 0.5s;
-  color: #3498db;
-  border: 2px solid #3498db;
+  background: #01995a;
 }
 
-#hero .btn-get-started:hover {
-  background: #3498db;
-  color: #fff;
-}
+
 
 #hero .animated {
   animation: up-down 2s ease-in-out infinite alternate-reverse both;
