@@ -39,9 +39,9 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::resource('user', 'UserController');
 
     /**
-     * Fornecedores
+     * Grupo
      */
-    Route::resource('fornecedor', 'FornecedoresController');
+    Route::resource('grupo', 'GrupoController');
 
     /**
      * Permissions
