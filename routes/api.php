@@ -44,6 +44,11 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::resource('grupo', 'GrupoController');
 
     /**
+     * Item
+     */
+    Route::resource('item', 'ItemController');
+
+    /**
      * Permissions
      */
     Route::prefix('permission')->group(function () {
