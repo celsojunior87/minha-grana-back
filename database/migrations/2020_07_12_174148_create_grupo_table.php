@@ -16,10 +16,14 @@ class CreateGrupoTable extends Migration
         Schema::create('grupo', function (Blueprint $table) {
             $table->increments('id');
             $table->string('nome');
-            $table->unsignedInteger('user_id')->nullable();
+            $table->unsignedInteger('user_id');
             $table->foreign('user_id')
                 ->references('id')
                 ->on('users');
+            $table->unsignedInteger('tipo_grupo_id');
+            $table->foreign('tipo_grupo_id')
+                ->references('id')
+                ->on('tipo_grupo');
             $table->date('data');
             $table->timestamps();
         });
