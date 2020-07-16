@@ -12,13 +12,9 @@ abstract class AbstractRepository extends RepositoryInterface
      * @param null $with
      * @return mixed
      */
-    public function all($params = null, $with = null)
+    public function all($params = null, $with = [])
     {
-        //todo verificar o que fazer com a variável $params
-        if($with) {
-            return $this->model->with($with)->get();
-        }
-        return $this->model->get();
+        return $this->model->with($with)->query($params)->get();
     }
 
     /**
