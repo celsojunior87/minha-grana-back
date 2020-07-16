@@ -238,7 +238,13 @@ class UserService extends AbstractService
 
     public function cadastrar($params)
     {
-        return $this->repository->createExterno($params);
+        if ($this->repository->existByEmail($params['email'])) {
+            throw new \Exception('O E-mail se encontra em nossa base de dados');
+        } else {
+            return $this->repository->createExterno($params);
+        }
+
+
     }
 
 

@@ -61,7 +61,7 @@ class UserController extends AbstractController
             $user = $this->service->cadastrar($request->all());
             return $this->success('Cadastro efetuado com sucesso', ['user' => $user]);
         } catch (\Exception $e) {
-            return $this->error('O E-mail já existe na nossa base de dados');
+            return $this->error($e->getMessage());
         }
     }
 
