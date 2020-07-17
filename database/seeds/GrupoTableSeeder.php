@@ -13,6 +13,13 @@ class GrupoTableSeeder extends Seeder
      */
     public function run()
     {
+        \App\Models\Grupo::create([
+            'user_id' => 1,
+            'tipo_grupo_id' => 1,
+            'nome' => 'Receitas',
+            'data' => '2020-07-20'
+
+        ]);
         factory(Grupo::class, 20)->create()->each(function ($grupo) {
             $grupo->items()->save(factory(Item::class)->make(['grupo_id' => $grupo->id]));
         });
