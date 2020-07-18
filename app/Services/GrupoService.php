@@ -31,11 +31,14 @@ class GrupoService extends AbstractService
         return parent::getAll($params, ['items']);
     }
 
+    /**
+     * @param array $data
+     * @return mixed
+     */
     public function save(array $data)
     {
         $data['user_id'] = Auth::user()->id;
         $data['data'] = Carbon::now();
-
         return parent::save($data);
     }
 

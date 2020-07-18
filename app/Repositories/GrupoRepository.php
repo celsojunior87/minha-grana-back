@@ -15,6 +15,10 @@ class GrupoRepository extends AbstractRepository
         $this->model = $model;
     }
 
+    /**
+     * @param $params
+     * @return array|mixed
+     */
     public function formatParams($params)
     {
         $formatted = [];
