@@ -42,6 +42,10 @@ Route::group(['middleware' => 'auth:api'], function () {
      * Grupo
      */
     Route::resource('grupo', 'GrupoController');
+    /**
+     * TipoGrupo
+     */
+    Route::resource('tipo-grupo', 'TipoGrupoController');
 
     /**
      * Item
