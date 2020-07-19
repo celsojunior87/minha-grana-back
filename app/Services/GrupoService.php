@@ -64,4 +64,10 @@ class GrupoService extends AbstractService
         $arr['tipo_grupo'] = generateSelectOption($this->tipoGrupoService->getRepository()->list('id'));
         return $arr;
     }
+
+    public function movimentacao($params)
+    {
+        $this->repository->movimentacao($params);
+
+    }
 }

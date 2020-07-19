@@ -22,6 +22,7 @@ class Grupo extends Model
      */
     public function scopeQuery($queryBuilder, array $params)
     {
+
         if (Arr::has($params, 'date')) {
             $date = Arr::get($params, 'date');
             $newDate = Carbon::createFromFormat('Y-m', $date);
@@ -32,4 +33,10 @@ class Grupo extends Model
         }
         return $queryBuilder;
     }
+
+    public function scopeQueryMovimentacao($params)
+    {
+        dd($params);
+    }
+
 }

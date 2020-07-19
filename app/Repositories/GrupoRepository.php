@@ -41,4 +41,16 @@ class GrupoRepository extends AbstractRepository
 
         return $formatted;
     }
+
+    /**
+     * @param $params
+     * @return array|mixed
+     */
+    public function movimentacao($params, $with = [])
+    {
+        $arr = $this->model->scopeQueryMovimentacao($params)->get();
+
+        dd($arr);
+
+    }
 }

@@ -14,7 +14,7 @@ abstract class AbstractRepository extends RepositoryInterface
      */
     public function all($params = null, $with = [])
     {
-        return $this->model->with($with)->query($params)->get();
+         return $this->model->with($with)->query($params)->get();
     }
 
     /**
