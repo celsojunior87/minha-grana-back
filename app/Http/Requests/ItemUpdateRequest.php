@@ -24,7 +24,8 @@ class ItemUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'vl_esperado' => 'required',
+            'vl_esperado' => '',
+            'nome' => '',
         ];
     }
 
@@ -36,6 +37,7 @@ class ItemUpdateRequest extends FormRequest
     public function attributes(){
         return  [
             'vl_esperado' => 'Valor esperado',
+            'nome' => 'Nome'
         ];
     }
 }
