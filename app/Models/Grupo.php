@@ -34,9 +34,9 @@ class Grupo extends Model
         return $queryBuilder;
     }
 
-    public function scopeQueryMovimentacao($params)
+    public function scopeQueryMovimentacao($queryBuilder, array $params)
     {
+        dd($queryBuilder);
         dd($params);
     }
-
 }

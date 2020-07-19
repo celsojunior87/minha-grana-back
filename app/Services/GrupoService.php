@@ -67,7 +67,6 @@ class GrupoService extends AbstractService
 
     public function movimentacao($params)
     {
-        $this->repository->movimentacao($params);
-
+        return $this->repository->movimentacao($params);
     }
 }
