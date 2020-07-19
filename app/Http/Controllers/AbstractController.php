@@ -13,6 +13,7 @@ abstract class AbstractController extends Controller
     protected $with = [];
     protected $service;
     protected $requestValidate = '';
+    protected $requestValidateUpdate = '';
 
     /**
      * @param Request $request
@@ -22,7 +23,6 @@ abstract class AbstractController extends Controller
     {
         return $this->ok($this->service->getAll($request->all(), $this->with));
     }
-
 
     /**
      * @param Request $request
@@ -63,9 +63,9 @@ abstract class AbstractController extends Controller
     public function update(Request $request, $id)
     {
         try {
-            if (!empty($this->requestValidate)) {
-                $requestValidate = app($this->requestValidate);
-                $request->validate($requestValidate->rules());
+            if (!empty($this->requestValidateUpdate)) {
+                $requestValidateUpdate = app($this->requestValidateUpdate);
+                $request->validate($requestValidateUpdate->rules());
             }
         } catch (ValidationException $e) {
             return $this->error('Ops', $e->errors());
