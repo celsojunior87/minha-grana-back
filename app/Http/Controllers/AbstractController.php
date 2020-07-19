@@ -2,6 +2,7 @@
 
 
 namespace App\Http\Controllers;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
@@ -22,15 +23,15 @@ abstract class AbstractController extends Controller
         return $this->ok($this->service->getAll($request->all(), $this->with));
     }
 
+
     /**
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
-
         try {
-            if(!empty($this->requestValidate)) {
+            if (!empty($this->requestValidate)) {
                 $requestValidate = app($this->requestValidate);
                 $request->validate($requestValidate->rules());
             }
@@ -45,10 +46,10 @@ abstract class AbstractController extends Controller
             return $this->success('Operação realizada com com sucesso', ['response' => $response]);
         } catch (\Exception | ValidationException $e) {
             DB::rollBack();
-            if($e instanceof ValidationException) {
+            if ($e instanceof ValidationException) {
                 return $this->error('Ops', $e->errors());
             }
-            if($e instanceof \Exception) {
+            if ($e instanceof \Exception) {
                 return $this->error($e->getMessage());
             }
         }
@@ -62,7 +63,7 @@ abstract class AbstractController extends Controller
     public function update(Request $request, $id)
     {
         try {
-            if(!empty($this->requestValidate)) {
+            if (!empty($this->requestValidate)) {
                 $requestValidate = app($this->requestValidate);
                 $request->validate($requestValidate->rules());
             }
@@ -77,10 +78,10 @@ abstract class AbstractController extends Controller
             return $this->success('Operação realizada com com sucesso');
         } catch (\Exception | ValidationException $e) {
             DB::rollBack();
-            if($e instanceof \Exception) {
+            if ($e instanceof \Exception) {
                 return $this->error($e->getMessage());
             }
-            if($e instanceof ValidationException) {
+            if ($e instanceof ValidationException) {
                 return $this->error('Ops', $e->errors());
             }
         }
@@ -129,6 +130,7 @@ abstract class AbstractController extends Controller
         $preRequisite = $this->service->preRequisite($id);
         return $this->ok(compact('preRequisite'));
     }
+
 
     /**
      * @return Response

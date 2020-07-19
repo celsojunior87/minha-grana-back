@@ -42,7 +42,9 @@ Route::group(['middleware' => 'auth:api'], function () {
      * Grupo
      */
     Route::get('grupo/pre-requisite', 'GrupoController@preRequisite');
+    Route::get('grupo/movimentacao', 'GrupoController@getMovimentacao');
     Route::resource('grupo', 'GrupoController');
+
 
     /**
      * TipoGrupo

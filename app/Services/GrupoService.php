@@ -3,7 +3,6 @@
 
 namespace App\Services;
 
-
 use App\Repositories\GrupoRepository;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -29,6 +28,7 @@ class GrupoService extends AbstractService
     public function getAll($params = null, $with = null)
     {
         return parent::getAll($params, ['items']);
+
     }
 
     /**
@@ -49,5 +49,11 @@ class GrupoService extends AbstractService
     {
         $arr['tipo_grupo'] = generateSelectOption($this->tipoGrupoService->getRepository()->list('id'));
         return $arr;
+    }
+
+    public function movimentacao($params)
+    {
+        $this->repository->movimentacao($params);
+
     }
 }
