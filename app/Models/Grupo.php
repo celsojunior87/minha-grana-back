@@ -44,8 +44,8 @@ class Grupo extends Model
                     [$newDate->firstOfMonth()->format('Y-m-d'), $newDate->lastOfMonth()->format('Y-m-d')]
                 );
         }
-        $queryBuilder->whereColumn('created_at', '!=', 'update_at')->get();
-        
+        $queryBuilder->whereColumn('created_at', '!=', 'updated_at')->get();
+
         return $queryBuilder;
     }
 }
