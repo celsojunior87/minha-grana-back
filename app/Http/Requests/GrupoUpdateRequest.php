@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class GrupoRequest extends FormRequest
+class GrupoUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,7 +25,7 @@ class GrupoRequest extends FormRequest
     {
         return [
             'nome' => 'required',
-            'tipo_grupo' => 'required'
+            'tipo_grupo' => ''
         ];
     }
 

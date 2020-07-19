@@ -15,6 +15,11 @@ class Grupo extends Model
         return $this->hasMany(Item::class, 'grupo_id', 'id')->orderBy('created_at');
     }
 
+    public function tipoGrupo()
+    {
+        return $this->belongsTo(TipoGrupo::class, 'tipo_grupo_id', 'id');
+    }
+
     /**
      * @param $queryBuilder
      * @param array $params
