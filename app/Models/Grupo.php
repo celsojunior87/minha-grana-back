@@ -28,10 +28,15 @@ class Grupo extends Model
             $queryBuilder
                 ->whereBetween('data',
                     [$newDate->firstOfMonth()->format('Y-m-d'), $newDate->lastOfMonth()->format('Y-m-d')]
-                )
+                )->UserAuth()
                 ->orderBy('created_at');
         }
         return $queryBuilder;
+    }
+
+    public function scopeUserAuth($query)
+    {
+        return $query->where('user_id', auth()->user()->id);
     }
 
     public function scopeQueryMovimentacao($queryBuilder, array $params)
