@@ -28,7 +28,21 @@ class GrupoService extends AbstractService
 
     public function getAll($params = null, $with = null)
     {
-        return parent::getAll($params, ['items']);
+        $grupos = parent::getAll($params, ['items']);
+        foreach ($grupos as $key => $grupo) {
+            $total_vl_esperado = 0;
+            $total_vl_planejado = 0;
+            $total_vl_recebido = 0;
+            foreach($grupo->items()->get() as $item) {
+                $total_vl_esperado += $item->vl_esperado;
+                $total_vl_planejado += $item->vl_planejado;
+                $total_vl_recebido += $item->vl_recebido;
+            }
+            $grupos[$key]['total_vl_esperado'] = $total_vl_esperado;
+            $grupos[$key]['total_vl_planejado'] = $total_vl_planejado;
+            $grupos[$key]['total_vl_recebido'] = $total_vl_recebido;
+        }
+        return $grupos;
     }
 
     /**
