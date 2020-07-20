@@ -33,7 +33,6 @@ Route::group(['middleware' => 'auth:api'], function () {
     /**
      * User
      */
-
     Route::get('user/pre-requisite', 'UserController@preRequisite');
     Route::post('/user/{id}/avatar', 'UserController@avatar');
     Route::resource('user', 'UserController');
