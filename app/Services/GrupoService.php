@@ -3,7 +3,6 @@
 
 namespace App\Services;
 
-
 use App\Repositories\GrupoRepository;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -33,7 +32,7 @@ class GrupoService extends AbstractService
             $total_vl_esperado = 0;
             $total_vl_planejado = 0;
             $total_vl_recebido = 0;
-            foreach($grupo->items()->get() as $item) {
+            foreach ($grupo->items()->get() as $item) {
                 $total_vl_esperado += $item->vl_esperado;
                 $total_vl_planejado += $item->vl_planejado;
                 $total_vl_recebido += $item->vl_recebido;
@@ -48,10 +47,14 @@ class GrupoService extends AbstractService
     public function movimentacao($params)
     {
         $grupos = $this->repository->movimentacao($params);
-        $arrGrupos = $grupos[0]['items']->toArray();
+        $arrGrupos = $grupos[0]['items'];
+        dd($arrGrupos);
         foreach ($arrGrupos as $key => $value) {
-              $grupo = $value;
+            foreach ($value->items()->get() as $v) {
+
+                dd($v);
             }
+        }
         return $grupo;
     }
 
@@ -82,7 +85,7 @@ class GrupoService extends AbstractService
 
     public function criarMes($params)
     {
-        if(empty($params['date'])) {
+        if (empty($params['date'])) {
             throw new \Exception('A data é obrigatória');
         }
 
@@ -91,7 +94,7 @@ class GrupoService extends AbstractService
         /**
          * Verifica se existe algo no mes atual
          */
-        if(empty($grupos)) {
+        if (empty($grupos)) {
 
             /**
              * Faz a mesma consulta, baseada no mes anterior
@@ -103,7 +106,7 @@ class GrupoService extends AbstractService
             /**
              * Se não existir nada no mês anterior, então cria um novo
              */
-            if(empty($gruposMesAnterior)) {
+            if (empty($gruposMesAnterior)) {
                 return $this->criarReceita($date);
             } else {
                 /**
@@ -130,7 +133,7 @@ class GrupoService extends AbstractService
                 'data' => Carbon::createFromFormat('Y-m', $mesAtual)->firstOfMonth()->format('Y-m-d')
             ];
             $id = parent::save($novoGrupo)->id;
-            if($grupo->items()) {
+            if ($grupo->items()) {
                 foreach ($grupo->items()->get() as $item) {
                     $novoItem = [
                         'nome' => $item->nome,
@@ -139,7 +142,7 @@ class GrupoService extends AbstractService
                         'vl_recebido' => $item->vl_recebido,
                         'grupo_id' => $id
                     ];
-                    $this->itemService->save($novoItem);
+                    $this->itemSeronfvice->save($novoItem);
                 }
             }
         }
