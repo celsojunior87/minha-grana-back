@@ -8,4 +8,6 @@ class TipoGrupo extends Model
 {
     public $table = 'tipo_grupo';
     public $timestamps = false;
+
+    const RECEITAS = 1;
 }

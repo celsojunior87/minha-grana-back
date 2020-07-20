@@ -22,4 +22,9 @@ class GrupoController extends AbstractController
         $this->service->movimentacao($request->all());
     }
 
+    public function criarMes(Request $request)
+    {
+        $this->service->criarMes($request->all());
+        return $this->success('Operação realizada com com sucesso');
+    }
 }
