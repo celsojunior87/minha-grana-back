@@ -31,6 +31,10 @@ class GrupoRepository extends AbstractRepository
             $formatted['tipo_grupo_id'] = $params['tipo_grupo'];
         }
 
+        if (isset($params['tipo_grupo_id'])) {
+            $formatted['tipo_grupo_id'] = $params['tipo_grupo_id'];
+        }
+
         if (isset($params['user_id'])) {
             $formatted['user_id'] = $params['user_id'];
         }

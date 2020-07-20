@@ -33,9 +33,10 @@ class Grupo extends Model
             $queryBuilder
                 ->whereBetween('data',
                     [$newDate->firstOfMonth()->format('Y-m-d'), $newDate->lastOfMonth()->format('Y-m-d')]
-                )->UserAuth()
+                )
                 ->orderBy('created_at');
         }
+        $queryBuilder->userAuth();
         return $queryBuilder;
     }
 
@@ -55,7 +56,7 @@ class Grupo extends Model
                 );
         }
         $queryBuilder->whereColumn('created_at', '!=', 'updated_at')->get();
-
+        $queryBuilder->userAuth();
         return $queryBuilder;
     }
 }
