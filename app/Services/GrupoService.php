@@ -6,6 +6,7 @@ namespace App\Services;
 use App\Repositories\GrupoRepository;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Arr;
 
 class GrupoService extends AbstractService
 {
@@ -19,10 +20,16 @@ class GrupoService extends AbstractService
      */
     protected $tipoGrupoService;
 
-    public function __construct(GrupoRepository $repository, TipoGrupoService $tipoGrupoService)
+    /**
+     * @var ItemService 
+     */
+    protected $itemService;
+
+    public function __construct(GrupoRepository $repository, TipoGrupoService $tipoGrupoService, ItemService $itemService)
     {
         $this->repository = $repository;
         $this->tipoGrupoService = $tipoGrupoService;
+        $this->itemService = $itemService;
     }
 
     public function getAll($params = null, $with = null)
