@@ -19,7 +19,7 @@ class GrupoController extends AbstractController
 
     public function getMovimentacao(Request $request)
     {
-        $this->service->movimentacao($request->all());
+        return $this->service->movimentacao($request->all());
     }
 
 }

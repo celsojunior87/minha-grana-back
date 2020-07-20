@@ -33,7 +33,8 @@ class GrupoService extends AbstractService
             $total_vl_esperado = 0;
             $total_vl_planejado = 0;
             $total_vl_recebido = 0;
-            foreach($grupo->items()->get() as $item) {
+            foreach ($grupo->items()->get() as $item) {
+
                 $total_vl_esperado += $item->vl_esperado;
                 $total_vl_planejado += $item->vl_planejado;
                 $total_vl_recebido += $item->vl_recebido;
@@ -43,6 +44,16 @@ class GrupoService extends AbstractService
             $grupos[$key]['total_vl_recebido'] = $total_vl_recebido;
         }
         return $grupos;
+    }
+
+    public function movimentacao($params)
+    {
+        $grupos = $this->repository->movimentacao($params);
+        $arrGrupos = $grupos[0]['items']->toArray();
+        foreach ($arrGrupos as $key => $value) {
+              $grupo = $value;
+            }
+        return $grupo;
     }
 
     /**
@@ -65,8 +76,5 @@ class GrupoService extends AbstractService
         return $arr;
     }
 
-    public function movimentacao($params)
-    {
-        return $this->repository->movimentacao($params);
-    }
+
 }
