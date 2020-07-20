@@ -52,6 +52,6 @@ class GrupoRepository extends AbstractRepository
      */
     public function movimentacao($params, $with = [])
     {
-        $arr = $this->model->with(['items'])->queryMovimentacao($params)->get();
+        return $this->model->with(['items'])->queryMovimentacao($params)->get();
     }
 }

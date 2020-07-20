@@ -1,12 +1,12 @@
 <?php
 
+
 namespace App\Services;
 
-use App\Models\TipoGrupo;
+
 use App\Repositories\GrupoRepository;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Arr;
 
 class GrupoService extends AbstractService
 {
@@ -20,16 +20,10 @@ class GrupoService extends AbstractService
      */
     protected $tipoGrupoService;
 
-    /**
-     * @var ItemService
-     */
-    protected $itemService;
-
-    public function __construct(GrupoRepository $repository, TipoGrupoService $tipoGrupoService, ItemService $itemService)
+    public function __construct(GrupoRepository $repository, TipoGrupoService $tipoGrupoService)
     {
         $this->repository = $repository;
         $this->tipoGrupoService = $tipoGrupoService;
-        $this->itemService = $itemService;
     }
 
     public function getAll($params = null, $with = null)
@@ -49,6 +43,16 @@ class GrupoService extends AbstractService
             $grupos[$key]['total_vl_recebido'] = $total_vl_recebido;
         }
         return $grupos;
+    }
+
+    public function movimentacao($params)
+    {
+        $grupos = $this->repository->movimentacao($params);
+        $arrGrupos = $grupos[0]['items']->toArray();
+        foreach ($arrGrupos as $key => $value) {
+              $grupo = $value;
+            }
+        return $grupo;
     }
 
     /**
@@ -71,10 +75,10 @@ class GrupoService extends AbstractService
         return $arr;
     }
 
-    public function movimentacao($params)
-    {
-        return $this->repository->movimentacao($params);
-    }
+//    public function movimentacao($params)
+//    {
+//        return $this->repository->movimentacao($params);
+//    }
 
     public function criarMes($params)
     {
