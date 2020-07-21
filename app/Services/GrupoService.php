@@ -4,6 +4,7 @@
 namespace App\Services;
 
 
+use App\Models\TipoGrupo;
 use App\Repositories\GrupoRepository;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -22,7 +23,7 @@ class GrupoService extends AbstractService
     protected $tipoGrupoService;
 
     /**
-     * @var ItemService 
+     * @var ItemService
      */
     protected $itemService;
 
@@ -82,11 +83,12 @@ class GrupoService extends AbstractService
         return $arr;
     }
 
-//    public function movimentacao($params)
-//    {
-//        return $this->repository->movimentacao($params);
-//    }
-
+    /**
+     * Cria um mês, quando o mesmo está em branco
+     * @param $params
+     * @return mixed|void
+     * @throws \Exception
+     */
     public function criarMes($params)
     {
         if(empty($params['date'])) {
@@ -111,7 +113,7 @@ class GrupoService extends AbstractService
              * Se não existir nada no mês anterior, então cria um novo
              */
             if(empty($gruposMesAnterior)) {
-                return $this->criarReceita($date);
+                $this->criarGruposDefault($date);
             } else {
                 /**
                  * Se existir, copia os itens do mês anterior.
@@ -157,14 +159,99 @@ class GrupoService extends AbstractService
      * @param $date
      * @return mixed
      */
-    public function criarReceita($date)
+    public function criarGruposDefault($date)
     {
-        $novoGrupo = [
-            'nome' => 'Receitas',
-            'user_id' => auth()->user()->id,
-            'tipo_grupo_id' => TipoGrupo::RECEITAS,
-            'date' => Carbon::createFromFormat('Y-m', $date)->firstOfMonth()->format('Y-m-d')
+        $this->criarReceitas($date);
+        $this->criarDoacoes($date);
+        $this->criarEconomias($date);
+        $this->criarCasa($date);
+        $this->criarDividas($date);
+    }
+
+    /**
+     * Cria receitas
+     * @param $date
+     */
+    public function criarReceitas($date)
+    {
+        $this->criarGrupoAbstract(
+            'Receitas',
+            auth()->user()->id,
+            TipoGrupo::RECEITAS,
+            Carbon::createFromFormat('Y-m', $date)->firstOfMonth()->format('Y-m-d')
+        );
+    }
+
+    /**
+     * Criar doações
+     * @param $date
+     */
+    public function criarDoacoes($date)
+    {
+        $this->criarGrupoAbstract(
+            'Doacoes',
+            auth()->user()->id,
+            TipoGrupo::DESPESAS,
+            Carbon::createFromFormat('Y-m', $date)->firstOfMonth()->format('Y-m-d')
+        );
+    }
+
+    /**
+     * Criar economias
+     * @param $date
+     */
+    public function criarEconomias($date)
+    {
+        $this->criarGrupoAbstract(
+            'Economias',
+            auth()->user()->id,
+            TipoGrupo::DESPESAS,
+            Carbon::createFromFormat('Y-m', $date)->firstOfMonth()->format('Y-m-d')
+        );
+    }
+
+    /**
+     * Criar casas
+     * @param $date
+     */
+    public function criarCasa($date)
+    {
+        $this->criarGrupoAbstract(
+            'Casa',
+            auth()->user()->id,
+            TipoGrupo::DESPESAS,
+            Carbon::createFromFormat('Y-m', $date)->firstOfMonth()->format('Y-m-d')
+        );
+    }
+
+    /**
+     * Dívidas
+     * @param $date
+     */
+    public function criarDividas($date)
+    {
+        $this->criarGrupoAbstract(
+            'Dívidas',
+            auth()->user()->id,
+            TipoGrupo::DESPESAS,
+            Carbon::createFromFormat('Y-m', $date)->firstOfMonth()->format('Y-m-d')
+        );
+    }
+
+    /**
+     * @param $nomeGrupo
+     * @param $userId
+     * @param $tipoGrupoId
+     * @param $date
+     */
+    public function criarGrupoAbstract($nomeGrupo, $userId, $tipoGrupoId, $date)
+    {
+        $grupo = [
+            'nome' => $nomeGrupo,
+            'user_id' => $userId,
+            'tipo_grupo_id' => $tipoGrupoId,
+            'date' => $date
         ];
-        return $this->save($novoGrupo);
+        $this->save($grupo);
     }
 }

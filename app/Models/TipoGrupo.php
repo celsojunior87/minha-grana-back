@@ -10,4 +10,5 @@ class TipoGrupo extends Model
     public $timestamps = false;
 
     const RECEITAS = 1;
+    const DESPESAS = 2;
 }
