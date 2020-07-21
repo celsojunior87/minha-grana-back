@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use App\Models\TipoGrupo;
 
 
 class TipoGrupoTableSeeder extends Seeder
@@ -12,21 +13,11 @@ class TipoGrupoTableSeeder extends Seeder
      */
     public function run()
     {
-        \App\Models\TipoGrupo::create([
+        TipoGrupo::create([
             'nome'=>'Receitas',
-
         ]);
-        \App\Models\TipoGrupo::create([
-            'nome'=>'Dividas',
-
-        ]);
-        \App\Models\TipoGrupo::create([
-            'nome'=>'Economias',
-
-        ]);
-        \App\Models\TipoGrupo::create([
+        TipoGrupo::create([
             'nome'=>'Despesas',
-
         ]);
     }
 }
