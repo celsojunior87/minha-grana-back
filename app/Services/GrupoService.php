@@ -56,11 +56,13 @@ class GrupoService extends AbstractService
     public function movimentacao($params)
     {
         $grupos = $this->repository->movimentacao($params);
-        $arrGrupos = $grupos[0]['items']->toArray();
-        foreach ($arrGrupos as $key => $value) {
-              $grupo = $value;
+        $arrItems = [];
+        foreach ($grupos as $key => $grupo) {
+            foreach ($grupo->items()->get() as $item){
+                $arrItems[] = $item->toArray();
             }
-        return $grupo;
+        }
+        return $arrItems;
     }
 
     /**
