@@ -52,7 +52,7 @@ class Grupo extends Model
             $newDate = Carbon::createFromFormat('Y-m', $date);
             $queryBuilder
                 ->whereHas('items', function($query) {
-                    return $query->where('created_at', '!=', 'updated_t');
+                    return $query->where('created_at', '!=', 'updated_at');
                 })
                 ->whereBetween('data',
                     [$newDate->firstOfMonth()->format('Y-m-d'), $newDate->lastOfMonth()->format('Y-m-d')]
