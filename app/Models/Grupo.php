@@ -36,6 +36,17 @@ class Grupo extends Model
                 )
                 ->orderBy('created_at');
         }
+        if (Arr::has($params, 'tipo_grupo')) {
+            $tipo_grupo = Arr::get($params, 'tipo_grupo');
+            if($tipo_grupo === 'receita') {
+                $tipo_grupo = TipoGrupo::RECEITAS;
+            }
+            if($tipo_grupo === 'despesa') {
+                $tipo_grupo = TipoGrupo::DESPESAS;
+            }
+            $queryBuilder
+                ->where('tipo_grupo_id', '=', $tipo_grupo);
+        }
         $queryBuilder->userAuth();
         return $queryBuilder;
     }
