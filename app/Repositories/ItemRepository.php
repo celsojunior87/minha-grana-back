@@ -30,6 +30,15 @@ class ItemRepository extends AbstractRepository
         if (isset($params['vl_esperado'])) {
             $formatted['vl_esperado'] = Number::formatCurrencyBr($params['vl_esperado']);
         }
+        if (isset($params['vl_planejado'])) {
+            $formatted['vl_planejado'] = Number::formatCurrencyBr($params['vl_planejado']);
+        }
+        if (isset($params['data'])) {
+            $formatted['data'] = $params['data'];
+        }
+        if (isset($params['vl_saldo_realizado'])) {
+            $formatted['vl_saldo_realizado'] = Number::formatCurrencyBr($params['vl_saldo_realizado']);
+        }
 
         return $formatted;
     }
