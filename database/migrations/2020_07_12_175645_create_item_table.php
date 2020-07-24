@@ -25,9 +25,6 @@ class CreateItemTable extends Migration
             $table->date('data')->nullable();
             $table->string('gasto')->nullable()->default(0.00);;
             $table->unsignedInteger('status_id')->nullable();
-            $table->foreign('status_id')
-                ->references('id')
-                ->on('status');
             $table->unsignedInteger('grupo_id')->nullable();
             $table->foreign('grupo_id')
                 ->references('id')
