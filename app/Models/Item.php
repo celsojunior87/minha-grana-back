@@ -12,4 +12,8 @@ class Item extends Model
     {
         return $this->hasMany(Grupo::class,'id','grupo_id');
     }
+    public function status()
+    {
+        return $this->hasMany(Status::class,'id','status_id');
+    }
 }

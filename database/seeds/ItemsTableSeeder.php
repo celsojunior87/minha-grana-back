@@ -21,7 +21,6 @@ class ItemsTableSeeder extends Seeder
             'vl_saldo_esperado' => 0,
             'vl_saldo_realizado' => 0,
             'vl_total' => 0,
-            'status' => 0,
         ]);
         Item::create([
             'grupo_id' => 2,
@@ -32,7 +31,6 @@ class ItemsTableSeeder extends Seeder
             'vl_saldo_esperado' => 0,
             'vl_saldo_realizado' => 0,
             'vl_total' => 0,
-            'status' => 0,
         ]);
     }
 }
