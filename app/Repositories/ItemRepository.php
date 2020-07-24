@@ -40,7 +40,7 @@ class ItemRepository extends AbstractRepository
             $formatted['vl_saldo_realizado'] = Number::formatCurrencyBr($params['vl_saldo_realizado']);
         }
         if (isset($params['status_id'])) {
-            $formatted['status_id'] = Number::formatCurrencyBr($params['status_id']);
+            $formatted['status_id'] = $params['status_id'];
         }
 
         return $formatted;
