@@ -18,7 +18,7 @@ class StatusTableSeeder extends Seeder
         ]);
         Status::create([
             'id' => 2,
-            'nome' => 'feito',
+            'nome' => 'Feito',
         ]);
         Status::create([
             'id' => 3,

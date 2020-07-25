@@ -4,6 +4,7 @@
 namespace App\Services;
 
 
+use App\Models\Status;
 use App\Models\TipoGrupo;
 use App\Repositories\GrupoRepository;
 use Carbon\Carbon;
@@ -62,7 +63,41 @@ class GrupoService extends AbstractService
                 $arrItems[] = $item->toArray();
             }
         }
+
+        foreach ($arrItems as $key => $item) {
+            $arrItems[$key]['status'] = $this->fazerCalculoStatus($item);
+        }
+
         return $arrItems;
+    }
+
+    /**
+     *
+     *  Cálculo status
+     *  STATUS: Seguir as seguintes regras:
+     *  SE ESPERADO <> REALIZADO ENTÃO “Ajuste”
+     *  SE ESPERADO = REALIZADO ENTÃO “Feito”
+     *  SE ESPERADO <> 0 & REALIZADO = ENTÃO “Aguardando”
+     *  SE ESPERADO = 0 & REALIZADO = 0 ENTÃO null
+     *
+     * @param $item
+     * @return array|string[]
+     */
+    public function fazerCalculoStatus($item)
+    {
+        $valorSaldoEsperado = Arr::get($item, 'vl_saldo_esperado');
+        $valorSaldoRealizado = Arr::get($item, 'vl_saldo_realizado');
+
+        if($valorSaldoEsperado !== 0 && $valorSaldoEsperado !== $valorSaldoRealizado) {
+            return ['nome' => Status::find(Status::AGUARDANDO)->nome, 'color' => 'orange', 'text_color' => 'white'];
+        }
+        if($valorSaldoEsperado === $valorSaldoRealizado) {
+            return ['nome' => Status::find(Status::FEITO)->nome, 'color' => 'green', 'text_color' => 'white'];
+        }
+        if($valorSaldoEsperado !== $valorSaldoRealizado) {
+            return ['nome' => Status::find(Status::AJUSTE)->nome, 'color' => 'secondary', 'text_color' => 'white'];
+        }
+        return ['nome' => '', 'color' => 'default', 'text_color' => ''];
     }
 
     /**
