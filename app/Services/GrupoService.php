@@ -128,19 +128,15 @@ class GrupoService extends AbstractService
      */
     public function criarMes($params)
     {
-
         if (empty($params['date'])) {
             throw new \Exception('A data é obrigatória');
         }
 
         $grupos = $this->getAll($params)->toArray();
 
-
         /**
          * Verifica se existe algo no mes atual
          */
-
-
         if (empty($grupos)) {
 
             /**
@@ -149,7 +145,6 @@ class GrupoService extends AbstractService
             $date = Arr::get($params, 'date');
             $mesAnterior = Carbon::createFromFormat('Y-m', $date)->subMonth(1)->format('Y-m');
             $gruposMesAnterior = $this->getAll(['date' => $mesAnterior])->toArray();
-
 
             /**
              * Se não existir nada no mês anterior, então cria um novo
@@ -281,37 +276,6 @@ class GrupoService extends AbstractService
     }
 
     /**
-     * Criar doações
-     * @param $date
-     */
-    public function apagarGrupoDoacao($date)
-    {
-        $this->deletarGrupoAbstract(
-            'Doacao',
-            auth()->user()->id,
-            TipoGrupo::DESPESAS,
-            Carbon::createFromFormat('Y-m', $date)->firstOfMonth()->format('Y-m-d')
-        );
-    }
-
-    /**
-     * @param $nomeGrupo
-     * @param $userId
-     * @param $tipoGrupoId
-     * @param $date
-     */
-    public function deletarGrupoAbstract($nomeGrupo, $userId, $tipoGrupoId, $date)
-    {
-        $grupo = [
-            'nome' => $nomeGrupo,
-            'user_id' => $userId,
-            'tipo_grupo_id' => $tipoGrupoId,
-            'date' => $date
-        ];
-        $this->delete($grupo['tipo_grupo_id']);
-    }
-
-    /**
      * @param $nomeGrupo
      * @param $userId
      * @param $tipoGrupoId
@@ -326,5 +290,18 @@ class GrupoService extends AbstractService
             'date' => $date
         ];
         $this->save($grupo);
+    }
+
+    /**
+     * Remove um grupo e todos seus itens relacionados
+     * @param $date
+     */
+    public function delete($id)
+    {
+        $items = $this->find($id)->items()->get();
+        foreach ($items as $item) {
+            $this->itemService->getRepository()->delete($item->id);
+        }
+        return parent::delete($id);
     }
 }
