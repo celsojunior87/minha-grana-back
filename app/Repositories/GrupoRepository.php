@@ -54,7 +54,7 @@ class GrupoRepository extends AbstractRepository
     {
         return $this->model
             ->with(['items', 'items.itemMovimentacao'])
-            ->queryMovimentacao($params)
+            ->query($params)
             ->orderBy('id')
             ->get();
     }

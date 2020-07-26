@@ -57,20 +57,27 @@ class GrupoService extends AbstractService
     public function movimentacao($params)
     {
         $grupos = $this->repository->movimentacao($params);
-        $arrItems = [];
+        return $this->getMovimentacaoByGrupos($grupos);
+    }
+
+    public function getMovimentacaoByGrupos($grupos)
+    {
+        $arrItemsMovimentacao = [];
         foreach ($grupos as $key => $grupo) {
             foreach ($grupo->items()->get() as $item) {
-                $arrItem = $item->toArray();
-                $arrItem['item_movimentacao'] = $item->itemMovimentacao()->get()->toArray();
-                $arrItems[] = $arrItem;
+                foreach ($item->itemMovimentacao()->get() as $movimentacao) {
+                    $arrItem['nome'] = $item->nome;
+                    $arrItem['vl_planejado'] = $movimentacao->vl_planejado;
+                    $arrItem['vl_saldo_esperado'] = $movimentacao->vl_saldo_esperado;
+                    $arrItem['vl_realizado'] = $movimentacao->vl_realizado;
+                    $arrItemsMovimentacao[] = $arrItem;
+                }
             }
         }
-
-        foreach ($arrItems as $key => $item) {
-            $arrItems[$key]['status'] = $this->fazerCalculoStatus($item);
+        foreach ($arrItemsMovimentacao as $key => $item) {
+            $arrItemsMovimentacao[$key]['status'] = $this->fazerCalculoStatus($item);
         }
-
-        return $arrItems;
+        return $arrItemsMovimentacao;
     }
 
     /**

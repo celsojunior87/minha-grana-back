@@ -55,21 +55,4 @@ class Grupo extends Model
     {
         return $query->where('user_id', auth()->user()->id);
     }
-
-    public function scopeQueryMovimentacao($queryBuilder, array $params)
-    {
-        if (Arr::has($params, 'date')) {
-            $date = Arr::get($params, 'date');
-            $newDate = Carbon::createFromFormat('Y-m', $date);
-            $queryBuilder
-                ->whereHas('items', function($query) {
-                    return $query->whereColumn('created_at', '!=', 'updated_at');
-                })
-                ->whereBetween('data',
-                    [$newDate->firstOfMonth()->format('Y-m-d'), $newDate->lastOfMonth()->format('Y-m-d')]
-                );
-        }
-        $queryBuilder->userAuth();
-        return $queryBuilder;
-    }
 }
