@@ -107,7 +107,7 @@ class GrupoService extends AbstractService
     public function save(array $data)
     {
         $data['user_id'] = Auth::user()->id;
-        $data['data'] = Carbon::now();
+        $data['data'] = (!isset($data['date'])) ? Carbon::now() : $data['date'];
         return parent::save($data);
     }
 
