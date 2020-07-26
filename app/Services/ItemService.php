@@ -24,9 +24,38 @@ class ItemService extends AbstractService
             ->getModel()
             ->firstWhere(['item_id' => $id]);
 
-        if(!$itemMovimentacao) {
+        if (!$itemMovimentacao) {
             $this->itemMovimentacaoService->save(['item_id' => $id]);
         }
         return parent::update($id, $data);
+    }
+
+    public function beforeSave(array $data)
+    {
+        $countItemsNoGrupo = $this->repository
+            ->getModel()
+            ->where('grupo_id', $data['grupo_id'])
+            ->count();
+
+        $data['ordenacao'] = $countItemsNoGrupo + 1;
+        return $data;
+    }
+
+    public function delete($id)
+    {
+        $grupo_id = $this->repository->find($id)->grupo_id;
+        parent::delete($id);
+
+        $itemsPorGrupo = $this->repository
+            ->getModel()
+            ->orderBy('ordenacao')
+            ->where('grupo_id', $grupo_id)
+            ->get();
+
+        foreach ($itemsPorGrupo->toArray() as $key => $item) {
+            $item['ordenacao'] = ++$key;
+            parent::update($item['id'], $item);
+        }
+
     }
 }

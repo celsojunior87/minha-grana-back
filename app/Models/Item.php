@@ -8,6 +8,8 @@ class Item extends Model
 {
     public $table = 'item';
 
+    public $fillable = ['ordenacao'];
+
     public function grupo()
     {
         return $this->hasMany(Grupo::class,'id','grupo_id');

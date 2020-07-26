@@ -14,6 +14,5 @@ class ItemMovimentacaoService extends AbstractService
     public function __construct(ItemMovimentacaoRepository $repository)
     {
         $this->repository = $repository;
-
     }
 }

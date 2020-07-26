@@ -80,6 +80,11 @@ abstract class AbstractService extends ServiceInterface
 
     }
 
+    public function beforeDelete($id)
+    {
+        return $id;
+    }
+
     /**
      * @param int $id
      * @return mixed
@@ -87,7 +92,15 @@ abstract class AbstractService extends ServiceInterface
     public function delete(int $id)
     {
         $this->validadeOnDelete($id);
-        return $this->repository->delete($id);
+        $this->beforeDelete($id);
+        $this->repository->delete($id);
+        $this->afterDelete($id);
+        return $id;
+    }
+
+    public function afterDelete($entity)
+    {
+        return $entity;
     }
 
     /**

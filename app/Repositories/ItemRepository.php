@@ -22,11 +22,9 @@ class ItemRepository extends AbstractRepository
         if (isset($params['nome'])) {
             $formatted['nome'] = $params['nome'];
         }
-
         if (isset($params['grupo_id'])) {
             $formatted['grupo_id'] = $params['grupo_id'];
         }
-
         if (isset($params['vl_esperado'])) {
             $formatted['vl_esperado'] = Number::formatCurrencyBr($params['vl_esperado']);
         }
@@ -42,7 +40,9 @@ class ItemRepository extends AbstractRepository
         if (isset($params['status_id'])) {
             $formatted['status_id'] = $params['status_id'];
         }
-
+        if (isset($params['ordenacao'])) {
+            $formatted['ordenacao'] = $params['ordenacao'];
+        }
         return $formatted;
     }
 }
