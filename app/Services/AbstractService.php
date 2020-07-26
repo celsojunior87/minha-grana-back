@@ -35,10 +35,20 @@ abstract class AbstractService extends ServiceInterface
 
     /**
      * @param array $data
+     * @return array
+     */
+    public function beforeSave(array $data)
+    {
+        return $data;
+    }
+
+    /**
+     * @param array $data
      * @return mixed
      */
     public function save(array $data)
     {
+        $data = $this->beforeSave($data);
         if ($this->validadeOnInsert($data) !== false) {
             $entity = $this->repository->create($data);
             $this->afterSave($entity, $data);
@@ -46,9 +56,9 @@ abstract class AbstractService extends ServiceInterface
         }
     }
 
-    public function afterSave($model, $params)
+    public function afterSave($entity, $params)
     {
-
+        return $entity;
     }
 
     /**
