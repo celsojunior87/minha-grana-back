@@ -59,7 +59,7 @@ class GrupoService extends AbstractService
         $grupos = $this->repository->movimentacao($params);
         $arrItems = [];
         foreach ($grupos as $key => $grupo) {
-            foreach ($grupo->items()->get() as $item){
+            foreach ($grupo->items()->get() as $item) {
                 $arrItems[] = $item->toArray();
             }
         }
@@ -88,13 +88,13 @@ class GrupoService extends AbstractService
         $valorSaldoEsperado = Arr::get($item, 'vl_saldo_esperado');
         $valorSaldoRealizado = Arr::get($item, 'vl_saldo_realizado');
 
-        if($valorSaldoEsperado !== 0 && $valorSaldoEsperado !== $valorSaldoRealizado) {
+        if ($valorSaldoEsperado !== 0 && $valorSaldoEsperado !== $valorSaldoRealizado) {
             return ['nome' => Status::find(Status::AGUARDANDO)->nome, 'color' => 'orange', 'text_color' => 'white'];
         }
-        if($valorSaldoEsperado === $valorSaldoRealizado) {
+        if ($valorSaldoEsperado === $valorSaldoRealizado) {
             return ['nome' => Status::find(Status::FEITO)->nome, 'color' => 'green', 'text_color' => 'white'];
         }
-        if($valorSaldoEsperado !== $valorSaldoRealizado) {
+        if ($valorSaldoEsperado !== $valorSaldoRealizado) {
             return ['nome' => Status::find(Status::AJUSTE)->nome, 'color' => 'secondary', 'text_color' => 'white'];
         }
         return ['nome' => '', 'color' => 'default', 'text_color' => ''];
@@ -128,15 +128,19 @@ class GrupoService extends AbstractService
      */
     public function criarMes($params)
     {
+
         if (empty($params['date'])) {
             throw new \Exception('A data é obrigatória');
         }
 
         $grupos = $this->getAll($params)->toArray();
 
+
         /**
          * Verifica se existe algo no mes atual
          */
+
+
         if (empty($grupos)) {
 
             /**
@@ -146,10 +150,11 @@ class GrupoService extends AbstractService
             $mesAnterior = Carbon::createFromFormat('Y-m', $date)->subMonth(1)->format('Y-m');
             $gruposMesAnterior = $this->getAll(['date' => $mesAnterior])->toArray();
 
+
             /**
              * Se não existir nada no mês anterior, então cria um novo
              */
-            if(empty($gruposMesAnterior)) {
+            if (empty($gruposMesAnterior)) {
                 $this->criarGruposDefault($date);
             } else {
                 /**
@@ -176,7 +181,7 @@ class GrupoService extends AbstractService
                 'data' => Carbon::createFromFormat('Y-m', $mesAtual)->firstOfMonth()->format('Y-m-d')
             ];
             $id = parent::save($novoGrupo)->id;
-            if($grupo->items()) {
+            if ($grupo->items()) {
                 foreach ($grupo->items()->get() as $item) {
                     $novoItem = [
                         'nome' => $item->nome,
@@ -273,6 +278,37 @@ class GrupoService extends AbstractService
             TipoGrupo::DESPESAS,
             Carbon::createFromFormat('Y-m', $date)->firstOfMonth()->format('Y-m-d')
         );
+    }
+
+    /**
+     * Criar doações
+     * @param $date
+     */
+    public function apagarGrupoDoacao($date)
+    {
+        $this->deletarGrupoAbstract(
+            'Doacao',
+            auth()->user()->id,
+            TipoGrupo::DESPESAS,
+            Carbon::createFromFormat('Y-m', $date)->firstOfMonth()->format('Y-m-d')
+        );
+    }
+
+    /**
+     * @param $nomeGrupo
+     * @param $userId
+     * @param $tipoGrupoId
+     * @param $date
+     */
+    public function deletarGrupoAbstract($nomeGrupo, $userId, $tipoGrupoId, $date)
+    {
+        $grupo = [
+            'nome' => $nomeGrupo,
+            'user_id' => $userId,
+            'tipo_grupo_id' => $tipoGrupoId,
+            'date' => $date
+        ];
+        $this->delete($grupo['tipo_grupo_id']);
     }
 
     /**
