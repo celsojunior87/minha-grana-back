@@ -22,9 +22,7 @@ class CreateItemMovimentacaoTable extends Migration
             $table->decimal('vl_realizado', 20, 2)->nullable()->default(0.00);
             $table->date('data')->nullable();
             $table->unsignedInteger('item_id')->nullable();
-            $table->foreign('item_id')
-                ->references('id')
-                ->on('item');
+            $table->foreign('item_id')->references('id')->on('item')->onDelete('cascade');
             $table->timestamps();
         });
     }

@@ -15,4 +15,10 @@ class ItemMovimentacaoService extends AbstractService
     {
         $this->repository = $repository;
     }
+
+    public function criarItemMovimentacao($idItem)
+    {
+        $data['item_id'] = $idItem;
+        $this->save($data);
+    }
 }

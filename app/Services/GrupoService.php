@@ -66,6 +66,8 @@ class GrupoService extends AbstractService
         foreach ($grupos as $key => $grupo) {
             foreach ($grupo->items()->get() as $item) {
                 foreach ($item->itemMovimentacao()->get() as $movimentacao) {
+                    $arrItem['item_id'] = $item->id;
+                    $arrItem['movimentacao_id'] = $movimentacao->id;
                     $arrItem['nome'] = $item->nome;
                     $arrItem['vl_planejado'] = $movimentacao->vl_planejado;
                     $arrItem['vl_saldo_esperado'] = $movimentacao->vl_saldo_esperado;
