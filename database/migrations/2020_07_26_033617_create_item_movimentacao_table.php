@@ -22,9 +22,7 @@ class CreateItemMovimentacaoTable extends Migration
             $table->integer('ordenacao')->nullable();
             $table->date('data')->nullable();
             $table->unsignedInteger('item_id')->nullable();
-            $table->foreign('item_id')
-                ->references('id')
-                ->on('item');
+            $table->foreign('item_id')->references('id')->on('item')->onDelete('cascade');
             $table->timestamps();
         });
     }
