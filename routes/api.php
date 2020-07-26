@@ -59,7 +59,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     /**
      * Item
      */
-    Route::resource('itemMovimentacao', 'ItemMovimentacaoController');
+    Route::resource('item-movimentacao', 'ItemMovimentacaoController');
 
     /**
      * Permissions
