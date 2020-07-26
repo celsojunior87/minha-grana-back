@@ -20,9 +20,7 @@ class ItemMovimentacaoRepository extends AbstractRepository
     {
         $formatted = [];
 
-        if (isset($params['descricao'])) {
-            $formatted['descricao'] = $params['descricao'];
-        }
+        $formatted['descricao'] = '$params[]';
 
         if (isset($params['item_id'])) {
             $formatted['item_id'] = $params['item_id'];

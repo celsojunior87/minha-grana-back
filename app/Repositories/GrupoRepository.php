@@ -52,6 +52,10 @@ class GrupoRepository extends AbstractRepository
      */
     public function movimentacao($params)
     {
-        return $this->model->with(['items'])->queryMovimentacao($params)->get();
+        return $this->model
+            ->with(['items', 'items.itemMovimentacao'])
+            ->queryMovimentacao($params)
+            ->orderBy('id')
+            ->get();
     }
 }

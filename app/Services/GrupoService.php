@@ -60,7 +60,9 @@ class GrupoService extends AbstractService
         $arrItems = [];
         foreach ($grupos as $key => $grupo) {
             foreach ($grupo->items()->get() as $item) {
-                $arrItems[] = $item->toArray();
+                $arrItem = $item->toArray();
+                $arrItem['item_movimentacao'] = $item->itemMovimentacao()->get()->toArray();
+                $arrItems[] = $arrItem;
             }
         }
 
@@ -75,10 +77,10 @@ class GrupoService extends AbstractService
      *
      *  Cálculo status
      *  STATUS: Seguir as seguintes regras:
-     *  SE ESPERADO <> REALIZADO ENTÃO “Ajuste”
-     *  SE ESPERADO = REALIZADO ENTÃO “Feito”
-     *  SE ESPERADO <> 0 & REALIZADO = ENTÃO “Aguardando”
-     *  SE ESPERADO = 0 & REALIZADO = 0 ENTÃO null
+     *  SE PLANEJADO <> REALIZADO ENTÃO “Ajuste”
+     *  SE PLANEJADO = REALIZADO ENTÃO “Feito”
+     *  SE PLANEJADO <> 0 & REALIZADO = ENTÃO “Aguardando”
+     *  SE PLANEJADO = 0 & REALIZADO = 0 ENTÃO null
      *
      * @param $item
      * @return array|string[]
@@ -88,14 +90,14 @@ class GrupoService extends AbstractService
         $valorSaldoEsperado = Arr::get($item, 'vl_saldo_esperado');
         $valorSaldoRealizado = Arr::get($item, 'vl_saldo_realizado');
 
+        if ($valorSaldoEsperado !== $valorSaldoRealizado) {
+            return ['nome' => Status::find(Status::AJUSTE)->nome, 'color' => 'secondary', 'text_color' => 'white'];
+        }
         if ($valorSaldoEsperado !== 0 && $valorSaldoEsperado !== $valorSaldoRealizado) {
             return ['nome' => Status::find(Status::AGUARDANDO)->nome, 'color' => 'orange', 'text_color' => 'white'];
         }
-        if ($valorSaldoEsperado === $valorSaldoRealizado) {
+        if ($valorSaldoEsperado === $valorSaldoRealizado && $valorSaldoRealizado != 0 && $valorSaldoEsperado != 0) {
             return ['nome' => Status::find(Status::FEITO)->nome, 'color' => 'green', 'text_color' => 'white'];
-        }
-        if ($valorSaldoEsperado !== $valorSaldoRealizado) {
-            return ['nome' => Status::find(Status::AJUSTE)->nome, 'color' => 'secondary', 'text_color' => 'white'];
         }
         return ['nome' => '', 'color' => 'default', 'text_color' => ''];
     }

@@ -12,4 +12,9 @@ class Item extends Model
     {
         return $this->hasMany(Grupo::class,'id','grupo_id');
     }
+
+    public function itemMovimentacao()
+    {
+        return $this->hasMany(ItemMovimentacao::class,'item_id','id');
+    }
 }

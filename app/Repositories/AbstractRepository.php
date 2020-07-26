@@ -8,13 +8,21 @@ use Illuminate\Database\Eloquent\Model;
 abstract class AbstractRepository extends RepositoryInterface
 {
     /**
+     * @return mixed
+     */
+    public function getModel(): Model
+    {
+        return $this->model;
+    }
+
+    /**
      * @param $params
      * @param null $with
      * @return mixed
      */
     public function all($params = null, $with = [])
     {
-         return $this->model->with($with)->query($params)->get();
+        return $this->model->with($with)->query($params)->get();
     }
 
     /**
@@ -55,7 +63,7 @@ abstract class AbstractRepository extends RepositoryInterface
 
     public function findByUserAuth($params)
     {
-        if(isset($params['id_user']) && !empty($params['id_user'])) {
+        if (isset($params['id_user']) && !empty($params['id_user'])) {
             return $this->findOrFail($params['id_user']);
         }
         /**

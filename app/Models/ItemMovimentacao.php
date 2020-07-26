@@ -7,10 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 class ItemMovimentacao extends Model
 {
    public $table = 'item_movimentacao';
-
+   public $fillable = ['item_id'];
+   protected $primaryKey = 'id';
 
    public function item()
    {
-       return $this->hasMany(Item::class,'id','item_id');
+       return $this->belongsTo(Item::class,'item_id','id');
    }
 }
