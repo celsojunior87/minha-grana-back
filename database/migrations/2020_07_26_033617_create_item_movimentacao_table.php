@@ -19,6 +19,7 @@ class CreateItemMovimentacaoTable extends Migration
             $table->decimal('vl_planejado', 20, 2)->nullable()->default(0.0);
             $table->decimal('vl_saldo_esperado', 20, 2)->nullable()->default(0.00);
             $table->decimal('vl_realizado', 20, 2)->nullable()->default(0.00);
+            $table->integer('ordenacao')->nullable();
             $table->date('data')->nullable();
             $table->unsignedInteger('item_id')->nullable();
             $table->foreign('item_id')

@@ -16,6 +16,7 @@ class CreateItemTable extends Migration
         Schema::create('item', function (Blueprint $table) {
             $table->increments('id');
             $table->string('nome');
+            $table->integer('ordenacao')->nullable();
             $table->decimal('vl_esperado', 20, 2)->nullable()->default(0.00);
             $table->decimal('vl_planejado', 20, 2)->nullable()->default(0.0);
             $table->decimal('vl_recebido', 20, 2)->nullable()->default(0.00);

@@ -15,6 +15,7 @@ class ItemsTableSeeder extends Seeder
         Item::create([
             'grupo_id' => 1,
             'nome' => 'Receita',
+            'ordenacao' => 1,
             'vl_esperado' => 0,
             'vl_planejado' => 0,
             'vl_recebido' => 0,
@@ -25,6 +26,7 @@ class ItemsTableSeeder extends Seeder
         Item::create([
             'grupo_id' => 2,
             'nome' => 'Doacao',
+            'ordenacao' => 1,
             'vl_esperado' => 0,
             'vl_planejado' => 0,
             'vl_recebido' => 0,
