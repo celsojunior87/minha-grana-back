@@ -57,6 +57,11 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::resource('item', 'ItemController');
 
     /**
+     * Item
+     */
+    Route::resource('itemMovimentacao', 'ItemMovimentacaoController');
+
+    /**
      * Permissions
      */
     Route::prefix('permission')->group(function () {
