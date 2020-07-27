@@ -34,6 +34,7 @@ class ItemMovimentacaoService extends AbstractService
 
     public function delete($id)
     {
+
         $item_id = $this->repository->find($id)->grupo_id;
         parent::delete($id);
         $itemsPorGrupo = $this->repository
