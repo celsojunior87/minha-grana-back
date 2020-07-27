@@ -29,11 +29,18 @@ class GrupoService extends AbstractService
      */
     protected $itemService;
 
-    public function __construct(GrupoRepository $repository, TipoGrupoService $tipoGrupoService, ItemService $itemService)
+    protected $itemMovimentacaoService;
+
+    public function __construct(GrupoRepository $repository,
+                                TipoGrupoService $tipoGrupoService,
+                                ItemService $itemService,
+                                ItemMovimentacaoService $itemMovimentacaoService
+    )
     {
         $this->repository = $repository;
         $this->tipoGrupoService = $tipoGrupoService;
         $this->itemService = $itemService;
+        $this->itemMovimentacaoService = $itemMovimentacaoService;
     }
 
     public function getAll($params = null, $with = null)
@@ -73,7 +80,6 @@ class GrupoService extends AbstractService
                     $arrItem['movimentacao_id'] = $movimentacao->id;
                     $arrItem['nome'] = $item->nome;
                     $arrItem['vl_planejado'] = $movimentacao->vl_planejado;
-                    $arrItem['vl_saldo_esperado'] = $this->calculaSaldoEsperado($movimentacao);
                     $arrItem['vl_realizado'] = $movimentacao->vl_realizado;
                     $arrItemsMovimentacao[] = $arrItem;
                 }
@@ -83,6 +89,11 @@ class GrupoService extends AbstractService
             $arrItemsMovimentacao[$key]['status'] = $this->fazerCalculoStatus($item);
         }
         array_multisort(array_column($arrItemsMovimentacao, "ordenacao"), SORT_ASC, $arrItemsMovimentacao);
+
+        foreach ($arrItemsMovimentacao as $key => $itemsMovimentacao) {
+            $itemMovimentacao = $this->itemMovimentacaoService->find($itemsMovimentacao['movimentacao_id']);
+            $arrItemsMovimentacao[$key]['vl_saldo_esperado'] = $this->calculaSaldoEsperado($itemMovimentacao);
+        }
         return $arrItemsMovimentacao;
     }
 
