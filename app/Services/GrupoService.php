@@ -92,7 +92,7 @@ class GrupoService extends AbstractService
             return $movimentacao->vl_realizado;
         }
 
-        dd($movimentacao->item()->grupo()->get());
+        dd($movimentacao->item()->first()->grupo()->first());
 
     }
 
