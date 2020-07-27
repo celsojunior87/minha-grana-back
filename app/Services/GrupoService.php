@@ -67,6 +67,7 @@ class GrupoService extends AbstractService
             foreach ($grupo->items()->get() as $item) {
                 foreach ($item->itemMovimentacao()->get() as $movimentacao) {
                     $arrItem['item_id'] = $item->id;
+                    $arrItem['ordenacao'] = $movimentacao->ordenacao;
                     $arrItem['data'] = $movimentacao->data;
                     $arrItem['movimentacao_id'] = $movimentacao->id;
                     $arrItem['nome'] = $item->nome;
@@ -80,6 +81,7 @@ class GrupoService extends AbstractService
         foreach ($arrItemsMovimentacao as $key => $item) {
             $arrItemsMovimentacao[$key]['status'] = $this->fazerCalculoStatus($item);
         }
+        array_multisort( array_column($arrItemsMovimentacao, "ordenacao"), SORT_ASC, $arrItemsMovimentacao );
         return $arrItemsMovimentacao;
     }
 
