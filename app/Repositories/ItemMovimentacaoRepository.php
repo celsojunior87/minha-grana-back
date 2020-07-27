@@ -25,20 +25,20 @@ class ItemMovimentacaoRepository extends AbstractRepository
         if (isset($params['item_id'])) {
             $formatted['item_id'] = $params['item_id'];
         }
-
         if (isset($params['vl_planejado'])) {
             $formatted['vl_planejado'] = Number::formatCurrencyBr($params['vl_planejado']);
         }
         if (isset($params['vl_saldo_esperado'])) {
             $formatted['vl_saldo_esperado'] = Number::formatCurrencyBr($params['vl_saldo_esperado']);
         }
-
         if (isset($params['vl_realizado'])) {
             $formatted['vl_realizado'] = Number::formatCurrencyBr($params['vl_realizado']);
         }
-
         if (isset($params['data'])) {
             $formatted['data'] = $params['data'];
+        }
+        if (isset($params['ordenacao'])) {
+            $formatted['ordenacao'] = $params['ordenacao'];
         }
 
         return $formatted;
