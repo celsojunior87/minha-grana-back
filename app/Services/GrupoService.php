@@ -88,22 +88,36 @@ class GrupoService extends AbstractService
         foreach ($arrItemsMovimentacao as $key => $item) {
             $arrItemsMovimentacao[$key]['status'] = $this->fazerCalculoStatus($item);
         }
-        array_multisort(array_column($arrItemsMovimentacao, "ordenacao"), SORT_ASC, $arrItemsMovimentacao);
+        array_multisort(array_column($arrItemsMovimentacao, "ordenacao"),
+            SORT_NUMERIC, $arrItemsMovimentacao);
+
+        $tipoGrupo = TipoGrupo::all();
+        $tipoGrupo->toArray();
+
 
         foreach ($arrItemsMovimentacao as $key => $itemsMovimentacao) {
             $itemMovimentacao = $this->itemMovimentacaoService->find($itemsMovimentacao['movimentacao_id']);
-            $arrItemsMovimentacao[$key]['vl_saldo_esperado'] = $this->calculaSaldoEsperado($itemMovimentacao);
+            $itemMovimentacaoAnterior = ($key == 0) ? null : $arrItemsMovimentacao[$key - 1];
+            $itemMovimentacaoAnterior = ($itemMovimentacaoAnterior == null) ? null :
+                $this->itemMovimentacaoService->find($itemMovimentacaoAnterior['movimentacao_id']);
+            $arrItemsMovimentacao[$key]['vl_saldo_esperado'] =
+                $this->calculaSaldoEsperado($itemMovimentacao, $itemMovimentacaoAnterior, $tipoGrupo);
         }
         return $arrItemsMovimentacao;
     }
 
-    public function calculaSaldoEsperado(ItemMovimentacao $movimentacao)
+    public function calculaSaldoEsperado(ItemMovimentacao $movimentacao, ?ItemMovimentacao $itemMovimentacaoAnterior, $tipoGrupo)
     {
         if ($movimentacao->ordenacao == 1) {
             return $movimentacao->vl_realizado;
         }
+        if ($tipoGrupo[0]) {
+            return $movimentacao->vl_saldo_esperado = $itemMovimentacaoAnterior['vl_realizado'] + $movimentacao->vl_realizado;
+        }
+        if ($tipoGrupo[1]) {
+            return $movimentacao->vl_saldo_esperado = $itemMovimentacaoAnterior['vl_realizado'] - $movimentacao->vl_saldo_esperado;
+        }
 
-        dd($movimentacao->item()->first()->grupo()->first());
 
     }
 
