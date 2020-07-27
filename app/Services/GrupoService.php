@@ -4,6 +4,7 @@
 namespace App\Services;
 
 
+use App\Models\ItemMovimentacao;
 use App\Models\Status;
 use App\Models\TipoGrupo;
 use App\Repositories\GrupoRepository;
@@ -72,7 +73,7 @@ class GrupoService extends AbstractService
                     $arrItem['movimentacao_id'] = $movimentacao->id;
                     $arrItem['nome'] = $item->nome;
                     $arrItem['vl_planejado'] = $movimentacao->vl_planejado;
-                    $arrItem['vl_saldo_esperado'] = $movimentacao->vl_saldo_esperado;
+                    $arrItem['vl_saldo_esperado'] = $this->calculaSaldoEsperado($movimentacao);
                     $arrItem['vl_realizado'] = $movimentacao->vl_realizado;
                     $arrItemsMovimentacao[] = $arrItem;
                 }
@@ -81,8 +82,18 @@ class GrupoService extends AbstractService
         foreach ($arrItemsMovimentacao as $key => $item) {
             $arrItemsMovimentacao[$key]['status'] = $this->fazerCalculoStatus($item);
         }
-        array_multisort( array_column($arrItemsMovimentacao, "ordenacao"), SORT_ASC, $arrItemsMovimentacao );
+        array_multisort(array_column($arrItemsMovimentacao, "ordenacao"), SORT_ASC, $arrItemsMovimentacao);
         return $arrItemsMovimentacao;
+    }
+
+    public function calculaSaldoEsperado(ItemMovimentacao $movimentacao)
+    {
+        if ($movimentacao->ordenacao == 1) {
+            return $movimentacao->vl_realizado;
+        }
+
+        dd($movimentacao->item()->grupo()->get());
+
     }
 
     /**

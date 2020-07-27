@@ -12,11 +12,11 @@ class Item extends Model
 
     public function grupo()
     {
-        return $this->hasMany(Grupo::class,'id','grupo_id');
+        return $this->belongsTo(Grupo::class, 'grupo_id', 'id');
     }
 
     public function itemMovimentacao()
     {
-        return $this->hasMany(ItemMovimentacao::class,'item_id','id');
+        return $this->hasMany(ItemMovimentacao::class, 'item_id', 'id');
     }
 }
