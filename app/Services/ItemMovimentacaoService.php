@@ -4,7 +4,9 @@
 namespace App\Services;
 
 
+use App\Models\Item;
 use App\Repositories\ItemMovimentacaoRepository;
+use Carbon\Carbon;
 
 
 class ItemMovimentacaoService extends AbstractService
@@ -24,11 +26,12 @@ class ItemMovimentacaoService extends AbstractService
 
     public function beforeSave(array $data)
     {
-        $countItemsMovimentacaoNoGrupo = $this->repository
-            ->getModel()
-            ->where('item_id', $data['item_id'])
-            ->count();
-        $data['ordenacao'] = $countItemsMovimentacaoNoGrupo + 1;
+        $item = Item::find($data['item_id']);
+        $params['date'] = Carbon::createFromFormat('Y-m-d', $item->grupo()->first()->data)->format('Y-m');
+        $grupoService = app(GrupoService::class);
+        $grupos = $grupoService->getAll($params);
+        $itemsMovimentacoes = $grupoService->getMovimentacaoByGrupos($grupos);
+        $data['ordenacao'] = count($itemsMovimentacoes) + 1;
         return $data;
     }
 

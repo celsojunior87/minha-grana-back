@@ -91,34 +91,33 @@ class GrupoService extends AbstractService
         array_multisort(array_column($arrItemsMovimentacao, "ordenacao"),
             SORT_NUMERIC, $arrItemsMovimentacao);
 
-        $tipoGrupo = TipoGrupo::all();
-        $tipoGrupo->toArray();
-
-
         foreach ($arrItemsMovimentacao as $key => $itemsMovimentacao) {
             $itemMovimentacao = $this->itemMovimentacaoService->find($itemsMovimentacao['movimentacao_id']);
-            $itemMovimentacaoAnterior = ($key == 0) ? null : $arrItemsMovimentacao[$key - 1];
-            $itemMovimentacaoAnterior = ($itemMovimentacaoAnterior == null) ? null :
-                $this->itemMovimentacaoService->find($itemMovimentacaoAnterior['movimentacao_id']);
+            $itemMovimentacaoAnterior = isset($arrItemsMovimentacao[$key - 1]) ? $arrItemsMovimentacao[$key - 1] : null;
             $arrItemsMovimentacao[$key]['vl_saldo_esperado'] =
-                $this->calculaSaldoEsperado($itemMovimentacao, $itemMovimentacaoAnterior, $tipoGrupo);
+                $this->calculaSaldoEsperado($itemMovimentacao, $itemMovimentacaoAnterior);
+            $arrItemsMovimentacao[$key]['color'] = $this->definirCorPorTipoGrupo($itemMovimentacao);
         }
         return $arrItemsMovimentacao;
     }
 
-    public function calculaSaldoEsperado(ItemMovimentacao $movimentacao, ?ItemMovimentacao $itemMovimentacaoAnterior, $tipoGrupo)
+    public function definirCorPorTipoGrupo(ItemMovimentacao $itemMovimentacao)
     {
-        if ($movimentacao->ordenacao == 1) {
-            return $movimentacao->vl_realizado;
-        }
-        if ($tipoGrupo[0]) {
-            return $movimentacao->vl_saldo_esperado = $itemMovimentacaoAnterior['vl_realizado'] + $movimentacao->vl_realizado;
-        }
-        if ($tipoGrupo[1]) {
-            return $movimentacao->vl_saldo_esperado = $itemMovimentacaoAnterior['vl_realizado'] - $movimentacao->vl_saldo_esperado;
-        }
+        $tipoGrupo = $itemMovimentacao->item()->first()->grupo()->first()->tipoGrupo()->first()->id;
+        return ($tipoGrupo === TipoGrupo::RECEITAS ? 'green' : 'red');
+    }
 
-
+    public function calculaSaldoEsperado(ItemMovimentacao $itemMovimentacao, $arrItemsMovimentacaoAnterior)
+    {
+        if ($itemMovimentacao->ordenacao == 1) {
+            return $itemMovimentacao->vl_realizado;
+        }
+        if($itemMovimentacao->item()->first()->grupo()->first()->tipoGrupo()->first()->id == TipoGrupo::RECEITAS) {
+            return $arrItemsMovimentacaoAnterior['vl_saldo_esperado'] + $itemMovimentacao->vl_realizado;
+        }
+        if($itemMovimentacao->item()->first()->grupo()->first()->tipoGrupo()->first()->id == TipoGrupo::DESPESAS) {
+            return $arrItemsMovimentacaoAnterior['vl_saldo_esperado'] - $itemMovimentacao->vl_realizado;
+        }
     }
 
     /**
