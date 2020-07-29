@@ -13,6 +13,9 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
+    protected $messageSuccessDefault = 'Operação realizada com com sucesso';
+    protected $messageErrorDefault = 'Ops';
+
     /**
      * Used to return success response
      * @return Response
@@ -27,8 +30,12 @@ class Controller extends BaseController
      * @param int $status
      * @return \Illuminate\Http\JsonResponse
      */
-    public function error($message, $items = null, $status = 422)
+    public function error($message = null, $items = null, $status = 422)
     {
+        if(is_null($message)) {
+            $message = $this->messageErrorDefault;
+        }
+
         $data = ['status' => 'error', 'message' => $message];
 
         if ($items) {
@@ -48,6 +55,10 @@ class Controller extends BaseController
      */
     public function success($message, $items = null, $status = 200)
     {
+        if(is_null($message)) {
+            $message = $this->messageSuccessDefault;
+        }
+
         $data = ['status' => 'success', 'message' => $message];
 
         if ($items instanceof Arrayable) {
