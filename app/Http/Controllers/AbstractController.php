@@ -15,6 +15,7 @@ abstract class AbstractController extends Controller
     protected $requestValidate = '';
     protected $requestValidateUpdate = '';
 
+
     /**
      * @param Request $request
      * @return Response
@@ -36,18 +37,18 @@ abstract class AbstractController extends Controller
                 $request->validate($requestValidate->rules());
             }
         } catch (ValidationException $e) {
-            return $this->error('Ops', $e->errors());
+            return $this->error($this->messageErrorDefault, $e->errors());
         }
 
         try {
             DB::beginTransaction();
             $response = $this->service->save($request->all());
             DB::commit();
-            return $this->success('Operação realizada com com sucesso', ['response' => $response]);
+            return $this->success($this->messageSuccessDefault, ['response' => $response]);
         } catch (\Exception | ValidationException $e) {
             DB::rollBack();
             if ($e instanceof ValidationException) {
-                return $this->error('Ops', $e->errors());
+                return $this->error($this->messageErrorDefault, $e->errors());
             }
             if ($e instanceof \Exception) {
                 return $this->error($e->getMessage());
@@ -68,21 +69,21 @@ abstract class AbstractController extends Controller
                 $request->validate($requestValidateUpdate->rules());
             }
         } catch (ValidationException $e) {
-            return $this->error('Ops', $e->errors());
+            return $this->error($this->messageErrorDefault, $e->errors());
         }
 
         try {
             DB::beginTransaction();
             $this->service->update($id, $request->all());
             DB::commit();
-            return $this->success('Operação realizada com com sucesso');
+            return $this->success($this->messageSuccessDefault);
         } catch (\Exception | ValidationException $e) {
             DB::rollBack();
             if ($e instanceof \Exception) {
                 return $this->error($e->getMessage());
             }
             if ($e instanceof ValidationException) {
-                return $this->error('Ops', $e->errors());
+                return $this->error($this->messageErrorDefault, $e->errors());
             }
         }
     }
@@ -101,7 +102,7 @@ abstract class AbstractController extends Controller
                 return $this->error($e->getMessage());
             }
             if ($e instanceof ValidationException) {
-                return $this->error('Ops', $e->errors());
+                return $this->error($this->messageErrorDefault, $e->errors());
             }
         }
     }
@@ -115,7 +116,7 @@ abstract class AbstractController extends Controller
     {
         try {
             $this->service->delete($id);
-            return $this->success('Excluído com sucesso');
+            return $this->success($this->messageSuccessDefault);
         } catch (\Exception $e) {
             return $this->error($e->getMessage());
         }

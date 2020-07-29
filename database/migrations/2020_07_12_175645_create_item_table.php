@@ -28,7 +28,8 @@ class CreateItemTable extends Migration
             $table->unsignedInteger('grupo_id')->nullable();
             $table->foreign('grupo_id')
                 ->references('id')
-                ->on('grupo');
+                ->on('grupo')
+                ->onDelete('cascade');
             $table->timestamps();
         });
     }
