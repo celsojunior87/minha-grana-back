@@ -35,21 +35,4 @@ class ItemMovimentacaoService extends AbstractService
         return $data;
     }
 
-    public function delete($id)
-    {
-
-        $item_id = $this->repository->find($id)->grupo_id;
-        parent::delete($id);
-        $itemsPorGrupo = $this->repository
-            ->getModel()
-            ->orderBy('ordenacao')
-            ->where('item_id', $item_id)
-            ->get();
-
-        foreach ($itemsPorGrupo->toArray() as $key => $item) {
-            $item['ordenacao'] = ++$key;
-            parent::update($item['id'], $item);
-        }
-
-    }
 }

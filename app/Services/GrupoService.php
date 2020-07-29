@@ -85,18 +85,19 @@ class GrupoService extends AbstractService
                 }
             }
         }
-        foreach ($arrItemsMovimentacao as $key => $item) {
-            $arrItemsMovimentacao[$key]['status'] = $this->fazerCalculoStatus($item);
-        }
+
         array_multisort(array_column($arrItemsMovimentacao, "ordenacao"),
             SORT_NUMERIC, $arrItemsMovimentacao);
 
         foreach ($arrItemsMovimentacao as $key => $itemsMovimentacao) {
             $itemMovimentacao = $this->itemMovimentacaoService->find($itemsMovimentacao['movimentacao_id']);
-            $itemMovimentacaoAnterior = isset($arrItemsMovimentacao[$key - 1]) ? $arrItemsMovimentacao[$key - 1] : null;
+            $itemMovimentacaoAnterior = isset($arrItemsMovimentacao[$key - 1]) ? $arrItemsMovimentacao[$key - 1] : 0;
             $arrItemsMovimentacao[$key]['vl_saldo_esperado'] =
                 $this->calculaSaldoEsperado($itemMovimentacao, $itemMovimentacaoAnterior);
             $arrItemsMovimentacao[$key]['color'] = $this->definirCorPorTipoGrupo($itemMovimentacao);
+        }
+        foreach ($arrItemsMovimentacao as $key => $item) {
+            $arrItemsMovimentacao[$key]['status'] = $this->fazerCalculoStatus($item);
         }
         return $arrItemsMovimentacao;
     }
@@ -112,10 +113,10 @@ class GrupoService extends AbstractService
         if ($itemMovimentacao->ordenacao == 1) {
             return $itemMovimentacao->vl_realizado;
         }
-        if($itemMovimentacao->item()->first()->grupo()->first()->tipoGrupo()->first()->id == TipoGrupo::RECEITAS) {
+        if ($itemMovimentacao->item()->first()->grupo()->first()->tipoGrupo()->first()->id == TipoGrupo::RECEITAS) {
             return $arrItemsMovimentacaoAnterior['vl_saldo_esperado'] + $itemMovimentacao->vl_realizado;
         }
-        if($itemMovimentacao->item()->first()->grupo()->first()->tipoGrupo()->first()->id == TipoGrupo::DESPESAS) {
+        if ($itemMovimentacao->item()->first()->grupo()->first()->tipoGrupo()->first()->id == TipoGrupo::DESPESAS) {
             return $arrItemsMovimentacaoAnterior['vl_saldo_esperado'] - $itemMovimentacao->vl_realizado;
         }
     }
@@ -134,16 +135,18 @@ class GrupoService extends AbstractService
      */
     public function fazerCalculoStatus($item)
     {
-        $valorSaldoEsperado = Arr::get($item, 'vl_saldo_esperado');
-        $valorSaldoRealizado = Arr::get($item, 'vl_saldo_realizado');
+        $valorRealizado = Arr::get($item, 'vl_realizado');
+        $valorPlanejado = Arr::get($item, 'vl_planejado');
 
-        if ($valorSaldoEsperado !== $valorSaldoRealizado) {
-            return ['nome' => Status::find(Status::AJUSTE)->nome, 'color' => 'secondary', 'text_color' => 'white'];
-        }
-        if ($valorSaldoEsperado !== 0 && $valorSaldoEsperado !== $valorSaldoRealizado) {
+        if ($valorRealizado == '0.00' && $valorPlanejado !== $valorRealizado) {
             return ['nome' => Status::find(Status::AGUARDANDO)->nome, 'color' => 'orange', 'text_color' => 'white'];
         }
-        if ($valorSaldoEsperado === $valorSaldoRealizado && $valorSaldoRealizado != 0 && $valorSaldoEsperado != 0) {
+
+        if ($valorPlanejado !== $valorRealizado) {
+            return ['nome' => Status::find(Status::AJUSTE)->nome, 'color' => 'secondary', 'text_color' => 'white'];
+        }
+
+        if ($valorPlanejado === $valorRealizado && $valorRealizado != 0) {
             return ['nome' => Status::find(Status::FEITO)->nome, 'color' => 'green', 'text_color' => 'white'];
         }
         return ['nome' => '', 'color' => 'default', 'text_color' => ''];
