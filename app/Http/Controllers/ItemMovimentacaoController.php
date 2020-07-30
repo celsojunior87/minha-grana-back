@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Services\ItemMovimentacaoService;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 
@@ -35,5 +36,10 @@ class ItemMovimentacaoController extends AbstractController
                 return $this->error($e->getMessage());
             }
         }
+    }
+
+    public function reordenar(Request $request)
+    {
+        return $this->success($this->service->reordenar($request->all()));
     }
 }

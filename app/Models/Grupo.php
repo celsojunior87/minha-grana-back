@@ -12,7 +12,7 @@ class Grupo extends Model
 
     public function items()
     {
-        return $this->hasMany(Item::class, 'grupo_id', 'id')->orderBy('created_at');
+        return $this->hasMany(Item::class, 'grupo_id', 'id')->orderBy('ordenacao');
     }
 
     public function tipoGrupo()

@@ -56,16 +56,13 @@ class ItemService extends AbstractService
             $item['ordenacao'] = ++$key;
             parent::update($item['id'], $item);
         }
-
-
-
     }
 
     public function reordenar($items)
     {
         foreach ($items as $key => $item) {
             $objItem = $this->find($item['item_id']);
-            $objItem->ordenacao = --$key;
+            $objItem->ordenacao = ++$key;
             $this->update($objItem->id, $objItem);
         }
     }

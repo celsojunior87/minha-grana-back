@@ -35,4 +35,13 @@ class ItemMovimentacaoService extends AbstractService
         return $data;
     }
 
+    public function reordenar($items)
+    {
+        foreach ($items as $key => $item) {
+            $objItemMovimentacao = $this->find($item['movimentacao_id']);
+            $objItemMovimentacao->ordenacao = ++$key;
+            $this->update($objItemMovimentacao->id, $objItemMovimentacao);
+        }
+    }
+
 }

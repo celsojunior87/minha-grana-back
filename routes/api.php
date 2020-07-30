@@ -60,6 +60,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     /**
      * Item
      */
+    Route::post('item-movimentacao/reordenar', 'ItemMovimentacaoController@reordenar');
     Route::post('item-movimentacao/item/{id}', 'ItemMovimentacaoController@criarItemMovimentacao');
     Route::resource('item-movimentacao', 'ItemMovimentacaoController');
 
