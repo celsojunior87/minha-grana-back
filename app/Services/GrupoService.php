@@ -93,12 +93,14 @@ class GrupoService extends AbstractService
             $itemMovimentacao = $this->itemMovimentacaoService->find($itemsMovimentacao['movimentacao_id']);
             $itemMovimentacaoAnterior = isset($arrItemsMovimentacao[$key - 1]) ? $arrItemsMovimentacao[$key - 1] : 0;
             $arrItemsMovimentacao[$key]['vl_saldo_esperado'] =
-                $this->calculaSaldoEsperado($itemMovimentacao, $itemMovimentacaoAnterior);
+                $this->calculaSaldoEsperado($itemMovimentacao, $itemMovimentacaoAnterior, $key);
             $arrItemsMovimentacao[$key]['color'] = $this->definirCorPorTipoGrupo($itemMovimentacao);
         }
         foreach ($arrItemsMovimentacao as $key => $item) {
             $arrItemsMovimentacao[$key]['status'] = $this->fazerCalculoStatus($item);
         }
+
+
         return $arrItemsMovimentacao;
     }
 
@@ -108,9 +110,9 @@ class GrupoService extends AbstractService
         return ($tipoGrupo === TipoGrupo::RECEITAS ? 'green' : 'red');
     }
 
-    public function calculaSaldoEsperado(ItemMovimentacao $itemMovimentacao, $arrItemsMovimentacaoAnterior)
+    public function calculaSaldoEsperado(ItemMovimentacao $itemMovimentacao, $arrItemsMovimentacaoAnterior, $key)
     {
-        if ($itemMovimentacao->ordenacao == 1) {
+        if ($key == 0) {
             return $itemMovimentacao->vl_realizado;
         }
         if ($itemMovimentacao->item()->first()->grupo()->first()->tipoGrupo()->first()->id == TipoGrupo::RECEITAS) {
@@ -353,6 +355,7 @@ class GrupoService extends AbstractService
         $items = $this->find($id)->items()->get();
         foreach ($items as $item) {
             $this->itemService->getRepository()->delete($item->id);
+            $this->itemService->reordenarItensOnDelete($item);
         }
         return parent::delete($id);
     }

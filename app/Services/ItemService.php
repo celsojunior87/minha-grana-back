@@ -4,7 +4,9 @@
 namespace App\Services;
 
 
+use App\Models\Item;
 use App\Repositories\ItemRepository;
+use Carbon\Carbon;
 
 class ItemService extends AbstractService
 {
@@ -43,18 +45,47 @@ class ItemService extends AbstractService
 
     public function delete($id)
     {
-        $grupo_id = $this->repository->find($id)->grupo_id;
+        $item = $this->repository->find($id);
         parent::delete($id);
 
+        $this->reordenarItensOnDelete($item);
+        $this->reordenarItensMovimentacaoOnDelete($item);
+    }
+
+    public function reordenarItensOnDelete(Item $item)
+    {
         $itemsPorGrupo = $this->repository
             ->getModel()
             ->orderBy('ordenacao')
-            ->where('grupo_id', $grupo_id)
+            ->where('grupo_id', $item->grupo_id)
             ->get();
 
+        /**
+         * Ordenacao de itens
+         */
         foreach ($itemsPorGrupo->toArray() as $key => $item) {
             $item['ordenacao'] = ++$key;
             parent::update($item['id'], $item);
+        }
+    }
+
+    public function reordenarItensMovimentacaoOnDelete(Item $item)
+    {
+        $grupoService = app(GrupoService::class);
+        $grupo = $grupoService->find($item->grupo_id);
+
+        $grupos = $grupoService->getAll(
+            ['date' => Carbon::createFromFormat('Y-m-d', $grupo->data)->format('Y-m')]
+        );
+
+        $movimentacoes = $grupoService->getMovimentacaoByGrupos($grupos);
+
+        /**
+         * Ordenacao de movimentacoes
+         */
+        foreach ($movimentacoes as $key => $movimentacao) {
+            $movimentacao['ordenacao'] = ++$key;
+            $this->itemMovimentacaoService->update($movimentacao['movimentacao_id'], $movimentacao);
         }
     }
 
