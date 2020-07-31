@@ -25,9 +25,14 @@ class Number
      */
     public static function moedaToDatabase($get_valor)
     {
+
         $source = array('.', ',');
         $replace = array('', '.');
-        $valor = str_replace($source, $replace, $get_valor); //remove os pontos e substitui a virgula pelo ponto
+        if(strpos($get_valor,',')) {
+            $valor = str_replace($source, $replace, $get_valor); //remove os pontos e substitui a virgula pelo ponto
+        } else {
+            $valor = $get_valor;
+        }
         return str_replace('R$', '', $valor);
     }
 
