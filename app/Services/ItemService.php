@@ -92,7 +92,7 @@ class ItemService extends AbstractService
     public function reordenar($items)
     {
         foreach ($items as $key => $item) {
-            $objItem = $this->find($item['item_id']);
+            $objItem = $this->find($item['id']);
             $objItem->ordenacao = ++$key;
             $this->update($objItem->id, $objItem);
         }
