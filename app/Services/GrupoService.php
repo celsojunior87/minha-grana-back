@@ -68,7 +68,26 @@ class GrupoService extends AbstractService
         return $this->getMovimentacaoByGrupos($grupos);
     }
 
+    /**
+     * Buscar movimentacoes por grupo
+     * @param $grupos
+     * @return mixed
+     * @throws \Exception
+     */
     public function getMovimentacaoByGrupos($grupos)
+    {
+        $arrItemsMovimentacao = $this->buscarGruposComMovimentacoesPorGrupos($grupos);
+        $arrItemsMovimentacao = $this->calcularSaldoEsperadoPorGruposComMovimentacoes($arrItemsMovimentacao);
+        $arrItemsMovimentacao = $this->calcularStatusPorGruposComMovimentacoes($arrItemsMovimentacao);
+        $this->ordernarGruposComMovimentacoes($arrItemsMovimentacao);
+        return $arrItemsMovimentacao;
+    }
+
+    /**
+     * Buscar grupos com movimentacoes por grupo
+     * @param $grupos
+     */
+    public function buscarGruposComMovimentacoesPorGrupos($grupos)
     {
         $arrItemsMovimentacao = [];
         foreach ($grupos as $key => $grupo) {
@@ -85,28 +104,56 @@ class GrupoService extends AbstractService
                 }
             }
         }
+        return $arrItemsMovimentacao;
+    }
 
-
-        array_multisort(array_column($arrItemsMovimentacao, "ordenacao"),
-            SORT_NUMERIC, $arrItemsMovimentacao);
-
-
-        foreach ($arrItemsMovimentacao as $key => $itemsMovimentacao) {
-            $itemMovimentacao = $this->itemMovimentacaoService->find($itemsMovimentacao['movimentacao_id']);
-            $itemMovimentacaoAnterior = isset($arrItemsMovimentacao[$key - 1]) ? $arrItemsMovimentacao[$key - 1] : 0;
-            $arrItemsMovimentacao[$key]['vl_saldo_esperado'] =
-                $this->calculaSaldoEsperado($itemMovimentacao, $itemMovimentacaoAnterior, $key);
-
-
-            $arrItemsMovimentacao[$key]['color'] = $this->definirCorPorTipoGrupo($itemMovimentacao);
-
-
+    /**
+     * Ordena os grupos com movimentacoes
+     * @param $arrItemsMovimentacao
+     * @return bool
+     */
+    public function ordernarGruposComMovimentacoes($arrItemsMovimentacao)
+    {
+        if($arrItemsMovimentacao) {
+            $arrItemsMovimentacao = array_multisort(array_column($arrItemsMovimentacao, "ordenacao"),
+                SORT_NUMERIC, $arrItemsMovimentacao);
         }
 
-        foreach ($arrItemsMovimentacao as $key => $item) {
-            $arrItemsMovimentacao[$key]['status'] = $this->fazerCalculoStatus($item);
+        return $arrItemsMovimentacao;
+    }
+
+    /**
+     * Metodo que manda calcular o saldo esperado
+     * @param $arrItemsMovimentacao
+     * @return mixed
+     * @throws \Exception
+     */
+    public function calcularSaldoEsperadoPorGruposComMovimentacoes($arrItemsMovimentacao)
+    {
+        if(is_array($arrItemsMovimentacao)) {
+            foreach ($arrItemsMovimentacao as $key => $itemsMovimentacao) {
+                $itemMovimentacao = $this->itemMovimentacaoService->find($itemsMovimentacao['movimentacao_id']);
+                $itemMovimentacaoAnterior = isset($arrItemsMovimentacao[$key - 1]) ? $arrItemsMovimentacao[$key - 1] : 0;
+                $arrItemsMovimentacao[$key]['vl_saldo_esperado'] =
+                    $this->calculaSaldoEsperado($itemMovimentacao, $itemMovimentacaoAnterior, $key);
+                $arrItemsMovimentacao[$key]['color'] = $this->definirCorPorTipoGrupo($itemMovimentacao);
+            }
         }
 
+        return $arrItemsMovimentacao;
+    }
+
+    /**
+     * @param $arrItemsMovimentacao
+     * @return mixed
+     */
+    public function calcularStatusPorGruposComMovimentacoes($arrItemsMovimentacao)
+    {
+        if(is_array($arrItemsMovimentacao)) {
+            foreach ($arrItemsMovimentacao as $key => $item) {
+                $arrItemsMovimentacao[$key]['status'] = $this->fazerCalculoStatus($item);
+            }
+        }
 
         return $arrItemsMovimentacao;
     }
@@ -297,7 +344,6 @@ class GrupoService extends AbstractService
      */
     public function criarReceitas($date)
     {
-
         $this->criarGrupoAbstract(
             'Receitas',
             auth()->user()->id,
