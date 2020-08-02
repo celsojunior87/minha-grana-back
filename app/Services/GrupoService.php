@@ -58,7 +58,7 @@ class GrupoService extends AbstractService
             $grupos[$key]['total_vl_esperado'] = $total_vl_esperado;
             $grupos[$key]['total_vl_planejado'] = $total_vl_planejado;
             $grupos[$key]['total_vl_recebido'] = $total_vl_recebido;
-        }
+        };
         return $grupos;
     }
 
@@ -86,16 +86,23 @@ class GrupoService extends AbstractService
             }
         }
 
+
         array_multisort(array_column($arrItemsMovimentacao, "ordenacao"),
             SORT_NUMERIC, $arrItemsMovimentacao);
+
 
         foreach ($arrItemsMovimentacao as $key => $itemsMovimentacao) {
             $itemMovimentacao = $this->itemMovimentacaoService->find($itemsMovimentacao['movimentacao_id']);
             $itemMovimentacaoAnterior = isset($arrItemsMovimentacao[$key - 1]) ? $arrItemsMovimentacao[$key - 1] : 0;
             $arrItemsMovimentacao[$key]['vl_saldo_esperado'] =
                 $this->calculaSaldoEsperado($itemMovimentacao, $itemMovimentacaoAnterior, $key);
+
+
             $arrItemsMovimentacao[$key]['color'] = $this->definirCorPorTipoGrupo($itemMovimentacao);
+
+
         }
+
         foreach ($arrItemsMovimentacao as $key => $item) {
             $arrItemsMovimentacao[$key]['status'] = $this->fazerCalculoStatus($item);
         }
@@ -110,8 +117,18 @@ class GrupoService extends AbstractService
         return ($tipoGrupo === TipoGrupo::RECEITAS ? 'green' : 'red');
     }
 
+    /**
+     *  PLANEJE = SALDO ESPERADO DO ITEM - SOMATORIA DO REALIZADO DO ITEM
+     */
+    public function calcularValorPorGrupo()
+    {
+
+
+    }
+
     public function calculaSaldoEsperado(ItemMovimentacao $itemMovimentacao, $arrItemsMovimentacaoAnterior, $key)
     {
+
         if ($key == 0) {
             return $itemMovimentacao->vl_realizado;
         }
@@ -141,15 +158,30 @@ class GrupoService extends AbstractService
         $valorPlanejado = Arr::get($item, 'vl_planejado');
 
         if ($valorRealizado == '0.00' && $valorPlanejado !== $valorRealizado) {
-            return ['nome' => Status::find(Status::AGUARDANDO)->nome, 'color' => 'orange', 'text_color' => 'white'];
+            return [
+                'id' => Status::AGUARDANDO,
+                'nome' => Status::find(Status::AGUARDANDO)->nome,
+                'color' => 'orange',
+                'text_color' => 'white'
+            ];
         }
 
         if ($valorPlanejado !== $valorRealizado) {
-            return ['nome' => Status::find(Status::AJUSTE)->nome, 'color' => 'secondary', 'text_color' => 'white'];
+            return [
+                'id' => Status::AJUSTE,
+                'nome' => Status::find(Status::AJUSTE)->nome,
+                'color' => 'secondary',
+                'text_color' => 'white'
+            ];
         }
 
         if ($valorPlanejado === $valorRealizado && $valorRealizado != 0) {
-            return ['nome' => Status::find(Status::FEITO)->nome, 'color' => 'green', 'text_color' => 'white'];
+            return [
+                'id' => Status::FEITO,
+                'nome' => Status::find(Status::FEITO)->nome,
+                'color' => 'green',
+                'text_color' => 'white'
+            ];
         }
         return ['nome' => '', 'color' => 'default', 'text_color' => ''];
     }
@@ -265,6 +297,7 @@ class GrupoService extends AbstractService
      */
     public function criarReceitas($date)
     {
+
         $this->criarGrupoAbstract(
             'Receitas',
             auth()->user()->id,

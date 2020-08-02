@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\Services\UserService;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Laravel\Socialite\Facades\Socialite;
 
 class LoginController extends Controller
 {
@@ -21,6 +22,7 @@ class LoginController extends Controller
     */
 
     use AuthenticatesUsers;
+
     public $userService;
     /**
      * Where to redirect users after login.
@@ -39,6 +41,7 @@ class LoginController extends Controller
         $this->userService = $userService;
         $this->middleware('guest')->except('logout');
     }
+
     /**
      * Login with facebook
      * @param Request $request
@@ -57,5 +60,16 @@ class LoginController extends Controller
 
         return response()->json(compact('token', 'auth'));
     }
+
+    /**
+     * Redirect the user to the GitHub authentication page.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function redirectToProvider($provider)
+    {
+        return Socialite::driver($provider)->redirect();
+    }
+
 
 }

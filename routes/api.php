@@ -21,6 +21,8 @@ Route::middleware('auth:api')->get('/auth', function (Request $request) {
 Route::post('/user/cadastrar', 'UserController@cadastrar');
 Route::post('/user/recuperar-senha', 'Auth\ForgotPasswordController@sendResetLinkEmail');
 Route::post('/user/resetar-senha', 'Auth\ResetPasswordController@reset');
+Route::get('login/{provider}', 'Auth\LoginController@redirectToProvider')->name('social.login');
+Route::get('login/{provider}/callback', 'Auth\LoginController@handleProviderCallback')->name('social.callback');
 
 Route::post('/login-facebook', 'Auth\LoginController@loginFacebook');
 Route::group(['middleware' => 'auth:api'], function () {
