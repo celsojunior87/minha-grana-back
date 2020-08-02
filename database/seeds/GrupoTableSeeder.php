@@ -3,6 +3,7 @@
 use Illuminate\Database\Seeder;
 use App\Models\Grupo;
 use App\Models\Item;
+use Carbon\Carbon;
 
 class GrupoTableSeeder extends Seeder
 {
@@ -17,31 +18,31 @@ class GrupoTableSeeder extends Seeder
             'user_id' => 1,
             'tipo_grupo_id' => 1,
             'nome' => 'Receitas',
-            'data' => '2020-07-20'
+            'data' => Carbon::now()
         ]);
         Grupo::create([
             'user_id' => 1,
             'tipo_grupo_id' => 2,
             'nome' => 'Doação',
-            'data' => '2020-07-20'
+            'data' => Carbon::now()
         ]);
         Grupo::create([
             'user_id' => 1,
             'tipo_grupo_id' => 2,
             'nome' => 'Economias',
-            'data' => '2020-07-20'
+            'data' => Carbon::now()
         ]);
         Grupo::create([
             'user_id' => 1,
             'tipo_grupo_id' => 2,
             'nome' => 'Casa',
-            'data' => '2020-07-20'
+            'data' => Carbon::now()
         ]);
         Grupo::create([
             'user_id' => 1,
             'tipo_grupo_id' => 2,
             'nome' => 'Dívidas',
-            'data' => '2020-07-20'
+            'data' => Carbon::now()
         ]);
     }
 }
