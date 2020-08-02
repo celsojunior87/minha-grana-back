@@ -77,8 +77,6 @@ class GrupoService extends AbstractService
     public function getMovimentacaoByGrupos($grupos)
     {
         $arrItemsMovimentacao = $this->buscarGruposComMovimentacoesPorGrupos($grupos);
-        $arrItemsMovimentacao = $this->calcularSaldoEsperadoPorGruposComMovimentacoes($arrItemsMovimentacao);
-        $arrItemsMovimentacao = $this->calcularStatusPorGruposComMovimentacoes($arrItemsMovimentacao);
 
         /**
          * Ordenacao por movimentacoes
@@ -86,6 +84,8 @@ class GrupoService extends AbstractService
         array_multisort(array_column($arrItemsMovimentacao, "ordenacao"),
             SORT_NUMERIC, $arrItemsMovimentacao);
 
+        $arrItemsMovimentacao = $this->calcularSaldoEsperadoPorGruposComMovimentacoes($arrItemsMovimentacao);
+        $arrItemsMovimentacao = $this->calcularStatusPorGruposComMovimentacoes($arrItemsMovimentacao);
         return $arrItemsMovimentacao;
     }
 
