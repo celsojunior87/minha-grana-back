@@ -31,6 +31,7 @@ abstract class AbstractController extends Controller
      */
     public function store(Request $request)
     {
+
         try {
             if (!empty($this->requestValidate)) {
                 $requestValidate = app($this->requestValidate);

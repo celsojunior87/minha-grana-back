@@ -45,21 +45,64 @@ class GrupoService extends AbstractService
 
     public function getAll($params = null, $with = null)
     {
-        $grupos = parent::getAll($params, ['items', 'tipoGrupo']);
-        foreach ($grupos as $key => $grupo) {
-            $total_vl_esperado = 0;
-            $total_vl_planejado = 0;
-            $total_vl_recebido = 0;
-            foreach ($grupo->items()->get() as $item) {
-                $total_vl_esperado += $item->vl_esperado;
-                $total_vl_planejado += $item->vl_planejado;
-                $total_vl_recebido += $item->vl_recebido;
-            }
-            $grupos[$key]['total_vl_esperado'] = $total_vl_esperado;
-            $grupos[$key]['total_vl_planejado'] = $total_vl_planejado;
-            $grupos[$key]['total_vl_recebido'] = $total_vl_recebido;
-        };
+        $grupos = parent::getAll($params, ['items', 'tipoGrupo'])->toArray();
+
+        if ($grupos[0]['tipo_grupo']['id'] == 1) {
+            foreach ($grupos as $key => $grupo) {
+                $total_vl_esperado = 0;
+                $total_vl_planejado = 0;
+                $total_vl_recebido = 0;
+                foreach ($grupo['items'] as $keyItems => $item) {
+                    $grupos[$key]['items'][$keyItems]['vl_recebido'] = $this->somatoriaValorRealizadoItem($item);
+                    $total_vl_esperado += $item['vl_esperado'];
+                    $total_vl_planejado += $item['vl_planejado'];
+                    $total_vl_recebido += $item['vl_recebido'];
+                }
+                $grupos[$key]['total_vl_esperado'] = $total_vl_esperado;
+                $grupos[$key]['total_vl_planejado'] = $total_vl_planejado;
+                $grupos[$key]['total_vl_recebido'] = $total_vl_recebido;
+            };
+        }
+        if ($grupos[0]['tipo_grupo']['id'] == 2) {
+            foreach ($grupos as $key => $grupo) {
+                $total_vl_esperado = 0;
+                $total_vl_planejado = 0;
+                $total_vl_recebido = 0;
+                foreach ($grupo['items'] as $keyItems => $item) {
+                    $grupos[$key]['items'][$keyItems]['gasto'] = $this->somatoriaValorRealizadoItem($item);
+                    $grupos[$key]['items'][$keyItems]['planeje'] = $this->calculaPlaneje($item);
+                    $total_vl_esperado += $item['vl_esperado'];
+                    $total_vl_planejado += $item['vl_planejado'];
+                    $total_vl_recebido += $item['vl_recebido'];
+                }
+                $grupos[$key]['total_vl_esperado'] = $total_vl_esperado;
+                $grupos[$key]['total_vl_planejado'] = $total_vl_planejado;
+                $grupos[$key]['total_vl_recebido'] = $total_vl_recebido;
+            };
+        }
         return $grupos;
+
+    }
+
+    public function calculaPlaneje($item)
+    {
+        $objItem = $this->itemService->getRepository()->find($item['id']);
+        $movimentacao = $objItem->itemMovimentacao()->get()->toArray();
+
+
+    }
+
+    public function somatoriaValorRealizadoItem($item)
+    {
+        $objItem = $this->itemService->getRepository()->find($item['id']);
+        $movimentacoes = $objItem->itemMovimentacao()->get()->toArray();
+
+
+        $vl_recebido = 0;
+        foreach ($movimentacoes as $movimentacoe) {
+            $vl_recebido += $movimentacoe['vl_realizado'];
+        }
+        return $vl_recebido;
     }
 
     public function movimentacao($params)
@@ -121,7 +164,8 @@ class GrupoService extends AbstractService
      */
     public function calcularSaldoEsperadoPorGruposComMovimentacoes($arrItemsMovimentacao)
     {
-        if(is_array($arrItemsMovimentacao)) {
+
+        if (is_array($arrItemsMovimentacao)) {
             foreach ($arrItemsMovimentacao as $key => $itemsMovimentacao) {
                 $itemMovimentacao = $this->itemMovimentacaoService->find($itemsMovimentacao['movimentacao_id']);
                 $itemMovimentacaoAnterior = isset($arrItemsMovimentacao[$key - 1]) ? $arrItemsMovimentacao[$key - 1] : 0;
@@ -140,7 +184,7 @@ class GrupoService extends AbstractService
      */
     public function calcularStatusPorGruposComMovimentacoes($arrItemsMovimentacao)
     {
-        if(is_array($arrItemsMovimentacao)) {
+        if (is_array($arrItemsMovimentacao)) {
             foreach ($arrItemsMovimentacao as $key => $item) {
                 $arrItemsMovimentacao[$key]['status'] = $this->fazerCalculoStatus($item);
             }
@@ -155,14 +199,6 @@ class GrupoService extends AbstractService
         return ($tipoGrupo === TipoGrupo::RECEITAS ? 'green' : 'red');
     }
 
-    /**
-     *  PLANEJE = SALDO ESPERADO DO ITEM - SOMATORIA DO REALIZADO DO ITEM
-     */
-    public function calcularValorPorGrupo()
-    {
-
-
-    }
 
     public function calculaSaldoEsperado(ItemMovimentacao $itemMovimentacao, $arrItemsMovimentacaoAnterior, $key)
     {
