@@ -45,7 +45,7 @@ class GrupoService extends AbstractService
 
     public function getAll($params = null, $with = null)
     {
-        $grupos = parent::getAll($params, ['items', 'tipoGrupo'])->toArray();
+        $grupos = parent::getAll($params, ['items', 'tipoGrupo', 'items.itemMovimentacao'])->toArray();
 
         if ($grupos[0]['tipo_grupo']['id'] == 1) {
             foreach ($grupos as $key => $grupo) {
@@ -140,15 +140,15 @@ class GrupoService extends AbstractService
     {
         $arrItemsMovimentacao = [];
         foreach ($grupos as $key => $grupo) {
-            foreach ($grupo->items()->get() as $item) {
-                foreach ($item->itemMovimentacao()->get() as $movimentacao) {
-                    $arrItem['item_id'] = $item->id;
-                    $arrItem['ordenacao'] = $movimentacao->ordenacao;
-                    $arrItem['data'] = $movimentacao->data;
-                    $arrItem['movimentacao_id'] = $movimentacao->id;
-                    $arrItem['nome'] = $item->nome;
-                    $arrItem['vl_planejado'] = $movimentacao->vl_planejado;
-                    $arrItem['vl_realizado'] = $movimentacao->vl_realizado;
+            foreach ($grupo['items'] as $item) {
+                foreach ($item['item_movimentacao'] as $movimentacao) {
+                    $arrItem['item_id'] = $item['id'];
+                    $arrItem['ordenacao'] = $movimentacao['ordenacao'];
+                    $arrItem['data'] = $movimentacao['data'];
+                    $arrItem['movimentacao_id'] = $movimentacao['id'];
+                    $arrItem['nome'] = $item['nome'];
+                    $arrItem['vl_planejado'] = $movimentacao['vl_planejado'];
+                    $arrItem['vl_realizado'] = $movimentacao['vl_realizado'];
                     $arrItemsMovimentacao[] = $arrItem;
                 }
             }
