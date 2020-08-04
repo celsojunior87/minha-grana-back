@@ -22,22 +22,19 @@
         <!-- Tabs Titles -->
         <!-- <h2 class="active" style="color:silver">Caa</h2>
      -->
-        <img src="https://i.imgur.com/otcM3i6.png">
+        <img style="width: 200px" src="https://i.imgur.com/v0xNfkc.png">
         <h3 style="color: #01995a">Minha Grana</h3>
 
-        <p>Clique no botão abaixo para redefinir a senha de login no app Minha Grana APP com sua conta:</p>
+        <p style="color: #0d0d0d">Clique no botão abaixo para redefinir a senha de login no app Minha Grana APP com sua
+            conta:</p>
         <br>
-        <a href="{{$link}}">
-            <input
-                    type="button"
-                    class="fadeIn fourth"
-                    value="Resetar Senha"
-            />
+        <a class="btn-success" href="{{$link}}">
+
 
         </a>
-        <p>Se Você não solicitou a redefinição da sua senha , ignore este e-mail</p>
-        <p>Obrigado,</p>
-        <p>Equipe do Minha Grana APP.</p>
+        <p style="color: #0d0d0d">Se Você não solicitou a redefinição da sua senha , ignore este e-mail</p>
+        <p style="color: #0d0d0d">Obrigado,</p>
+        <p style="color: #0d0d0d">Equipe do Minha Grana APP.</p>
     </div>
 </div>
 <br/>

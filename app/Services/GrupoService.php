@@ -46,50 +46,42 @@ class GrupoService extends AbstractService
     public function getAll($params = null, $with = null)
     {
         $grupos = parent::getAll($params, ['items', 'tipoGrupo', 'items.itemMovimentacao'])->toArray();
+        foreach ($grupos as $key => $grupo) {
+            $total_vl_esperado = 0;
+            $total_vl_planejado = 0;
+            $total_vl_recebido = 0;
+            foreach ($grupo['items'] as $keyItems => $item) {
+                $grupos[$key]['items'][$keyItems]['vl_recebido'] = $this->somatoriaValorRealizadoItem($item);
+                $grupos[$key]['items'][$keyItems]['vl_planeje'] = $this->calculaPlaneje($item);
+                $grupos[$key]['items'][$keyItems]['vl_gasto'] = $this->somatoriaValorRealizadoItem($item);
+                $total_vl_esperado += $item['vl_esperado'];
+                $total_vl_planejado += $item['vl_planejado'];
+                $total_vl_recebido += $item['vl_recebido'];
+            }
+            $grupos[$key]['total_vl_esperado'] = $total_vl_esperado;
+            $grupos[$key]['total_vl_planejado'] = $total_vl_planejado;
+            $grupos[$key]['total_vl_recebido'] = $total_vl_recebido;
+        };
 
-        if ($grupos[0]['tipo_grupo']['id'] == 1) {
-            foreach ($grupos as $key => $grupo) {
-                $total_vl_esperado = 0;
-                $total_vl_planejado = 0;
-                $total_vl_recebido = 0;
-                foreach ($grupo['items'] as $keyItems => $item) {
-                    $grupos[$key]['items'][$keyItems]['vl_recebido'] = $this->somatoriaValorRealizadoItem($item);
-                    $total_vl_esperado += $item['vl_esperado'];
-                    $total_vl_planejado += $item['vl_planejado'];
-                    $total_vl_recebido += $item['vl_recebido'];
-                }
-                $grupos[$key]['total_vl_esperado'] = $total_vl_esperado;
-                $grupos[$key]['total_vl_planejado'] = $total_vl_planejado;
-                $grupos[$key]['total_vl_recebido'] = $total_vl_recebido;
-            };
-        }
-        if ($grupos[0]['tipo_grupo']['id'] == 2) {
-            foreach ($grupos as $key => $grupo) {
-                $total_vl_esperado = 0;
-                $total_vl_planejado = 0;
-                $total_vl_recebido = 0;
-                foreach ($grupo['items'] as $keyItems => $item) {
-                    $grupos[$key]['items'][$keyItems]['gasto'] = $this->somatoriaValorRealizadoItem($item);
-                    $grupos[$key]['items'][$keyItems]['planeje'] = $this->calculaPlaneje($item);
-                    $total_vl_esperado += $item['vl_esperado'];
-                    $total_vl_planejado += $item['vl_planejado'];
-                    $total_vl_recebido += $item['vl_recebido'];
-                }
-                $grupos[$key]['total_vl_esperado'] = $total_vl_esperado;
-                $grupos[$key]['total_vl_planejado'] = $total_vl_planejado;
-                $grupos[$key]['total_vl_recebido'] = $total_vl_recebido;
-            };
-        }
         return $grupos;
 
     }
 
     public function calculaPlaneje($item)
     {
-        $objItem = $this->itemService->getRepository()->find($item['id']);
-        $movimentacao = $objItem->itemMovimentacao()->get()->toArray();
+        $vl_planeje = 0;
+        $vl_realizado = 0;
 
 
+        foreach ($item['item_movimentacao'] as $movimentacao) {
+            $vl_realizado += $movimentacao['vl_realizado'];
+        }
+        $vl_planeje = $item['vl_esperado'] - $vl_realizado;
+        if (empty($item['item_movimentacao'])) {
+
+            $vl_planeje = 0;
+        }
+        return $vl_planeje;
     }
 
     public function somatoriaValorRealizadoItem($item)
@@ -288,11 +280,13 @@ class GrupoService extends AbstractService
      */
     public function criarMes($params)
     {
+
         if (empty($params['date'])) {
             throw new \Exception('A data é obrigatória');
         }
 
-        $grupos = $this->getAll($params)->toArray();
+
+        $grupos = $this->getAll($params);
 
         /**
          * Verifica se existe algo no mes atual
@@ -303,8 +297,10 @@ class GrupoService extends AbstractService
              * Faz a mesma consulta, baseada no mes anterior
              */
             $date = Arr::get($params, 'date');
+
             $mesAnterior = Carbon::createFromFormat('Y-m', $date)->subMonth(1)->format('Y-m');
-            $gruposMesAnterior = $this->getAll(['date' => $mesAnterior])->toArray();
+
+            $gruposMesAnterior = $this->getAll(['date' => $mesAnterior]);
 
             /**
              * Se não existir nada no mês anterior, então cria um novo
