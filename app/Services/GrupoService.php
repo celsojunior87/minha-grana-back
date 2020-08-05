@@ -67,6 +67,9 @@ class GrupoService extends AbstractService
 
     }
 
+    /**
+     *  O valor esperado menos a soma do planejado
+     */
     public function calculaPlaneje($item)
     {
         $vl_planeje = 0;
@@ -74,9 +77,14 @@ class GrupoService extends AbstractService
 
 
         foreach ($item['item_movimentacao'] as $movimentacao) {
+
             $vl_realizado += $movimentacao['vl_realizado'];
         }
+
+
         $vl_planeje = $item['vl_esperado'] - $vl_realizado;
+
+
         if (empty($item['item_movimentacao'])) {
 
             $vl_planeje = 0;
