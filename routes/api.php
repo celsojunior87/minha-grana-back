@@ -56,6 +56,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     /**
      * Item
      */
+    Route::put('item/ajuste', 'ItemController@ajuste');
     Route::post('item/reordenar', 'ItemController@reordenar');
     Route::resource('item', 'ItemController');
 
