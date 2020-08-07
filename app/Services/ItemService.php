@@ -93,16 +93,29 @@ class ItemService extends AbstractService
     public function reordenar($items)
     {
         foreach ($items as $key => $item) {
+
+            dd($item);
             $objItem = $this->find($item['id']);
             $objItem->ordenacao = ++$key;
             parent::update($objItem->id, $objItem);
         }
     }
 
+    /**
+     * vl_ajuste = valor realizado - valor planejado
+     * data
+     * tipo de grupo
+     * items
+     * @param $params
+     */
     public function ajuste($params)
     {
+        foreach ($params as $key => $param) {
+            $objParams = $this->find($param['id']);
+           // $objParams->vl_resultado;
 
-        dd('cegou');
+        }
+
     }
 
     /**
