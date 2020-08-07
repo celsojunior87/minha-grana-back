@@ -5,6 +5,7 @@ namespace App\Services;
 
 
 use App\Models\Item;
+use App\Models\TipoGrupo;
 use App\Repositories\ItemRepository;
 use Carbon\Carbon;
 
@@ -102,5 +103,45 @@ class ItemService extends AbstractService
     {
 
         dd('cegou');
+    }
+
+    /**
+     * Busca grupos e seus items
+     * grupos : [
+     *      {
+     *          id: 1,
+     *          nome: 'Receita',
+     *          items: [
+     *              {
+     *                  id: 1,
+     *                  nome: Datainfo
+     *              }
+     *          ]
+     *      }
+     *  ]
+     * @param $date
+     * @return mixed
+     */
+    public function preRequisiteAjuste($date)
+    {
+        $grupoService = app(GrupoService::class);
+        $grupos = $grupoService->getAll(['date' => $date]);
+        $arr['grupos'] = [];
+
+        if(!empty($grupos)) {
+            foreach ($grupos as $key => $grupo) {
+                if(!empty($grupo['items'])) {
+                    $arr['grupos'][$key]['id'] = $grupo['id'];
+                    $arr['grupos'][$key]['nome'] = $grupo['nome'];
+                    foreach ($grupo['items'] as $keyItems => $item) {
+                        $arr['grupos'][$key]['items'][$keyItems]['id'] = $item['id'];
+                        $arr['grupos'][$key]['items'][$keyItems]['color'] =
+                            ($grupo['tipo_grupo']['id'] == TipoGrupo::RECEITAS) ? 'green' : 'red';
+                        $arr['grupos'][$key]['items'][$keyItems]['nome'] = $item['nome'];
+                    }
+                }
+            }
+        }
+        return $arr;
     }
 }

@@ -56,6 +56,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     /**
      * Item
      */
+    Route::get('item/ajuste/pre-requisite/{date}', 'ItemController@preRequisiteAjuste');
     Route::put('item/ajuste', 'ItemController@ajuste');
     Route::post('item/reordenar', 'ItemController@reordenar');
     Route::resource('item', 'ItemController');

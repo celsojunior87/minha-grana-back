@@ -29,5 +29,9 @@ class ItemController extends AbstractController
         return $this->success($this->service->ajuste($request->all()));
     }
 
-
+    public function preRequisiteAjuste($date)
+    {
+        $preRequisiteAjuste = $this->service->preRequisiteAjuste($date);
+        return $this->ok(compact('preRequisiteAjuste'));
+    }
 }
