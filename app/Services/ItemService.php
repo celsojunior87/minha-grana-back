@@ -94,7 +94,7 @@ class ItemService extends AbstractService
         foreach ($items as $key => $item) {
             $objItem = $this->find($item['id']);
             $objItem->ordenacao = ++$key;
-            $this->update($objItem->id, $objItem);
+            parent::update($objItem->id, $objItem);
         }
     }
 
