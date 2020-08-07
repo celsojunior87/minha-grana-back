@@ -28,10 +28,12 @@
         <p style="color: #0d0d0d">Clique no botão abaixo para redefinir a senha de login no app Minha Grana APP com sua
             conta:</p>
         <br>
-        <a class="btn-success" href="{{$link}}">
 
-
+        <a href="{{$link}}">
+            <button class="btn btn-primary"></button>
         </a>
+
+
         <p style="color: #0d0d0d">Se Você não solicitou a redefinição da sua senha , ignore este e-mail</p>
         <p style="color: #0d0d0d">Obrigado,</p>
         <p style="color: #0d0d0d">Equipe do Minha Grana APP.</p>

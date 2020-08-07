@@ -24,4 +24,10 @@ class ItemController extends AbstractController
         return $this->success($this->service->reordenar($request->all()));
     }
 
+    public function ajuste(Request $request)
+    {
+        return $this->success($this->service->ajuste($request->all()));
+    }
+
+
 }

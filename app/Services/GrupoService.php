@@ -73,18 +73,13 @@ class GrupoService extends AbstractService
     public function calculaPlaneje($item)
     {
         $vl_planeje = 0;
-        $vl_realizado = 0;
+        $vl_planejado = 0;
 
-
-        foreach ($item['item_movimentacao'] as $movimentacao) {
-
-            $vl_realizado += $movimentacao['vl_realizado'];
+           foreach ($item['item_movimentacao'] as $movimentacao) {
+            $vl_planejado += $movimentacao['vl_planejado'];
         }
 
-
-        $vl_planeje = $item['vl_esperado'] - $vl_realizado;
-
-
+        $vl_planeje = $item['vl_esperado'] - $vl_planejado;
         if (empty($item['item_movimentacao'])) {
 
             $vl_planeje = 0;

@@ -97,4 +97,10 @@ class ItemService extends AbstractService
             $this->update($objItem->id, $objItem);
         }
     }
+
+    public function ajuste($params)
+    {
+
+        dd('cegou');
+    }
 }
