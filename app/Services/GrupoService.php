@@ -58,6 +58,7 @@ class GrupoService extends AbstractService
                 $total_vl_planejado += $item['vl_planejado'];
                 $total_vl_recebido += $item['vl_recebido'];
             }
+
             $grupos[$key]['total_vl_esperado'] = $total_vl_esperado;
             $grupos[$key]['total_vl_planejado'] = $total_vl_planejado;
             $grupos[$key]['total_vl_recebido'] = $total_vl_recebido;
@@ -67,6 +68,15 @@ class GrupoService extends AbstractService
 
     }
 
+//    public function regraCoresLinhaGrupo($item)
+//    {
+//        dd($items);
+//        foreach ($item as $items) {
+//
+//
+//        }
+//    }
+
     /**
      *  O valor esperado menos a soma do planejado
      */
@@ -75,7 +85,7 @@ class GrupoService extends AbstractService
         $vl_planeje = 0;
         $vl_planejado = 0;
 
-           foreach ($item['item_movimentacao'] as $movimentacao) {
+        foreach ($item['item_movimentacao'] as $movimentacao) {
             $vl_planejado += $movimentacao['vl_planejado'];
         }
 

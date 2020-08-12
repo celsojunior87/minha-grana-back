@@ -8,6 +8,7 @@ use App\Models\Item;
 use App\Models\TipoGrupo;
 use App\Repositories\ItemRepository;
 use Carbon\Carbon;
+use App\Helper\Number;
 
 class ItemService extends AbstractService
 {
@@ -93,8 +94,6 @@ class ItemService extends AbstractService
     public function reordenar($items)
     {
         foreach ($items as $key => $item) {
-
-            dd($item);
             $objItem = $this->find($item['id']);
             $objItem->ordenacao = ++$key;
             parent::update($objItem->id, $objItem);
@@ -110,11 +109,35 @@ class ItemService extends AbstractService
      */
     public function ajuste($params)
     {
+
+        $vlAjuste = 0;
+        $dateAjuste = '';
+        dd($params);
         foreach ($params as $key => $param) {
-            $objParams = $this->find($param['id']);
-           // $objParams->vl_resultado;
+            if (isset($param['form'])) {
+                $vlAjuste = Number::formatCurrencyBr($param['form']['vl_ajuste']);
+                $dateAjuste = $param['form']['date'];
+                unset($params[$key]['form']);
+                unset($params[$key]['valor']);
+            }
+        }
+
+        foreach ($params as $param) {
+
+            $item = $this->find($param['id']);
+            $tipoGrupoId = $item->grupo()->first()->tipoGrupo()->first()->id;
+
+            if ($vlAjuste > 0) {
+                $item->vl_esperado += $vlAjuste;
+                parent::update($item->id, $item);
+
+            } else {
+                dd('foi aqui');
+            }
+
 
         }
+
 
     }
 
@@ -141,9 +164,9 @@ class ItemService extends AbstractService
         $grupos = $grupoService->getAll(['date' => $date]);
         $arr['grupos'] = [];
 
-        if(!empty($grupos)) {
+        if (!empty($grupos)) {
             foreach ($grupos as $key => $grupo) {
-                if(!empty($grupo['items'])) {
+                if (!empty($grupo['items'])) {
                     $arr['grupos'][$key]['id'] = $grupo['id'];
                     $arr['grupos'][$key]['nome'] = $grupo['nome'];
                     foreach ($grupo['items'] as $keyItems => $item) {
