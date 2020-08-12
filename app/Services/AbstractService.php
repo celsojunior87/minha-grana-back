@@ -13,7 +13,7 @@ abstract class AbstractService extends ServiceInterface
      * @param $data
      * @return mixed
      */
-    public function getAll($params = null, $with = null)
+    public function getAll($params = null, $with = [])
     {
         return $this->repository->all($params, $with);
     }

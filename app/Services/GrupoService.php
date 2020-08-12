@@ -27,9 +27,12 @@ class GrupoService extends AbstractService
     /**
      * @var ItemService
      */
-    protected $itemService;
+    public $itemService;
 
-    protected $itemMovimentacaoService;
+    /**
+     * @var ItemMovimentacaoService
+     */
+    public $itemMovimentacaoService;
 
     public function __construct(GrupoRepository $repository,
                                 TipoGrupoService $tipoGrupoService,
@@ -43,21 +46,25 @@ class GrupoService extends AbstractService
         $this->itemMovimentacaoService = $itemMovimentacaoService;
     }
 
-    public function getAll($params = null, $with = null)
+    public function getAll($params = null, $with = [])
     {
-        $grupos = parent::getAll($params, ['items', 'tipoGrupo', 'items.itemMovimentacao'])->toArray();
+        $with = ['items', 'tipoGrupo', 'items.itemMovimentacao'];
+        $grupos = parent::getAll($params, $with)->toArray();
         foreach ($grupos as $key => $grupo) {
             $total_vl_esperado = 0;
             $total_vl_planejado = 0;
             $total_vl_recebido = 0;
-            foreach ($grupo['items'] as $keyItems => $item) {
-                $grupos[$key]['items'][$keyItems]['vl_recebido'] = $this->somatoriaValorRealizadoItem($item);
-                $grupos[$key]['items'][$keyItems]['vl_planeje'] = $this->calculaPlaneje($item);
-                $grupos[$key]['items'][$keyItems]['vl_gasto'] = $this->somatoriaValorRealizadoItem($item);
-                $total_vl_esperado += $item['vl_esperado'];
-                $total_vl_planejado += $item['vl_planejado'];
-                $total_vl_recebido += $item['vl_recebido'];
+            if(isset($grupo['items'])) {
+                foreach ($grupo['items'] as $keyItems => $item) {
+                    $grupos[$key]['items'][$keyItems]['vl_recebido'] = $this->somatoriaValorRealizadoItem($item);
+                    $grupos[$key]['items'][$keyItems]['vl_planeje'] = $this->calculaPlaneje($item);
+                    $grupos[$key]['items'][$keyItems]['vl_gasto'] = $this->somatoriaValorRealizadoItem($item);
+                    $total_vl_esperado += $item['vl_esperado'];
+                    $total_vl_planejado += $item['vl_planejado'];
+                    $total_vl_recebido += $item['vl_recebido'];
+                }
             }
+
 
             $grupos[$key]['total_vl_esperado'] = $total_vl_esperado;
             $grupos[$key]['total_vl_planejado'] = $total_vl_planejado;
@@ -473,5 +480,17 @@ class GrupoService extends AbstractService
             $this->itemService->reordenarItensOnDelete($item);
         }
         return parent::delete($id);
+    }
+
+    /**
+     * Limpar o mês inteiro pelo usuário
+     * @param $params
+     */
+    public function limparMes($params)
+    {
+        $grupos = $this->getAll($params);
+        foreach ($grupos as $grupo) {
+            $this->delete($grupo['id']);
+        }
     }
 }
