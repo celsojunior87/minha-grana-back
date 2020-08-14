@@ -42,6 +42,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     /**
      * Grupo
      */
+    Route::delete('grupo/limpar-mes/{date}', 'GrupoController@limparMes');
     Route::post('grupo/criar-mes', 'GrupoController@criarMes');
     Route::get('grupo/pre-requisite', 'GrupoController@preRequisite');
     Route::get('grupo/movimentacao', 'GrupoController@getMovimentacao');
