@@ -52,22 +52,23 @@ class GrupoService extends AbstractService
         $grupos = parent::getAll($params, $with)->toArray();
         foreach ($grupos as $key => $grupo) {
             $total_vl_esperado = 0;
-            $total_vl_planejado = 0;
+            $total_vl_planeje = 0;
             $total_vl_recebido = 0;
             if(isset($grupo['items'])) {
                 foreach ($grupo['items'] as $keyItems => $item) {
                     $grupos[$key]['items'][$keyItems]['vl_recebido'] = $this->somatoriaValorRealizadoItem($item);
                     $grupos[$key]['items'][$keyItems]['vl_planeje'] = $this->calculaPlaneje($item);
+                    $grupos[$key]['items'][$keyItems]['class_vl_planeje'] = ( $grupos[$key]['items'][$keyItems]['vl_planeje'] < 0 ) ? 'item_vl valor_negativo' : 'item_vl valor_positivo';
                     $grupos[$key]['items'][$keyItems]['vl_gasto'] = $this->somatoriaValorRealizadoItem($item);
                     $total_vl_esperado += $item['vl_esperado'];
-                    $total_vl_planejado += $item['vl_planejado'];
-                    $total_vl_recebido += $item['vl_recebido'];
+                    $total_vl_planeje += $grupos[$key]['items'][$keyItems]['vl_planeje'];
+                    $total_vl_recebido += $grupos[$key]['items'][$keyItems]['vl_recebido'];
                 }
             }
 
 
             $grupos[$key]['total_vl_esperado'] = $total_vl_esperado;
-            $grupos[$key]['total_vl_planejado'] = $total_vl_planejado;
+            $grupos[$key]['total_vl_planeje'] = $total_vl_planeje;
             $grupos[$key]['total_vl_recebido'] = $total_vl_recebido;
         };
 
@@ -346,19 +347,19 @@ class GrupoService extends AbstractService
         $gruposEspelho = $this->getAll(['date' => $mesAnterior]);
         foreach ($gruposEspelho as $grupo) {
             $novoGrupo = [
-                'nome' => $grupo->nome,
+                'nome' => $grupo['nome'],
                 'user_id' => auth()->user()->id,
-                'tipo_grupo_id' => $grupo->tipo_grupo_id,
+                'tipo_grupo_id' => $grupo['tipo_grupo_id'],
                 'data' => Carbon::createFromFormat('Y-m', $mesAtual)->firstOfMonth()->format('Y-m-d')
             ];
             $id = parent::save($novoGrupo)->id;
-            if ($grupo->items()) {
-                foreach ($grupo->items()->get() as $item) {
+            if ($grupo['items']) {
+                foreach ($grupo['items'] as $item) {
                     $novoItem = [
-                        'nome' => $item->nome,
-                        'vl_esperado' => $item->vl_esperado,
-                        'vl_planejado' => $item->vl_planejado,
-                        'vl_recebido' => $item->vl_recebido,
+                        'nome' => $item['nome'],
+                        'vl_esperado' => $item['vl_esperado'],
+                        'vl_planejado' => $item['vl_planejado'],
+                        'vl_recebido' => $item['vl_recebido'],
                         'grupo_id' => $id
                     ];
                     $this->itemService->save($novoItem);

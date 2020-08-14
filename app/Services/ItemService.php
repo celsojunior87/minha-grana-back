@@ -21,19 +21,6 @@ class ItemService extends AbstractService
         $this->itemMovimentacaoService = $itemMovimentacaoService;
     }
 
-    public function update($id, $data)
-    {
-        $itemMovimentacao = $this->itemMovimentacaoService
-            ->getRepository()
-            ->getModel()
-            ->firstWhere(['item_id' => $id]);
-
-        if (!$itemMovimentacao) {
-            $this->itemMovimentacaoService->save(['item_id' => $id]);
-        }
-        return parent::update($id, $data);
-    }
-
     public function beforeSave(array $data)
     {
         $countItemsNoGrupo = $this->repository
@@ -166,15 +153,12 @@ class ItemService extends AbstractService
 
         if (!empty($grupos)) {
             foreach ($grupos as $key => $grupo) {
-                if (!empty($grupo['items'])) {
-                    $arr['grupos'][$key]['id'] = $grupo['id'];
-                    $arr['grupos'][$key]['nome'] = $grupo['nome'];
-                    foreach ($grupo['items'] as $keyItems => $item) {
-                        $arr['grupos'][$key]['items'][$keyItems]['id'] = $item['id'];
-                        $arr['grupos'][$key]['items'][$keyItems]['color'] =
-                            ($grupo['tipo_grupo']['id'] == TipoGrupo::RECEITAS) ? 'green' : 'red';
-                        $arr['grupos'][$key]['items'][$keyItems]['nome'] = $item['nome'];
-                    }
+                $arr['grupos'][$key]['id'] = $grupo['id'];
+                $arr['grupos'][$key]['nome'] = $grupo['nome'];
+                foreach ($grupo['items'] as $keyItems => $item) {
+                    $arr['grupos'][$key]['items'][$keyItems]['id'] = $item['id'];
+                    $arr['grupos'][$key]['items'][$keyItems]['color'] = ($grupo['tipo_grupo']['id'] == TipoGrupo::RECEITAS) ? 'green' : 'red';
+                    $arr['grupos'][$key]['items'][$keyItems]['nome'] = $item['nome'];
                 }
             }
         }
