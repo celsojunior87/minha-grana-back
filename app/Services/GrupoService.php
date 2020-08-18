@@ -54,11 +54,11 @@ class GrupoService extends AbstractService
             $total_vl_esperado = 0;
             $total_vl_planeje = 0;
             $total_vl_recebido = 0;
-            if(isset($grupo['items'])) {
+            if (isset($grupo['items'])) {
                 foreach ($grupo['items'] as $keyItems => $item) {
                     $grupos[$key]['items'][$keyItems]['vl_recebido'] = $this->somatoriaValorRealizadoItem($item);
                     $grupos[$key]['items'][$keyItems]['vl_planeje'] = $this->calculaPlaneje($item);
-                    $grupos[$key]['items'][$keyItems]['class_vl_planeje'] = ( $grupos[$key]['items'][$keyItems]['vl_planeje'] < 0 ) ? 'item_vl valor_negativo' : 'item_vl valor_positivo';
+                    $grupos[$key]['items'][$keyItems]['class_vl_planeje'] = ($grupos[$key]['items'][$keyItems]['vl_planeje'] < 0) ? 'item_vl valor_negativo' : 'item_vl valor_positivo';
                     $grupos[$key]['items'][$keyItems]['vl_gasto'] = $this->somatoriaValorRealizadoItem($item);
                     $total_vl_esperado += $item['vl_esperado'];
                     $total_vl_planeje += $grupos[$key]['items'][$keyItems]['vl_planeje'];
@@ -212,19 +212,28 @@ class GrupoService extends AbstractService
         return ($tipoGrupo === TipoGrupo::RECEITAS ? 'green' : 'red');
     }
 
+    /**
+     * se o valor realizado for igual a 0 o saldo esperado deverá ser igual ao planejado
+     */
 
     public function calculaSaldoEsperado(ItemMovimentacao $itemMovimentacao, $arrItemsMovimentacaoAnterior, $key)
     {
 
+
         if ($key == 0) {
+            if ($itemMovimentacao->vl_realizado == '0.00') {
+                return $itemMovimentacao->vl_planejado;
+            }
             return $itemMovimentacao->vl_realizado;
         }
+
         if ($itemMovimentacao->item()->first()->grupo()->first()->tipoGrupo()->first()->id == TipoGrupo::RECEITAS) {
             return $arrItemsMovimentacaoAnterior['vl_saldo_esperado'] + $itemMovimentacao->vl_realizado;
         }
         if ($itemMovimentacao->item()->first()->grupo()->first()->tipoGrupo()->first()->id == TipoGrupo::DESPESAS) {
             return $arrItemsMovimentacaoAnterior['vl_saldo_esperado'] - $itemMovimentacao->vl_realizado;
         }
+
     }
 
     /**
