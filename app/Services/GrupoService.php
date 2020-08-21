@@ -227,7 +227,11 @@ class GrupoService extends AbstractService
             return $itemMovimentacao->vl_realizado;
         }
 
+
         if ($itemMovimentacao->item()->first()->grupo()->first()->tipoGrupo()->first()->id == TipoGrupo::RECEITAS) {
+            if ($itemMovimentacao->vl_realizado == '0.00') {
+                return $arrItemsMovimentacaoAnterior['vl_saldo_esperado'] + $itemMovimentacao->vl_planejado;
+            }
             return $arrItemsMovimentacaoAnterior['vl_saldo_esperado'] + $itemMovimentacao->vl_realizado;
         }
         if ($itemMovimentacao->item()->first()->grupo()->first()->tipoGrupo()->first()->id == TipoGrupo::DESPESAS) {
