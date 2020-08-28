@@ -124,6 +124,30 @@ class GrupoService extends AbstractService
         return $this->getMovimentacaoByGrupos($grupos);
     }
 
+    public function frases($params)
+    {
+        $grupos = $this->getAll($params);
+
+        $totalReceita = 0;
+        $totalDespesa = 0;
+
+        foreach ($grupos as $grupo) {
+            if ($grupo['tipo_grupo']['id'] == TipoGrupo::RECEITAS) {
+                $totalReceita += $grupo['total_vl_esperado'];
+            }
+            if ($grupo['tipo_grupo']['id'] == TipoGrupo::DESPESAS) {
+                $totalDespesa += $grupo ['total_vl_esperado'];
+            }
+        }
+        if($totalReceita > $totalDespesa ){
+            $total = $totalReceita - $totalDespesa;
+            return 'Está sobrando R$'.$total;
+        }
+
+
+    }
+
+
     /**
      * Buscar movimentacoes por grupo
      * @param $grupos
@@ -218,15 +242,12 @@ class GrupoService extends AbstractService
 
     public function calculaSaldoEsperado(ItemMovimentacao $itemMovimentacao, $arrItemsMovimentacaoAnterior, $key)
     {
-
-
         if ($key == 0) {
             if ($itemMovimentacao->vl_realizado == '0.00') {
                 return $itemMovimentacao->vl_planejado;
             }
             return $itemMovimentacao->vl_realizado;
         }
-
 
         if ($itemMovimentacao->item()->first()->grupo()->first()->tipoGrupo()->first()->id == TipoGrupo::RECEITAS) {
             if ($itemMovimentacao->vl_realizado == '0.00') {
@@ -235,6 +256,9 @@ class GrupoService extends AbstractService
             return $arrItemsMovimentacaoAnterior['vl_saldo_esperado'] + $itemMovimentacao->vl_realizado;
         }
         if ($itemMovimentacao->item()->first()->grupo()->first()->tipoGrupo()->first()->id == TipoGrupo::DESPESAS) {
+            if ($itemMovimentacao->vl_realizado == '0.00') {
+                return $arrItemsMovimentacaoAnterior['vl_saldo_esperado'] - $itemMovimentacao->vl_planejado;
+            }
             return $arrItemsMovimentacaoAnterior['vl_saldo_esperado'] - $itemMovimentacao->vl_realizado;
         }
 
@@ -318,7 +342,6 @@ class GrupoService extends AbstractService
         if (empty($params['date'])) {
             throw new \Exception('A data é obrigatória');
         }
-
 
         $grupos = $this->getAll($params);
 

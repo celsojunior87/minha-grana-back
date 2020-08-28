@@ -21,8 +21,8 @@ Route::middleware('auth:api')->get('/auth', function (Request $request) {
 Route::post('/user/cadastrar', 'UserController@cadastrar');
 Route::post('/user/recuperar-senha', 'Auth\ForgotPasswordController@sendResetLinkEmail');
 Route::post('/user/resetar-senha', 'Auth\ResetPasswordController@reset');
-Route::get('login/{provider}', 'Auth\LoginController@redirectToProvider')->name('social.login');
-Route::get('login/{provider}/callback', 'Auth\LoginController@handleProviderCallback')->name('social.callback');
+//Route::get('login/facebook', 'Auth\LoginController@redirectToProvider');
+//Route::get('login/facebook/callback', 'Auth\LoginController@handleProviderCallback');
 
 Route::post('/login-facebook', 'Auth\LoginController@loginFacebook');
 Route::group(['middleware' => 'auth:api'], function () {
@@ -46,6 +46,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('grupo/criar-mes', 'GrupoController@criarMes');
     Route::get('grupo/pre-requisite', 'GrupoController@preRequisite');
     Route::get('grupo/movimentacao', 'GrupoController@getMovimentacao');
+    Route::get('grupo/frases/{date}', 'GrupoController@getFrases');
     Route::resource('grupo', 'GrupoController');
 
 

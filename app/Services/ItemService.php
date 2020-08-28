@@ -96,30 +96,39 @@ class ItemService extends AbstractService
      */
     public function ajuste($params)
     {
-
+        $movimentacaoId = '';
         $vlAjuste = 0;
         $dateAjuste = '';
-        dd($params);
         foreach ($params as $key => $param) {
             if (isset($param['form'])) {
                 $vlAjuste = Number::formatCurrencyBr($param['form']['vl_ajuste']);
                 $dateAjuste = $param['form']['date'];
+                $movimentacaoId = $param['form']['movimentacao_id'];
                 unset($params[$key]['form']);
                 unset($params[$key]['valor']);
             }
         }
+        $valor = 0;
 
-        foreach ($params as $param) {
+        foreach (array_filter($params) as $param) {
 
+            $valor = Number::formatCurrencyBr($param['valor']);
             $item = $this->find($param['id']);
             $tipoGrupoId = $item->grupo()->first()->tipoGrupo()->first()->id;
+            $movimentacoes = $item->itemMovimentacao()->get()->toArray();
+
+            if($tipoGrupoId == TipoGrupo::DESPESAS){
+
+                $item->vl_esperado -= $valor;
+
+            }
 
             if ($vlAjuste > 0) {
-                $item->vl_esperado += $vlAjuste;
+                $item->vl_esperado += $valor;
                 parent::update($item->id, $item);
 
             } else {
-                dd('foi aqui');
+
             }
 
 
