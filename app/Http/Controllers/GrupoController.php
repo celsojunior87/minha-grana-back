@@ -33,4 +33,9 @@ class GrupoController extends AbstractController
         $this->service->limparMes(['date' => $date]);
         return $this->success('Operação realizada com com sucesso');
     }
+
+    public function getFrases($date)
+    {
+        return $this->service->frases(['date' => $date]);
+    }
 }

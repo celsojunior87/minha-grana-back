@@ -127,24 +127,89 @@ class GrupoService extends AbstractService
     public function frases($params)
     {
         $grupos = $this->getAll($params);
+        $grupos = $this->getMovimentacaoByGrupos($grupos);
+        dd($grupos);
 
-        $totalReceita = 0;
-        $totalDespesa = 0;
+        $totalMovimentacaoReceitas = $this->somaTotalReceitaMovimentacao($grupos);
+        $totalReceita = $this->getTotalReceitas($grupos);
+        $totalDespesa = $this->getTotalDespesa($grupos);
 
+
+        if ($totalReceita > $totalDespesa) {
+            $total = $totalReceita - $totalDespesa;
+            return [
+                'frase' => ' Está sobrando',
+                'total' => $total,
+                'color' => '',
+                'class' => '',
+            ];
+        }
+        if ($totalReceita < $totalDespesa) {
+            $total = $totalReceita - $totalDespesa;
+            return [
+                'frase' => ' Você Ultrapassou',
+                'total' => $total,
+                'color' => 'red',
+                'class' => 'frase_ultrapassou',
+            ];
+        }
+
+        if ($totalMovimentacaoReceitas > $totalReceita) {
+            $total = $totalMovimentacaoReceitas - $totalReceita;
+            return [
+                'frase' => ' VOCÊ PLANEJOU RECEBER A MAIS',
+                'total' => $total,
+            ];
+        }
+
+        if ($totalMovimentacaoReceitas < $totalReceita) {
+
+            $total = $totalReceita - $totalMovimentacaoReceitas;
+            return [
+                'frase' => ' VOCÊ AINDA TEM DISPONIVEL PARA PLANEJAR',
+                'total' => $total,
+            ];
+
+        }
+
+    }
+
+    public function somaTotalReceitaMovimentacao($grupos)
+    {
+        $somaReceitaMovimentacao = 0;
         foreach ($grupos as $grupo) {
             if ($grupo['tipo_grupo']['id'] == TipoGrupo::RECEITAS) {
-                $totalReceita += $grupo['total_vl_esperado'];
+                foreach ($grupo['items'] as $item) {
+                    foreach ($item['item_movimentacao'] as $movimentacao) {
+                        $somaReceitaMovimentacao += $movimentacao['vl_planejado'];
+                    }
+                }
             }
+        }
+        return $somaReceitaMovimentacao;
+    }
+
+    public function getTotalDespesa($grupos)
+    {
+
+        $totalDespesa = 0;
+        foreach ($grupos as $grupo) {
             if ($grupo['tipo_grupo']['id'] == TipoGrupo::DESPESAS) {
                 $totalDespesa += $grupo ['total_vl_esperado'];
             }
         }
-        if($totalReceita > $totalDespesa ){
-            $total = $totalReceita - $totalDespesa;
-            return 'Está sobrando R$'.$total;
+        return $totalDespesa;
+    }
+
+    public function getTotalReceitas($grupos)
+    {
+        $totalReceita = 0;
+        foreach ($grupos as $grupo) {
+            if ($grupo['tipo_grupo']['id'] == TipoGrupo::RECEITAS) {
+                $totalReceita += $grupo['total_vl_esperado'];
+            }
         }
-
-
+        return $totalReceita;
     }
 
 
