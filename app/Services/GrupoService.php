@@ -127,8 +127,8 @@ class GrupoService extends AbstractService
     public function frases($params)
     {
         $grupos = $this->getAll($params);
-        $grupos = $this->getMovimentacaoByGrupos($grupos);
-        dd($grupos);
+
+        $totalMovimentacaoSaldoEsperado = $this->getMovimentacaoSaldoEsperado($grupos);
 
         $totalMovimentacaoReceitas = $this->somaTotalReceitaMovimentacao($grupos);
         $totalReceita = $this->getTotalReceitas($grupos);
@@ -172,6 +172,42 @@ class GrupoService extends AbstractService
 
         }
 
+        if ($totalReceita == $totalDespesa && $totalMovimentacaoSaldoEsperado > 0) {
+            return [
+                'frase' => ' VOCÊ AINDA PRECISA PLANEJAR',
+                'total' => $totalMovimentacaoSaldoEsperado,
+            ];
+        }
+
+        if ($totalReceita == $totalDespesa && $totalMovimentacaoSaldoEsperado < 0) {
+            return [
+                'frase' => ' Você PLANEJOU A MAIS',
+                'total' => $totalMovimentacaoSaldoEsperado * -1,
+                'color' => 'red',
+                'class' => 'frase_ultrapassou'
+            ];
+        }
+
+        if ($totalReceita == $totalDespesa && $totalMovimentacaoSaldoEsperado == 0) {
+            return [
+                'frase' => ' Parabéns, seu orcamento esta completo',
+                'color' => 'green',
+                'class' => 'frase_parabens'
+            ];
+        }
+
+    }
+
+    public function getMovimentacaoSaldoEsperado($grupos)
+    {
+        $movimentacoes = $this->getMovimentacaoByGrupos($grupos);
+
+        if (!empty($movimentacoes)) {
+            $ultimoElemento = end($movimentacoes);
+            return $ultimoElemento['vl_saldo_esperado'];
+        }
+
+        return 0;
     }
 
     public function somaTotalReceitaMovimentacao($grupos)
