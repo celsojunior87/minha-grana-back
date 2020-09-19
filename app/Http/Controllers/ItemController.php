@@ -26,7 +26,12 @@ class ItemController extends AbstractController
 
     public function ajuste(Request $request)
     {
-        return $this->success($this->service->ajuste($request->all()));
+        try {
+            return $this->success($this->service->ajuste($request->all()));
+        } catch (\Exception $e) {
+            return $this->error($e->getMessage());
+        }
+
     }
 
     public function preRequisiteAjuste($date)

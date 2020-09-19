@@ -110,31 +110,39 @@ class ItemService extends AbstractService
         }
         $valor = 0;
 
+        $this->verificarSeValorDosItensNaoEMaiorQueOValorAjuste(array_filter($params), $vlAjuste);
+
+
         foreach (array_filter($params) as $param) {
 
             $valor = Number::formatCurrencyBr($param['valor']);
             $item = $this->find($param['id']);
-            $tipoGrupoId = $item->grupo()->first()->tipoGrupo()->first()->id;
-            $movimentacoes = $item->itemMovimentacao()->get()->toArray();
 
-            if($tipoGrupoId == TipoGrupo::DESPESAS){
-
-                $item->vl_esperado -= $valor;
-
-            }
+            $movimentacao = $this->itemMovimentacaoService->find($movimentacaoId);
 
             if ($vlAjuste > 0) {
                 $item->vl_esperado += $valor;
                 parent::update($item->id, $item);
-
+                $movimentacao->vl_realizado -= $valor;
+                $this->itemMovimentacaoService->update($movimentacaoId, $movimentacao);
             } else {
-
+                $item->vl_esperado -= $valor;
+                parent::update($item->id, $item);
+                $movimentacao->vl_realizado += $valor;
+                $this->itemMovimentacaoService->update($movimentacaoId, $movimentacao);
             }
-
-
         }
+    }
 
-
+    public function verificarSeValorDosItensNaoEMaiorQueOValorAjuste($arrayAjuste, $vlAjuste)
+    {
+        $valorTotalAjustes = 0;
+        foreach ($arrayAjuste as $ajuste) {
+            $valorTotalAjustes += Number::formatCurrencyBr($ajuste['valor']);
+        }
+        if($valorTotalAjustes > $vlAjuste) {
+            throw new \Exception('O valor ');
+        }
     }
 
     /**
