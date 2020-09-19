@@ -140,8 +140,9 @@ class ItemService extends AbstractService
         foreach ($arrayAjuste as $ajuste) {
             $valorTotalAjustes += Number::formatCurrencyBr($ajuste['valor']);
         }
-        if($valorTotalAjustes > $vlAjuste) {
-            throw new \Exception('O valor ');
+
+cd         if(Number::formatCurrencyBr($valorTotalAjustes) > $vlAjuste) {
+            throw new \Exception('O total supera o valor faltante.');
         }
     }
 
