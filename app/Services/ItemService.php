@@ -118,6 +118,7 @@ class ItemService extends AbstractService
             $valor = Number::formatCurrencyBr($param['valor']);
             $item = $this->find($param['id']);
 
+
             $movimentacao = $this->itemMovimentacaoService->find($movimentacaoId);
 
             if ($vlAjuste > 0) {
@@ -136,14 +137,16 @@ class ItemService extends AbstractService
 
     public function verificarSeValorDosItensNaoEMaiorQueOValorAjuste($arrayAjuste, $vlAjuste)
     {
+        $vlAjusteP = abs($vlAjuste);
         $valorTotalAjustes = 0;
         foreach ($arrayAjuste as $ajuste) {
             $valorTotalAjustes += Number::formatCurrencyBr($ajuste['valor']);
         }
 
-        if (Number::formatCurrencyBr($valorTotalAjustes) > $vlAjuste) {
+        if (Number::formatCurrencyBr($valorTotalAjustes) > $vlAjusteP) {
             throw new \Exception('O total supera o valor faltante.');
         }
+
     }
 
     /**
