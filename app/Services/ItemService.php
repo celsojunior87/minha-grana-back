@@ -141,7 +141,7 @@ class ItemService extends AbstractService
             $valorTotalAjustes += Number::formatCurrencyBr($ajuste['valor']);
         }
 
-cd         if(Number::formatCurrencyBr($valorTotalAjustes) > $vlAjuste) {
+        if (Number::formatCurrencyBr($valorTotalAjustes) > $vlAjuste) {
             throw new \Exception('O total supera o valor faltante.');
         }
     }
