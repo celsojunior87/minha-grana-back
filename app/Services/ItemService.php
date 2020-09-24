@@ -96,7 +96,8 @@ class ItemService extends AbstractService
      */
     public function ajuste($params)
     {
-        $movimentacaoId = '';
+
+        $movimentacaDooId = '';
         $vlAjuste = 0;
         $dateAjuste = '';
         foreach ($params as $key => $param) {
@@ -111,27 +112,61 @@ class ItemService extends AbstractService
         $valor = 0;
 
         $this->verificarSeValorDosItensNaoEMaiorQueOValorAjuste(array_filter($params), $vlAjuste);
-
+        $this->verificarSeValorAdicionadoEigualOvalorAjuste(array_filter($params), $vlAjuste);
 
         foreach (array_filter($params) as $param) {
 
             $valor = Number::formatCurrencyBr($param['valor']);
             $item = $this->find($param['id']);
+            $tipoGrupoId = $item->grupo()->first()->tipoGrupo()->first()->id;
 
 
             $movimentacao = $this->itemMovimentacaoService->find($movimentacaoId);
 
-            if ($vlAjuste > 0) {
-                $item->vl_esperado += $valor;
-                parent::update($item->id, $item);
-                $movimentacao->vl_realizado -= $valor;
-                $this->itemMovimentacaoService->update($movimentacaoId, $movimentacao);
+            if ($tipoGrupoId == 1) {
+                if ($vlAjuste > 0) {
+                    $item->vl_esperado += $valor;
+                    parent::update($item->id, $item);
+                    $movimentacao->vl_planejado = $movimentacao->vl_realizado;
+                    $this->itemMovimentacaoService->update($movimentacaoId, $movimentacao);
+                }
+                if ($vlAjuste < 0) {
+                    $item->vl_esperado -= $valor;
+                    parent::update($item->id, $item);
+                    $movimentacao->vl_planejado = $movimentacao->vl_realizado;
+                    $this->itemMovimentacaoService->update($movimentacaoId, $movimentacao);
+                }
+
             } else {
-                $item->vl_esperado -= $valor;
-                parent::update($item->id, $item);
-                $movimentacao->vl_realizado += $valor;
-                $this->itemMovimentacaoService->update($movimentacaoId, $movimentacao);
+                if ($vlAjuste > 0) {
+                    $item->vl_esperado += $valor;
+                    parent::update($item->id, $item);
+                    $movimentacao->vl_planejado = $movimentacao->vl_realizado;
+                    $this->itemMovimentacaoService->update($movimentacaoId, $movimentacao);
+                }
+                if ($vlAjuste < 0) {
+                    $item->vl_esperado -= $valor;
+                    parent::update($item->id, $item);
+                    $movimentacao->vl_planejado = $movimentacao->vl_realizado;
+                    $this->itemMovimentacaoService->update($movimentacaoId, $movimentacao);
+                }
+
             }
+
+
+        }
+    }
+
+    public function verificarSeValorAdicionadoEigualOvalorAjuste($arrayAjuste, $vlAjuste)
+    {
+        $vlAjusteP = abs($vlAjuste);
+        $valorTotalAjustes = 0;
+        foreach ($arrayAjuste as $ajuste) {
+            $valorTotalAjustes += Number::formatCurrencyBr($ajuste['valor']);
+        }
+
+        if (Number::formatCurrencyBr($valorTotalAjustes) != $vlAjusteP) {
+            throw new \Exception('O valor Inserido é Menor que o valor a ser ajustado');
         }
     }
 
