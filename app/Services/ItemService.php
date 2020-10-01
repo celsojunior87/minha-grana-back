@@ -110,6 +110,7 @@ class ItemService extends AbstractService
             }
         }
         $valor = 0;
+        $result = 0;
 
         $this->verificarSeValorDosItensNaoEMaiorQueOValorAjuste(array_filter($params), $vlAjuste);
         $this->verificarSeValorAdicionadoEigualOvalorAjuste(array_filter($params), $vlAjuste);
@@ -119,7 +120,6 @@ class ItemService extends AbstractService
             $valor = Number::formatCurrencyBr($param['valor']);
             $item = $this->find($param['id']);
             $tipoGrupoId = $item->grupo()->first()->tipoGrupo()->first()->id;
-
 
             $movimentacao = $this->itemMovimentacaoService->find($movimentacaoId);
 
