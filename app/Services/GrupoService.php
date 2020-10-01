@@ -309,6 +309,7 @@ class GrupoService extends AbstractService
                 $itemMovimentacaoAnterior = isset($arrItemsMovimentacao[$key - 1]) ? $arrItemsMovimentacao[$key - 1] : 0;
                 $arrItemsMovimentacao[$key]['vl_saldo_esperado'] =
                     $this->calculaSaldoEsperado($itemMovimentacao, $itemMovimentacaoAnterior, $key);
+                $arrItemsMovimentacao[$key]['grupo_id'] = $this->itemService->find($itemsMovimentacao['item_id'])->toArray()['grupo_id'];
                 $arrItemsMovimentacao[$key]['color'] = $this->definirCorPorTipoGrupo($itemMovimentacao);
             }
         }
