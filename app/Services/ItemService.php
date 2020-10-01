@@ -96,7 +96,6 @@ class ItemService extends AbstractService
      */
     public function ajuste($params)
     {
-
         $movimentacaDooId = '';
         $vlAjuste = 0;
         $dateAjuste = '';
@@ -123,42 +122,41 @@ class ItemService extends AbstractService
 
             $movimentacao = $this->itemMovimentacaoService->find($movimentacaoId);
 
-          $itemId = $this->find($movimentacao->item_id);
-
-
+            $itemId = $this->find($movimentacao->item_id);
 
             if ($tipoGrupoId == TipoGrupo::RECEITAS) {
                 if ($vlAjuste > 0) {
                     $itemId->vl_esperado += $valor;
                     $item->vl_esperado += $valor;
                     parent::update($item->id, $item);
-                    parent::update($itemId->id,$itemId->vl_esperado);
+                    parent::update($itemId->id,$itemId);
                     $movimentacao->vl_planejado = $movimentacao->vl_realizado;
                     $this->itemMovimentacaoService->update($movimentacaoId, $movimentacao);
                 }
                 if ($vlAjuste < 0) {
-                    $itemId->vl_esperado -= $valor;
+                    $itemId->vl_esperado += $valor;
                     $item->vl_esperado -= $valor;
                     parent::update($item->id, $item);
-                    parent::update($itemId->id,$itemId->vl_esperado);
+                    parent::update($itemId->id,$itemId);
                     $movimentacao->vl_planejado = $movimentacao->vl_realizado;
                     $this->itemMovimentacaoService->update($movimentacaoId, $movimentacao);
                 }
 
             } else {
                 if ($vlAjuste > 0) {
+
                     $itemId->vl_esperado += $valor;
                     $item->vl_esperado += $valor;
                     parent::update($item->id, $item);
-                    parent::update($itemId->id,$itemId->vl_esperado);
+                    parent::update($itemId->id,$itemId);
                     $movimentacao->vl_planejado = $movimentacao->vl_realizado;
                     $this->itemMovimentacaoService->update($movimentacaoId, $movimentacao);
                 }
                 if ($vlAjuste < 0) {
-                    $itemId->vl_esperado -= $valor;
+                    $itemId->vl_esperado += $valor;
                     $item->vl_esperado -= $valor;
                     parent::update($item->id, $item);
-                    parent::update($itemId->id,$itemId->vl_esperado);
+                    parent::update($itemId->id,$itemId);
                     $movimentacao->vl_planejado = $movimentacao->vl_realizado;
                     $this->itemMovimentacaoService->update($movimentacaoId, $movimentacao);
                 }
