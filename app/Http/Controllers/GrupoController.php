@@ -38,4 +38,9 @@ class GrupoController extends AbstractController
     {
         return $this->service->frases(['date' => $date]);
     }
+
+    public function Economia($date)
+    {
+        return $this->service->economia(['date' => $date]);
+    }
 }

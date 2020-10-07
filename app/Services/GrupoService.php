@@ -76,14 +76,7 @@ class GrupoService extends AbstractService
 
     }
 
-//    public function regraCoresLinhaGrupo($item)
-//    {
-//        dd($items);
-//        foreach ($item as $items) {
-//
-//
-//        }
-//    }
+
 
     /**
      *  O valor esperado menos a soma do planejado
@@ -122,6 +115,14 @@ class GrupoService extends AbstractService
     {
         $grupos = $this->repository->movimentacao($params);
         return $this->getMovimentacaoByGrupos($grupos);
+    }
+
+    public function economia($params)
+    {
+        $grupos = $this->getAll($params);
+
+        dd($grupos);
+
     }
 
     public function frases($params)

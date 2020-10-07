@@ -129,7 +129,7 @@ class ItemService extends AbstractService
                     $itemId->vl_esperado += $valor;
                     $item->vl_esperado += $valor;
                     parent::update($item->id, $item);
-                    parent::update($itemId->id,$itemId);
+                    parent::update($itemId->id, $itemId);
                     $movimentacao->vl_planejado = $movimentacao->vl_realizado;
                     $this->itemMovimentacaoService->update($movimentacaoId, $movimentacao);
                 }
@@ -137,7 +137,7 @@ class ItemService extends AbstractService
                     $itemId->vl_esperado += $valor;
                     $item->vl_esperado -= $valor;
                     parent::update($item->id, $item);
-                    parent::update($itemId->id,$itemId);
+                    parent::update($itemId->id, $itemId);
                     $movimentacao->vl_planejado = $movimentacao->vl_realizado;
                     $this->itemMovimentacaoService->update($movimentacaoId, $movimentacao);
                 }
@@ -145,10 +145,10 @@ class ItemService extends AbstractService
             } else {
                 if ($vlAjuste > 0) {
 
-                    $itemId->vl_esperado += $valor;
+                    $itemId->vl_esperado -= $valor;
                     $item->vl_esperado += $valor;
                     parent::update($item->id, $item);
-                    parent::update($itemId->id,$itemId);
+                    parent::update($itemId->id, $itemId);
                     $movimentacao->vl_planejado = $movimentacao->vl_realizado;
                     $this->itemMovimentacaoService->update($movimentacaoId, $movimentacao);
                 }
@@ -156,7 +156,7 @@ class ItemService extends AbstractService
                     $itemId->vl_esperado += $valor;
                     $item->vl_esperado -= $valor;
                     parent::update($item->id, $item);
-                    parent::update($itemId->id,$itemId);
+                    parent::update($itemId->id, $itemId);
                     $movimentacao->vl_planejado = $movimentacao->vl_realizado;
                     $this->itemMovimentacaoService->update($movimentacaoId, $movimentacao);
                 }

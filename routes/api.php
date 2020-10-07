@@ -47,6 +47,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('grupo/pre-requisite', 'GrupoController@preRequisite');
     Route::get('grupo/movimentacao', 'GrupoController@getMovimentacao');
     Route::get('grupo/frases/{date}', 'GrupoController@getFrases');
+    Route::get('grupo/economia/{date}', 'GrupoController@Economia');
     Route::resource('grupo', 'GrupoController');
 
 
