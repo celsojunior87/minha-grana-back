@@ -24,7 +24,8 @@ class CreateItemTable extends Migration
             $table->decimal('vl_saldo_realizado', 20, 2)->nullable()->default(0.00);
             $table->decimal('vl_total', 20, 2)->nullable()->default(0.00);
             $table->date('data')->nullable();
-            $table->string('gasto')->nullable()->default(0.00);;
+            $table->string('gasto')->nullable()->default(0.00);
+            $table->string('transferencia_id')->nullable();
             $table->unsignedInteger('grupo_id')->nullable();
             $table->foreign('grupo_id')
                 ->references('id')
