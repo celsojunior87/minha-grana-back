@@ -39,4 +39,10 @@ class ItemController extends AbstractController
         $preRequisiteAjuste = $this->service->preRequisiteAjuste($date);
         return $this->ok(compact('preRequisiteAjuste'));
     }
+
+//    public function itemTransferencia()
+//    {
+//        return $this->service->
+//    }
+
 }

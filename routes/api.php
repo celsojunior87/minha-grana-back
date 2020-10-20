@@ -65,6 +65,15 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::resource('item', 'ItemController');
 
     /**
+     * Item Transferencia
+     */
+    //Route::get('item/ajuste/pre-requisite/{date}', 'ItemController@preRequisiteAjuste');
+    //Route::put('item/ajuste', 'ItemController@ajuste');
+    //Route::post('item/reordenar', 'ItemController@reordenar');
+    Route::get('item-transferencia/item/{id}', 'ItemTransferenciaController@itemTransferencia');
+    Route::resource('item-transferencia', 'ItemTransferenciaController');
+
+    /**
      * Item
      */
     Route::post('item-movimentacao/reordenar', 'ItemMovimentacaoController@reordenar');
