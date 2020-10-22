@@ -20,4 +20,9 @@ class ItemTransferenciaController extends Controller
     {
         return $this->itemService->find($id);
     }
+
+    public function economiaTransferencia(Request $request)
+    {
+        return $this->success($this->service->economia($request->all()));
+    }
 }

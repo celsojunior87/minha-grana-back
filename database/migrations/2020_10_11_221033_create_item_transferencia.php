@@ -13,7 +13,7 @@ class CreateItemTransferencia extends Migration
      */
     public function up()
     {
-        Schema::create('table_item_transferencia', function (Blueprint $table) {
+        Schema::create('item_transferencia', function (Blueprint $table) {
             $table->id();
             $table->decimal('vl_transferencia', 20, 2)->nullable()->default(0.00);
             $table->unsignedInteger('item_id_de')->nullable();

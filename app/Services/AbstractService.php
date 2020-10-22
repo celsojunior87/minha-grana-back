@@ -25,8 +25,8 @@ abstract class AbstractService extends ServiceInterface
      */
     public function find(int $id, $with = [])
     {
-        $result =  $this->repository->find($id, $with);
-        if($result == null){
+        $result = $this->repository->find($id, $with);
+        if ($result == null) {
             throw new \Exception('Objeto não encontrado na base de dados');
         }
         return $result;
@@ -140,8 +140,8 @@ abstract class AbstractService extends ServiceInterface
      */
     public function validadeOnDelete(int $id)
     {
-        $result =  $this->repository->find($id);
-        if($result == null){
+        $result = $this->repository->find($id);
+        if ($result == null) {
             throw new \Exception('Objeto não encontrado na base de dados');
         }
 

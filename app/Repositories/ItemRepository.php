@@ -43,6 +43,21 @@ class ItemRepository extends AbstractRepository
         if (isset($params['ordenacao'])) {
             $formatted['ordenacao'] = $params['ordenacao'];
         }
+
+        if (isset($params['vl_saldo_inicial'])) {
+            $formatted['vl_saldo_inicial'] = $params['vl_saldo_inicial'];
+        }
+
+        if (isset($params['vl_total_objetivo'])) {
+            $formatted['vl_total_objetivo'] = $params['vl_total_objetivo'];
+        }
+
+        if (isset($params['vl_gasto'])) {
+            $formatted['vl_gasto'] = $params['vl_gasto'];
+        }
+        if (isset($params['transferencia_id'])) {
+            $formatted['transferencia_id'] = $params['transferencia_id'];
+        }
         return $formatted;
     }
 }

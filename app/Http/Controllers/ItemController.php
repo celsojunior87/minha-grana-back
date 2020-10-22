@@ -40,9 +40,6 @@ class ItemController extends AbstractController
         return $this->ok(compact('preRequisiteAjuste'));
     }
 
-//    public function itemTransferencia()
-//    {
-//        return $this->service->
-//    }
+
 
 }
