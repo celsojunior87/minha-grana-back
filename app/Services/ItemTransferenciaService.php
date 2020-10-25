@@ -25,7 +25,7 @@ class ItemTransferenciaService extends AbstractService
     public function economia($params)
     {
         $item = [
-            'id' => $params['id'],
+            'id' => $params['item_id'],
             'vl_saldo_inicial' => $params['vl_saldo_inicial'],
             'vl_gasto' => $params['vl_gasto'],
             'vl_total_objetivo' => $params['vl_total_objetivo']
