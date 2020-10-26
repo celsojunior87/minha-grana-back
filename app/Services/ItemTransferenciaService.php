@@ -28,10 +28,8 @@ class ItemTransferenciaService extends AbstractService
             'id' => $params['item_id'],
             'vl_saldo_inicial' => $params['vl_saldo_inicial'],
             'vl_gasto' => $params['vl_gasto'],
-            'vl_total_objetivo' => $params['vl_total_objetivo']
+            'vl_total_objetivo' => $params['vl_total_objetivo'],
         ];
-
-        dd($item);
         $this->item->update($item['id'], $item);
 
     }
