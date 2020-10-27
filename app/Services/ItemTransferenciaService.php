@@ -14,12 +14,12 @@ use Illuminate\Http\Request;
 class ItemTransferenciaService extends AbstractService
 {
     protected $repository;
-    protected $item;
+    protected $itemService;
 
-    public function __construct(ItemTransferenciaRepository $repository, ItemService $item)
+    public function __construct(ItemTransferenciaRepository $repository, ItemService $itemService)
     {
         $this->repository = $repository;
-        $this->item = $item;
+        $this->itemService = $itemService;
     }
 
     public function economia($params)
@@ -27,11 +27,22 @@ class ItemTransferenciaService extends AbstractService
         $item = [
             'id' => $params['item_id'],
             'vl_saldo_inicial' => $params['vl_saldo_inicial'],
+            'vl_esperado' => $params['vl_esperado'],
             'vl_gasto' => $params['vl_gasto'],
             'vl_total_objetivo' => $params['vl_total_objetivo'],
         ];
-        $this->item->update($item['id'], $item);
+        $this->itemService->update($item['id'], $item);
 
+    }
+    /**
+     * @return mixed
+     */
+    public function preRequisiteTransferencia()
+    {
+        $arr['item'] = generateSelectOption($this->itemService->getRepository()->list('id'));
+
+        dd($arr);
+        return $arr;
     }
 
 

@@ -26,8 +26,9 @@ class ItemTransferenciaController extends Controller
         return $this->success($this->service->economia($request->all()));
     }
 
-    public function transferir($id)
+    public function preRequisiteTransferencia($date)
     {
-       return $this->itemService->find($id);
+        $preRequisiteAjuste = $this->service->preRequisiteTransferencia($date);
+        return $this->ok(compact('preRequisiteAjuste'));
     }
 }
