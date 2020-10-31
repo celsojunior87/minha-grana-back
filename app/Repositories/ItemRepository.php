@@ -60,4 +60,9 @@ class ItemRepository extends AbstractRepository
         }
         return $formatted;
     }
+
+    public function preRequisiteItemTransferenciaNotIn(int $id)
+    {
+        return $this->model->whereNotIn('id', [$id])->pluck('nome', 'id')->all();
+    }
 }

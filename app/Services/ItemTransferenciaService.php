@@ -16,13 +16,11 @@ class ItemTransferenciaService extends AbstractService
 {
     protected $repository;
     protected $itemService;
-    protected $itemTransferenciaService;
 
-    public function __construct(ItemTransferenciaRepository $repository, ItemService $itemService, ItemTransferenciaService $itemTransferenciaService)
+    public function __construct(ItemTransferenciaRepository $repository, ItemService $itemService)
     {
         $this->repository = $repository;
         $this->itemService = $itemService;
-        $this->itemTransferenciaService = $itemTransferenciaService;
 
     }
 
@@ -39,15 +37,6 @@ class ItemTransferenciaService extends AbstractService
 
     }
 
-    /**
-     * @return mixed
-     */
-    public function preRequisiteTransferencia()
-    {
-        $arr['item'] = generateSelectOption($this->itemService->getRepository()->list('id'));
-        return $arr;
-    }
-
     public function transferir($params)
     {
         $objetivo = $this->itemService->find($params['vl_total_objetivo']);
@@ -60,12 +49,18 @@ class ItemTransferenciaService extends AbstractService
 
         if ($transferencia['vl_transferencia'] < $objetivo) {
             throw new \Exception('O valor da transferencia não pode ser maior que o valor do Objetivo');
-        } else {
-            $this->itemTransferenciaService->save($transferencia);
         }
     }
 
+    public function preRequisite(int $id)
+    {
+        $selectOption = $this
+            ->itemService
+            ->getRepository()
+            ->preRequisiteItemTransferenciaNotIn($id);
 
+        return generateSelectOption($selectOption);
+    }
 }
 
 
