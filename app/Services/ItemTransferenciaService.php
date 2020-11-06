@@ -39,6 +39,7 @@ class ItemTransferenciaService extends AbstractService
 
     public function transferir($params)
     {
+        dd($params);
         $objetivo = $this->itemService->find($params['vl_total_objetivo']);
         $transferencia = [
             'id' => $params['id'],
