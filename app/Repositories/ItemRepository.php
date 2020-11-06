@@ -6,6 +6,8 @@ namespace App\Repositories;
 use App\Helper\Number;
 use App\Models\Item;
 use App\Models\TipoGrupo;
+use Carbon\Carbon;
+use Illuminate\Support\Arr;
 
 class ItemRepository extends AbstractRepository
 {
@@ -69,15 +71,20 @@ class ItemRepository extends AbstractRepository
      * @param int $id
      * @return array
      */
-    public function preRequisiteItemTransferenciaNotInSelfAndOnlyDespesas(int $id)
+    public function preRequisiteItemTransferenciaNotInSelfAndOnlyDespesas(array $item)
     {
+        $date = Arr::get($item['grupo'], 'data');
+        $newDate = Carbon::createFromFormat('Y-m-d', $date);
         return $this
             ->model
             ->with(['grupo'])
-            ->whereHas('grupo', function ($query) {
-                $query->where('tipo_grupo_id', '=', TipoGrupo::DESPESAS);
+            ->whereHas('grupo', function ($query) use ($newDate) {
+                $query->where('tipo_grupo_id', '=', TipoGrupo::DESPESAS)
+                ->whereBetween('data',
+                    [$newDate->firstOfMonth()->format('Y-m-d'), $newDate->lastOfMonth()->format('Y-m-d')]
+                );
             })
-            ->whereNotIn('id', [$id])
+            ->whereNotIn('id', [$item['id']])
             ->pluck('nome', 'id')
             ->all();
     }

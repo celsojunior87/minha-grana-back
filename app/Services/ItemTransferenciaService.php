@@ -55,10 +55,11 @@ class ItemTransferenciaService extends AbstractService
 
     public function preRequisite(int $id)
     {
+        $item = $this->itemService->find($id, ['grupo'])->toArray();
         $selectOption = $this
             ->itemService
             ->getRepository()
-            ->preRequisiteItemTransferenciaNotInSelfAndOnlyDespesas($id);
+            ->preRequisiteItemTransferenciaNotInSelfAndOnlyDespesas($item);
 
         return generateSelectOption($selectOption);
     }
