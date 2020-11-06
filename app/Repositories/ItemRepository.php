@@ -5,6 +5,7 @@ namespace App\Repositories;
 
 use App\Helper\Number;
 use App\Models\Item;
+use App\Models\TipoGrupo;
 
 class ItemRepository extends AbstractRepository
 {
@@ -61,8 +62,23 @@ class ItemRepository extends AbstractRepository
         return $formatted;
     }
 
-    public function preRequisiteItemTransferenciaNotIn(int $id)
+    /**
+     * Busca itens (menos o passado por id)
+     * E apenas itens do tipo DESPESA
+     * para ser referenciado como itens de transferência
+     * @param int $id
+     * @return array
+     */
+    public function preRequisiteItemTransferenciaNotInSelfAndOnlyDespesas(int $id)
     {
-        return $this->model->whereNotIn('id', [$id])->pluck('nome', 'id')->all();
+        return $this
+            ->model
+            ->with(['grupo'])
+            ->whereHas('grupo', function ($query) {
+                $query->where('tipo_grupo_id', '=', TipoGrupo::DESPESAS);
+            })
+            ->whereNotIn('id', [$id])
+            ->pluck('nome', 'id')
+            ->all();
     }
 }

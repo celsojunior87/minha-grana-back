@@ -58,7 +58,7 @@ class ItemTransferenciaService extends AbstractService
         $selectOption = $this
             ->itemService
             ->getRepository()
-            ->preRequisiteItemTransferenciaNotIn($id);
+            ->preRequisiteItemTransferenciaNotInSelfAndOnlyDespesas($id);
 
         return generateSelectOption($selectOption);
     }
