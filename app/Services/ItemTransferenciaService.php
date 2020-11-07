@@ -37,20 +37,13 @@ class ItemTransferenciaService extends AbstractService
 
     }
 
-    public function transferir($params)
+    public function transferir(array $transferencia)
     {
-        dd($params);
-        $objetivo = $this->itemService->find($params['vl_total_objetivo']);
-        $transferencia = [
-            'id' => $params['id'],
-            'item_id_de' => $params['item_id_de'],
-            'item_id_para' => $params['item_id_para'],
-            'vl_transferencia' => $params['vl_transferencia']
-        ];
+        $itemDe = $this->itemService->find($transferencia['item_id_de']);
+        $itemPara = $this->itemService->find($transferencia['item_id_para']);
+        $vlTransferencia = $transferencia['vl_transferencia'];
 
-        if ($transferencia['vl_transferencia'] < $objetivo) {
-            throw new \Exception('O valor da transferencia não pode ser maior que o valor do Objetivo');
-        }
+//       todo fazer a regra de negócio
     }
 
     public function preRequisite(int $id)
