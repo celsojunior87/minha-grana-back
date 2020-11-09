@@ -28,7 +28,7 @@ class Item extends Model
      */
     public function getVlSaldoFinalAttribute()
     {
-       $result = ($this->vl_saldo_inicial + $this->vl_saldo_esperado) - $this->vl_gasto;
-       return $result;
+        $result = ($this->vl_saldo_inicial + $this->vl_esperado) - $this->vl_gasto;
+        return $result;
     }
 }

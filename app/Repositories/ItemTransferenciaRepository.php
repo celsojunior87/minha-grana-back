@@ -21,6 +21,16 @@ class ItemTransferenciaRepository extends AbstractRepository
     {
         $formatted = [];
 
+        if (isset($params['item_id_de'])) {
+            $formatted['item_id_de'] = $params['item_id_de'];
+        }
+        if (isset($params['item_id_para'])) {
+            $formatted['item_id_para'] = $params['item_id_para'];
+        }
+        if (isset($params['vl_transferencia'])) {
+            $formatted['vl_transferencia'] = $params['vl_transferencia'];
+        }
+
         return $formatted;
     }
 }

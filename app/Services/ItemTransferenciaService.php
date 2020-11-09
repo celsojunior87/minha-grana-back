@@ -6,6 +6,8 @@ namespace App\Services;
 
 use App\Helper\Number;
 use App\Models\Item;
+use App\Models\ItemTransferencia;
+use App\Models\TipoGrupo;
 use App\Repositories\ItemMovimentacaoRepository;
 use App\Repositories\ItemTransferenciaRepository;
 use Carbon\Carbon;
@@ -16,19 +18,17 @@ class ItemTransferenciaService extends AbstractService
 {
     protected $repository;
     protected $itemService;
-    protected $item;
+    protected $grupoService;
 
-    public function __construct(ItemTransferenciaRepository $repository, ItemService $itemService, Item $item)
+    public function __construct(ItemTransferenciaRepository $repository, ItemService $itemService, GrupoService $grupoService)
     {
         $this->repository = $repository;
         $this->itemService = $itemService;
-        $this->item = $item;
-
+        $this->grupoService = $grupoService;
     }
 
     public function economia($params)
     {
-
         $item = [
             'id' => $params['item_id'],
             'vl_saldo_inicial' => $params['vl_saldo_inicial'],
@@ -37,32 +37,51 @@ class ItemTransferenciaService extends AbstractService
             'vl_total_objetivo' => $params['vl_total_objetivo'],
         ];
         $this->itemService->update($item['id'], $item);
-
     }
 
     public function transferir(array $transferencia)
     {
-        $vlSaldoFinal = $this->item->getVlSaldoFinalAttribute();
         $itemDe = $this->itemService->find($transferencia['item_id_de']);
         $itemPara = $this->itemService->find($transferencia['item_id_para']);
         $vlTransferencia = $transferencia['vl_transferencia'];
+        $vlSaldoFinal = $itemDe->getVlSaldoFinalAttribute();
 
         if ($vlTransferencia > $vlSaldoFinal) {
-            throw new \Exception('O valor da transferencia não pode ser maior que o saldo final');
-        }else{
-            $transferir = [
-                'item_id_de' => $itemDe,
-                'item_id_para' => $itemPara,
-                'vl_transferencia' => $vlTransferencia
-            ];
-
-            $this->save($transferir);
-
+            throw new \Exception('O valor da transferência não pode ser maior que o saldo final');
         }
 
+        $transferir = [
+            'item_id_de' => $itemDe->id,
+            'item_id_para' => $itemPara->id,
+            'vl_transferencia' => $vlTransferencia
+        ];
 
+        $itemTransferencia = $this->save($transferir);
 
-//       todo fazer a regra de negócio
+        $this->criarItemTransferido($itemTransferencia);
+    }
+
+    public function criarItemTransferido(ItemTransferencia $itemTransferencia)
+    {
+        $itemDe = $this->itemService->find($itemTransferencia->item_id_de);
+        $grupo = $this->grupoService->find($itemDe->grupo_id);
+        $dataDoItem = $grupo->data;
+
+        $search = [
+            'date' => Carbon::createFromFormat('Y-m-d', $dataDoItem)->format('Y-m') ,
+            'tipo_grupo' => TipoGrupo::RECEITAS
+        ];
+
+        $idGrupoReceita = $this->grupoService->getRepository()->movimentacao($search)[0]['id'];
+
+        $arrItemTransferencia = [
+            'transferencia_id' => $itemTransferencia->id,
+            'vl_esperado' => $itemTransferencia->vl_transferencia,
+            'grupo_id' => $idGrupoReceita,
+            'nome' => 'Transferência de ' . $itemDe->nome
+        ];
+
+        $this->itemService->save($arrItemTransferencia);
     }
 
     public function preRequisite(int $id)

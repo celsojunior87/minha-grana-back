@@ -117,14 +117,6 @@ class GrupoService extends AbstractService
         return $this->getMovimentacaoByGrupos($grupos);
     }
 
-    public function economia($params)
-    {
-        $grupos = $this->getAll($params);
-
-        dd($grupos);
-
-    }
-
     public function frases($params)
     {
         $grupos = $this->getAll($params);
