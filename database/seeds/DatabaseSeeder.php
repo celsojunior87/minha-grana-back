@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
         $this->call(OauthClientsSeeder::class);
         $this->call(TipoGrupoTableSeeder::class);
         $this->call(GrupoTableSeeder::class);
+        $this->call(TipoItemTableSeeder::class);
         $this->call(ItemsTableSeeder::class);
         $this->call(StatusTableSeeder::class);
 

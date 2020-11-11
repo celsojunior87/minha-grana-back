@@ -28,11 +28,17 @@ class CreateItemTable extends Migration
             $table->string('vl_gasto')->nullable()->default(0.00);
             $table->string('vl_total_objetivo')->nullable()->default(0.00);
             $table->string('transferencia_id')->nullable();
+            $table->unsignedInteger('tipo_item_id')->nullable();
+            $table->foreign('tipo_item_id')
+                ->references('id')
+                ->on('tipo_item')
+                ->onDelete('cascade');
             $table->unsignedInteger('grupo_id')->nullable();
             $table->foreign('grupo_id')
                 ->references('id')
                 ->on('grupo')
                 ->onDelete('cascade');
+
             $table->timestamps();
         });
     }
