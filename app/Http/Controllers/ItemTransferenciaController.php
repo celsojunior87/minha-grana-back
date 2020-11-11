@@ -30,4 +30,9 @@ class ItemTransferenciaController extends AbstractController
     {
         return $this->success($this->service->transferir($request->all()));
     }
+
+    public function divida(Request $request)
+    {
+        return $this->success($this->service->economia($request->all()));
+    }
 }
