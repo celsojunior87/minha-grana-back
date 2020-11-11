@@ -88,4 +88,17 @@ class ItemRepository extends AbstractRepository
             ->pluck('nome', 'id')
             ->all();
     }
+
+    /**
+     * Busca o primeiro item de transferencia em item
+     * @param $transferencia_id
+     * @return mixed
+     */
+    public function buscaItemJaTransferido($transferencia_id)
+    {
+        return $this
+            ->model
+            ->where('transferencia_id', $transferencia_id)
+            ->first();
+    }
 }

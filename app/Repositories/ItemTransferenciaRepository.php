@@ -30,7 +30,21 @@ class ItemTransferenciaRepository extends AbstractRepository
         if (isset($params['vl_transferencia'])) {
             $formatted['vl_transferencia'] = $params['vl_transferencia'];
         }
-
         return $formatted;
+    }
+
+    /**
+     * Traz a primeira transferencia do item
+     * @param array $itemTransferencia
+     * @return mixed
+     */
+    public function buscaPrimeiraTransferenciaDoItem(array $itemTransferencia)
+    {
+        return $this
+            ->model
+            ->where('item_id_de', $itemTransferencia['item_id_de'])
+            ->where('item_id_para', $itemTransferencia['item_id_para'])
+            ->orderBy('id')
+            ->first();
     }
 }

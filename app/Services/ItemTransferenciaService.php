@@ -78,10 +78,28 @@ class ItemTransferenciaService extends AbstractService
             'transferencia_id' => $itemTransferencia->id,
             'vl_esperado' => $itemTransferencia->vl_transferencia,
             'grupo_id' => $idGrupoReceita,
-            'nome' => 'Transferência de ' . $itemDe->nome
+            'nome' => 'Transferência de ' . $itemDe->nome,
+            'item_id_de' => $itemTransferencia->item_id_de,
+            'item_id_para' => $itemTransferencia->item_id_para,
         ];
+        $this->criarOuAtualizarTransferencia($arrItemTransferencia);
+    }
 
-        $this->itemService->save($arrItemTransferencia);
+    /**
+     * Se já existir uma transferencia, entao apenas atualiza o item
+     * @param array $itemTransferencia
+     * @throws \Exception
+     */
+    public function criarOuAtualizarTransferencia(array $itemTransferencia)
+    {
+        $primeiraTransferenciaDoItem = $this->repository->buscaPrimeiraTransferenciaDoItem($itemTransferencia);
+        $primeiroItemTransferido = $this->itemService->getRepository()->buscaItemJaTransferido($primeiraTransferenciaDoItem->id);
+        if($primeiroItemTransferido) {
+            $primeiroItemTransferido->vl_esperado += $itemTransferencia['vl_esperado'];
+            $this->itemService->update($primeiroItemTransferido->id, $primeiroItemTransferido);
+            return;
+        }
+        $this->itemService->save($itemTransferencia);
     }
 
     public function preRequisite(int $id)
