@@ -57,9 +57,18 @@ class ItemTransferenciaService extends AbstractService
         ];
 
         $itemTransferencia = $this->save($transferir);
-
         $this->criarItemTransferido($itemTransferencia);
+        $this->atualizarParaItemDestinadoTransferido($itemTransferencia);
     }
+
+    public function atualizarParaItemDestinadoTransferido(ItemTransferencia $itemTransferencia)
+    {
+        $itempara = $this->itemService->find($itemTransferencia->item_id_para);
+        $itempara->vl_esperado += $itemTransferencia->vl_transferencia;
+
+        $this->itemService->update($itempara->id, $itempara);
+    }
+
 
     public function criarItemTransferido(ItemTransferencia $itemTransferencia)
     {
@@ -68,7 +77,7 @@ class ItemTransferenciaService extends AbstractService
         $dataDoItem = $grupo->data;
 
         $search = [
-            'date' => Carbon::createFromFormat('Y-m-d', $dataDoItem)->format('Y-m') ,
+            'date' => Carbon::createFromFormat('Y-m-d', $dataDoItem)->format('Y-m'),
             'tipo_grupo' => TipoGrupo::RECEITAS
         ];
 
@@ -94,7 +103,7 @@ class ItemTransferenciaService extends AbstractService
     {
         $primeiraTransferenciaDoItem = $this->repository->buscaPrimeiraTransferenciaDoItem($itemTransferencia);
         $primeiroItemTransferido = $this->itemService->getRepository()->buscaItemJaTransferido($primeiraTransferenciaDoItem->id);
-        if($primeiroItemTransferido) {
+        if ($primeiroItemTransferido) {
             $primeiroItemTransferido->vl_esperado += $itemTransferencia['vl_esperado'];
             $this->itemService->update($primeiroItemTransferido->id, $primeiroItemTransferido);
             return;
