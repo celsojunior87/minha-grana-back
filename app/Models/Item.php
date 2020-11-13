@@ -9,7 +9,8 @@ class Item extends Model
     public $table = 'item';
 
     public $fillable = ['ordenacao'];
-    protected $appends = ['vl_saldo_final'];
+    protected $appends = ['vl_saldo_final', 'vl_gasto'];
+
 
     public function grupo()
     {
@@ -30,5 +31,20 @@ class Item extends Model
     {
         $result = ($this->vl_saldo_inicial + $this->vl_esperado) - $this->vl_gasto;
         return $result;
+    }
+
+    /**
+     * Valor gasto
+     */
+    public function getVlGastoAttribute()
+    {
+        $itensTransferencia = ItemTransferencia::where('item_id_de', $this->id)->get();
+        $vlGasto = 0;
+
+        foreach ($itensTransferencia as $item){
+
+            $vlGasto += $item->vl_transferencia;
+        }
+        return $vlGasto;
     }
 }
