@@ -27,6 +27,8 @@ class CreateItemTable extends Migration
             $table->string('vl_saldo_inicial')->nullable()->default(0.00);
             $table->string('vl_gasto')->nullable()->default(0.00);
             $table->string('vl_total_objetivo')->nullable()->default(0.00);
+            $table->decimal('juros_multas', 20, 2)->nullable()->default(0.00);
+            $table->decimal('pagamento_minimo', 20, 2)->nullable()->default(0.00);
             $table->string('transferencia_id')->nullable();
             $table->unsignedInteger('tipo_item_id')->nullable();
             $table->foreign('tipo_item_id')

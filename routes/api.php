@@ -72,6 +72,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     //Route::post('item/reordenar', 'ItemController@reordenar');
     Route::get('item-transferencia/item/{id}', 'ItemTransferenciaController@itemTransferencia');
     Route::put('item-transferencia/economia/', 'ItemTransferenciaController@economiaTransferencia');
+    Route::put('item-transferencia/divida/', 'ItemTransferenciaController@divida');
     Route::resource('item-transferencia', 'ItemTransferenciaController');
     Route::get('item-transferencia/item/{id}/pre-requisite', 'ItemTransferenciaController@preRequisite');
     Route::post('item-transferencia/economia/transferir', 'ItemTransferenciaController@transferir');

@@ -40,9 +40,7 @@ class Item extends Model
     {
         $itensTransferencia = ItemTransferencia::where('item_id_de', $this->id)->get();
         $vlGasto = 0;
-
-        foreach ($itensTransferencia as $item){
-
+        foreach ($itensTransferencia as $item) {
             $vlGasto += $item->vl_transferencia;
         }
         return $vlGasto;

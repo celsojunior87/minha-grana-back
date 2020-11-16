@@ -8,6 +8,7 @@ use App\Helper\Number;
 use App\Models\Item;
 use App\Models\ItemTransferencia;
 use App\Models\TipoGrupo;
+use App\Models\TipoItem;
 use App\Repositories\ItemMovimentacaoRepository;
 use App\Repositories\ItemTransferenciaRepository;
 use Carbon\Carbon;
@@ -37,6 +38,22 @@ class ItemTransferenciaService extends AbstractService
             'vl_gasto' => $params['vl_gasto'],
             'vl_total_objetivo' => $params['vl_total_objetivo'],
         ];
+        $this->itemService->update($item['id'], $item);
+    }
+
+    public function divida($params)
+    {
+
+        $tipoItem = TipoItem::DIVIDAS;
+        $item = [
+            'id' => $params['item_id'],
+            'tipo_item_id' => $tipoItem,
+            'vl_saldo_inicial' => $params['vl_saldo_inicial'],
+            'vl_esperado' => $params['vl_esperado'],
+        ];
+
+        dd($item);
+
         $this->itemService->update($item['id'], $item);
     }
 
