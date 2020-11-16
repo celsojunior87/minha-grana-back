@@ -61,6 +61,15 @@ class ItemRepository extends AbstractRepository
         if (isset($params['transferencia_id'])) {
             $formatted['transferencia_id'] = $params['transferencia_id'];
         }
+        if (isset($params['pagamento_minimo'])) {
+            $formatted['pagamento_minimo'] = $params['pagamento_minimo'];
+        }
+        if (isset($params['juros_multas'])) {
+            $formatted['juros_multas'] = $params['juros_multas'];
+        }
+        if (isset($params['tipo_item_id'])) {
+            $formatted['tipo_item_id'] = $params['tipo_item_id'];
+        }
         return $formatted;
     }
 
@@ -80,9 +89,9 @@ class ItemRepository extends AbstractRepository
             ->with(['grupo'])
             ->whereHas('grupo', function ($query) use ($newDate) {
                 $query->where('tipo_grupo_id', '=', TipoGrupo::DESPESAS)
-                ->whereBetween('data',
-                    [$newDate->firstOfMonth()->format('Y-m-d'), $newDate->lastOfMonth()->format('Y-m-d')]
-                );
+                    ->whereBetween('data',
+                        [$newDate->firstOfMonth()->format('Y-m-d'), $newDate->lastOfMonth()->format('Y-m-d')]
+                    );
             })
             ->whereNotIn('id', [$item['id']])
             ->pluck('nome', 'id')
