@@ -71,7 +71,7 @@
                 </li>
                 <li><a href="#contact">Contact</a></li>
 
-                <li class="get-started"><a href="http://vps714464.ovh.net/login">Acesse Aqui</a></li>
+                <li class="get-started"><a href="https://sabedoriafinanceira.minhagrana.app/">Acesse Aqui</a></li>
             </ul>
         </nav><!-- .nav-menu -->
 
@@ -88,7 +88,8 @@
                 <h2 data-aos="fade-up" data-aos-delay="400">We are team of talanted designers making websites with
                     Bootstrap</h2>
                 <div data-aos="fade-up" data-aos-delay="800">
-                    <a href="http://vps714464.ovh.net/login" class="btn-get-started scrollto">Acesse Aqui</a>
+                    <a href="https://sabedoriafinanceira.minhagrana.app/" class="btn-get-started scrollto">Acesse
+                        Aqui</a>
                 </div>
             </div>
             <div class="col-lg-6 order-1 order-lg-2 hero-img" data-aos="fade-left" data-aos-delay="200">
@@ -205,7 +206,7 @@
                             <div class="col-md-6 d-md-flex align-items-md-stretch">
                                 <div class="count-box">
                                     <i style="color: #01995a" class="icofont-attachment"></i>
-                                    <span   style="color: #01995a;font-size: 20px">2.Planeja suas despesas</span>
+                                    <span style="color: #01995a;font-size: 20px">2.Planeja suas despesas</span>
                                     <p><strong>Projects</strong> adipisci atque cum quia aspernatur totam laudantium et
                                         quia dere tan</p>
                                 </div>
@@ -214,7 +215,7 @@
                             <div class="col-md-6 d-md-flex align-items-md-stretch">
                                 <div class="count-box">
                                     <i style="color: #01995a" class="icofont-money"></i>
-                                    <span   style="color: #01995a;font-size: 20px">3. Dê um propósito para cada centavo</span>
+                                    <span style="color: #01995a;font-size: 20px">3. Dê um propósito para cada centavo</span>
                                     <p><strong>Years of experience</strong> aut commodi quaerat modi aliquam nam ducimus
                                         aut voluptate non vel</p>
                                 </div>
@@ -223,7 +224,7 @@
                             <div class="col-md-6 d-md-flex align-items-md-stretch">
                                 <div class="count-box">
                                     <i style="color: #01995a" class="icofont-handshake-deal"></i>
-                                    <span   style="color: #01995a;font-size: 20px">4. Acompanhe suas despesas</span>
+                                    <span style="color: #01995a;font-size: 20px">4. Acompanhe suas despesas</span>
                                     <p><strong>Awards</strong> rerum asperiores dolor alias quo reprehenderit eum et
                                         nemo pad der</p>
                                 </div>
@@ -231,7 +232,7 @@
                             <div class="col-md-6 d-md-flex align-items-md-stretch">
                                 <div class="count-box">
                                     <i style="color: #01995a" class="icofont-brand-target"></i>
-                                    <span   style="color: #01995a;font-size: 20px">5. Alcance seus Objetivos</span>
+                                    <span style="color: #01995a;font-size: 20px">5. Alcance seus Objetivos</span>
                                     <p><strong>Awards</strong> rerum asperiores dolor alias quo reprehenderit eum et
                                         nemo pad der</p>
                                 </div>
