@@ -10,5 +10,5 @@ class TipoItem extends Model
     public $timestamps = false;
 
     const ECONOMIA = 1;
-    const DIVIDAS = 2;
+    const DIVIDA = 2;
 }

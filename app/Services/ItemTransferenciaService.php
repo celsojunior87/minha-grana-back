@@ -36,20 +36,20 @@ class ItemTransferenciaService extends AbstractService
             'vl_esperado' => $params['vl_esperado'],
             'vl_gasto' => $params['vl_gasto'],
             'vl_total_objetivo' => $params['vl_total_objetivo'],
+            'tipo_item_id' => TipoItem::ECONOMIA,
         ];
         $this->itemService->update($item['id'], $item);
     }
 
     public function divida($params)
     {
-        $tipoItem = TipoItem::DIVIDAS;
         $item = [
             'id' => $params['item_id'],
-            'tipo_item_id' => $tipoItem,
             'vl_saldo_inicial' => $params['vl_saldo_inicial'],
             'vl_esperado' => $params['vl_esperado'],
             'pagamento_minimo' => $params['pagamento_minimo'],
             'juros_multas' => $params['juros_multas'],
+            'tipo_item_id' => TipoItem::DIVIDA,
         ];
 
 
