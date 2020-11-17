@@ -17,7 +17,7 @@ class TipoItemTableSeeder extends Seeder
             'nome'=>'Economia',
         ]);
         TipoItem::create([
-            'nome'=>'Dividas',
+            'nome'=>'Dívida',
         ]);
     }
 }

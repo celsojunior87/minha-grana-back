@@ -52,7 +52,6 @@ class ItemTransferenciaService extends AbstractService
             'tipo_item_id' => TipoItem::DIVIDA,
         ];
 
-
         $this->itemService->update($item['id'], $item);
     }
 
