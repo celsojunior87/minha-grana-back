@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\Services\UserService;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
 
 class LoginController extends Controller
@@ -54,7 +56,7 @@ class LoginController extends Controller
 
         auth()->setUser($user);
 
-        $token = auth()->login($user);
+        $token = $user->createToken('Minha-Grana Personal Access Client')->accessToken;
 
         $auth = $this->userService->fetchUser($request->user()->id);
 

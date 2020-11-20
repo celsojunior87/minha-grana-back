@@ -10,7 +10,7 @@ use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, Notifiable;
+    use HasApiTokens, Notifiable, HasApiTokens;
 
     /**
      * The attributes that are mass assignable.
@@ -51,15 +51,6 @@ class User extends Authenticatable
      */
     public function getPhotoUrlAttribute()
     {
-        if (!$this->avatar) {
-            return url('https://rothink.dev/assets/images/me.png');
-        }
-
-        $disk = Storage::disk('s3');
-        if ($disk->exists($this->avatar)) {
-            $s3 = $disk->getAdapter()->getClient();
-            return $s3->getObjectUrl(env('AWS_BUCKET'), $this->avatar);
-        }
         return $this->avatar;
     }
 

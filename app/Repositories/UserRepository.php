@@ -44,7 +44,7 @@ class UserRepository extends AbstractRepository
         $auth_user = $user->findOrFail($user->id);
 
         return [
-            'user' => $user,
+            'user' => $auth_user,
             'authenticated' => true
         ];
     }
@@ -64,7 +64,7 @@ class UserRepository extends AbstractRepository
      */
     public function findOrFailByEmail(string $email): User
     {
-        return $this->model->with(['empresaSistema'])->where(['email' => $email])->firstOrFail();
+        return $this->model->where(['email' => $email])->firstOrFail();
     }
 
     /**

@@ -204,7 +204,7 @@ class UserService extends AbstractService
             $params['birthday'] = Carbon::createFromFormat('m/d/Y', $params['birthday'])->toDateString();
         }
 
-        $params['username'] = strtolower(strstr($params['email'], '@', true));
+        $params['respostas'] = 'Começar a investir';
 
         return $params;
     }
