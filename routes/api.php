@@ -24,6 +24,7 @@ Route::post('/user/resetar-senha', 'Auth\ResetPasswordController@reset');
 //Route::get('login/facebook', 'Auth\LoginController@redirectToProvider');
 //Route::get('login/facebook/callback', 'Auth\LoginController@handleProviderCallback');
 Route::post('/login-facebook', 'Auth\LoginController@loginFacebook');
+Route::post('/login-google', 'Auth\LoginController@loginGoogle');
 Route::group(['middleware' => 'auth:api'], function () {
 
     /**

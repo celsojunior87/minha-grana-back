@@ -52,6 +52,22 @@ class LoginController extends Controller
      */
     public function loginFacebook(Request $request)
     {
+        return $this->makeLoginSocial($request);
+    }
+
+    /**
+     * Login with facebook
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Exception
+     */
+    public function loginGoogle(Request $request)
+    {
+       return $this->makeLoginSocial($request);
+    }
+
+    public function makeLoginSocial(Request $request)
+    {
         $user = $this->userService->loginFacebook($request->all());
 
         auth()->setUser($user);
