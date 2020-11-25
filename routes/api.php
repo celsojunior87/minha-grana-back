@@ -32,6 +32,8 @@ Route::group(['middleware' => 'auth:api'], function () {
      */
     Route::get('/me', 'AuthController@me');
 
+    Route::get('/dashboard/grupos', 'DashboardController@grupos');
+
     /**
      * User
      */

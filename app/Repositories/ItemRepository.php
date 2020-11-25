@@ -86,8 +86,6 @@ class ItemRepository extends AbstractRepository
             $formatted['tipo_item_id'] = $params['tipo_item_id'];
         }
 
-        dd($formatted);
-
         return $formatted;
     }
 
