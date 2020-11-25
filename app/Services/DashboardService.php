@@ -59,18 +59,18 @@ class DashboardService extends AbstractService
         $grupos = $this->buscarInformacoesParaMontarGraficoPorGrupo($params, $with);
         foreach ($grupos as $key => $grupo) {
             $graph['names'][] = $grupo['nome'];
-            $graph['values'][] = $this->fazerCalculoPorcentagemPorGrupos($grupos, $grupo);
+            $graph['values'][] = [$this->fazerCalculoPorcentagemPorGrupos($grupos, $grupo)];
         }
-        dd($graph);
+        return $graph;
     }
 
-    public function fazerCalculoPorcentagemPorGrupos($grupos, $grupo)
+    public function fazerCalculoPorcentagemPorGrupos($grupos, $grupoAtual)
     {
-        $total = 0;
+        $totalValorEsperadoTodosGrupos = 0;
         foreach ($grupos as $grupo) {
-            $total += $grupo['total_vl_planeje'];
+            $totalValorEsperadoTodosGrupos += $grupo['total_vl_esperado'];
         }
-        dd($total);
+        return round($grupoAtual['total_vl_esperado'] / $totalValorEsperadoTodosGrupos * 100);
     }
 
     public function buscarInformacoesParaMontarGraficoPorGrupo($params, $with)
