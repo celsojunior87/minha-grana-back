@@ -37,8 +37,10 @@ class DashboardService extends AbstractService
     public function montarDashboardByGrupos($params = null, $with = [])
     {
         $grupos = $this->buscarInformacoesParaMontarGraficoPorGrupo($params, $with);
+        $graph['colors'] = [];
         foreach ($grupos as $key => $grupo) {
             $graph['names'][] = $grupo['nome'];
+            array_push($graph['colors'], 'red');
             $graph['values'][] = [$this->fazerCalculoPorcentagemPorGrupos($grupos, $grupo)];
         }
         return $graph;
@@ -49,6 +51,9 @@ class DashboardService extends AbstractService
         $totalValorEsperadoTodosGrupos = 0;
         foreach ($grupos as $grupo) {
             $totalValorEsperadoTodosGrupos += $grupo['total_vl_esperado'];
+        }
+        if ($totalValorEsperadoTodosGrupos == 0) {
+            return 0;
         }
         return round($grupoAtual['total_vl_esperado'] / $totalValorEsperadoTodosGrupos * 100);
     }
