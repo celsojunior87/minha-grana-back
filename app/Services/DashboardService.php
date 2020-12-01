@@ -38,11 +38,10 @@ class DashboardService extends AbstractService
     public function montarDashboardByGrupos($params = null, $with = [])
     {
         $grupos = $this->buscarInformacoesParaMontarGraficoPorGrupo($params, $with);
+        $graph = [];
         foreach ($grupos as $key => $grupo) {
-            if ($grupo['tipo_grupo_id'] == TipoGrupo::DESPESAS) {
-                $graph['names'][] = $grupo['nome'];
-                $graph['values'][] = [$this->fazerCalculoPorcentagemPorGrupos($grupos, $grupo)];
-            }
+            $graph['names'][] = $grupo['nome'];
+            $graph['values'][] = [$this->fazerCalculoPorcentagemPorGrupos($grupos, $grupo)];
         }
         return $graph;
     }
@@ -62,7 +61,7 @@ class DashboardService extends AbstractService
     public function buscarInformacoesParaMontarGraficoPorGrupo($params, $with)
     {
         $with = ['items', 'tipoGrupo', 'items.itemMovimentacao'];
-        $grupos = parent::getAll($params, $with)->toArray();
+        $grupos = $this->repository->all($params, $with)->toArray();
         foreach ($grupos as $key => $grupo) {
             $total_vl_esperado = 0;
             $total_vl_planeje = 0;
