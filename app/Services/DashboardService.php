@@ -4,6 +4,7 @@
 namespace App\Services;
 
 
+use App\Models\TipoGrupo;
 use App\Repositories\GrupoRepository;
 
 class DashboardService extends AbstractService
@@ -39,9 +40,11 @@ class DashboardService extends AbstractService
         $grupos = $this->buscarInformacoesParaMontarGraficoPorGrupo($params, $with);
         $graph['colors'] = [];
         foreach ($grupos as $key => $grupo) {
-            $graph['names'][] = $grupo['nome'];
-            array_push($graph['colors'], 'red');
-            $graph['values'][] = [$this->fazerCalculoPorcentagemPorGrupos($grupos, $grupo)];
+            if ($grupo['tipo_grupo_id'] == TipoGrupo::DESPESAS) {
+                $graph['names'][] = $grupo['nome'];
+                array_push($graph['colors'], 'red');
+                $graph['values'][] = [$this->fazerCalculoPorcentagemPorGrupos($grupos, $grupo)];
+            }
         }
         return $graph;
     }
@@ -80,6 +83,7 @@ class DashboardService extends AbstractService
             $grupos[$key]['total_vl_esperado'] = $total_vl_esperado;
             $grupos[$key]['total_vl_planeje'] = $total_vl_planeje;
             $grupos[$key]['total_vl_recebido'] = $total_vl_recebido;
+
         };
         return $grupos;
     }
