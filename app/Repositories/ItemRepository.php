@@ -57,7 +57,7 @@ class ItemRepository extends AbstractRepository
 
         if (isset($params['vl_saldo_inicial'])) {
             $formatted['vl_saldo_inicial'] = $params['vl_saldo_inicial'];
-            if($params['tipo_item_id'] == TipoItem::DIVIDA) {
+            if(isset($params['tipo_item_id']) && $params['tipo_item_id'] == TipoItem::DIVIDA) {
                 $formatted['vl_saldo_inicial'] = -abs($params['vl_saldo_inicial']);
             }
         }

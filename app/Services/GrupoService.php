@@ -495,6 +495,9 @@ class GrupoService extends AbstractService
                         'vl_recebido' => $item['vl_recebido'],
                         'grupo_id' => $id
                     ];
+                    if(!empty($item['vl_saldo_inicial'])) {
+                        $novoItem['vl_saldo_inicial'] = ($item['vl_saldo_inicial'] + $item['vl_esperado']) - $item['vl_gasto'];
+                    }
                     $this->itemService->save($novoItem);
                 }
             }
