@@ -498,6 +498,11 @@ class GrupoService extends AbstractService
                     if(!empty($item['vl_saldo_inicial'])) {
                         $novoItem['vl_saldo_inicial'] = ($item['vl_saldo_inicial'] + $item['vl_esperado']) - $item['vl_gasto'];
                     }
+
+                    if(!empty($item['tipo_item_id'])) {
+                        $novoItem['tipo_item_id'] = $item['tipo_item_id'];
+                    }
+                    
                     $this->itemService->save($novoItem);
                 }
             }
