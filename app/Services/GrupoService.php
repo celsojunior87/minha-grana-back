@@ -77,7 +77,6 @@ class GrupoService extends AbstractService
     }
 
 
-
     /**
      *  O valor esperado menos a soma do planejado
      */
@@ -150,8 +149,8 @@ class GrupoService extends AbstractService
         if ($totalMovimentacaoReceitas > $totalReceita) {
             $total = $totalMovimentacaoReceitas - $totalReceita;
             return [
-                'frase' => ' VOCÊ PLANEJOU RECEBER A MAIS',
                 'total' => $total,
+                'frase' => ' Oops, você planejou  a mais! Ajuste suas receitas ou suas despesas até seu orçamento ser igual a zero. ',
             ];
         }
 
@@ -174,20 +173,28 @@ class GrupoService extends AbstractService
 
         if ($totalReceita == $totalDespesa && $totalMovimentacaoSaldoEsperado < 0) {
             return [
-                'frase' => ' Você PLANEJOU A MAIS',
+                'frase' => ' Oops! Você planejou  a mais. Ajuste suas receitas ou suas despesas até seu orçamento ser igual a zero.',
                 'total' => $totalMovimentacaoSaldoEsperado * -1,
                 'color' => 'red',
                 'class' => 'frase_ultrapassou'
             ];
         }
+        if ($totalReceita == 0) {
+            return [
+                'frase' => ' Comece adicionando todas as suas receitas . ',
+                'color' => 'green',
+                'class' => 'frase_inicial'
+            ];
+        }
 
         if ($totalReceita == $totalDespesa && $totalMovimentacaoSaldoEsperado == 0) {
             return [
-                'frase' => ' Parabéns, seu orcamento esta completo',
+                'frase' => 'Parabéns! Você deu um propósito para todo o seu dinheiro',
                 'color' => 'green',
                 'class' => 'frase_parabens'
             ];
         }
+
 
     }
 
@@ -452,7 +459,7 @@ class GrupoService extends AbstractService
              */
             $date = Arr::get($params, 'date');
 
-            $mesAnterior = Carbon::createFromFormat('Y-m', $date)->subMonth(1)->format('Y-m');
+            $mesAnterior = Carbon::createFromFormat('Y - m', $date)->subMonth(1)->format('Y - m');
 
             $gruposMesAnterior = $this->getAll(['date' => $mesAnterior]);
 
@@ -483,7 +490,7 @@ class GrupoService extends AbstractService
                 'nome' => $grupo['nome'],
                 'user_id' => auth()->user()->id,
                 'tipo_grupo_id' => $grupo['tipo_grupo_id'],
-                'data' => Carbon::createFromFormat('Y-m', $mesAtual)->firstOfMonth()->format('Y-m-d')
+                'data' => Carbon::createFromFormat('Y - m', $mesAtual)->firstOfMonth()->format('Y - m - d')
             ];
             $id = parent::save($novoGrupo)->id;
             if ($grupo['items']) {
@@ -495,14 +502,14 @@ class GrupoService extends AbstractService
                         'vl_recebido' => $item['vl_recebido'],
                         'grupo_id' => $id
                     ];
-                    if(!empty($item['vl_saldo_inicial'])) {
+                    if (!empty($item['vl_saldo_inicial'])) {
                         $novoItem['vl_saldo_inicial'] = ($item['vl_saldo_inicial'] + $item['vl_esperado']) - $item['vl_gasto'];
                     }
 
-                    if(!empty($item['tipo_item_id'])) {
+                    if (!empty($item['tipo_item_id'])) {
                         $novoItem['tipo_item_id'] = $item['tipo_item_id'];
                     }
-                    
+
                     $this->itemService->save($novoItem);
                 }
             }
@@ -533,7 +540,7 @@ class GrupoService extends AbstractService
             'Receitas',
             auth()->user()->id,
             TipoGrupo::RECEITAS,
-            Carbon::createFromFormat('Y-m', $date)->firstOfMonth()->format('Y-m-d')
+            Carbon::createFromFormat('Y - m', $date)->firstOfMonth()->format('Y - m - d')
         );
     }
 
@@ -547,7 +554,7 @@ class GrupoService extends AbstractService
             'Doacoes',
             auth()->user()->id,
             TipoGrupo::DESPESAS,
-            Carbon::createFromFormat('Y-m', $date)->firstOfMonth()->format('Y-m-d')
+            Carbon::createFromFormat('Y - m', $date)->firstOfMonth()->format('Y - m - d')
         );
     }
 
@@ -561,7 +568,7 @@ class GrupoService extends AbstractService
             'Economias',
             auth()->user()->id,
             TipoGrupo::DESPESAS,
-            Carbon::createFromFormat('Y-m', $date)->firstOfMonth()->format('Y-m-d')
+            Carbon::createFromFormat('Y - m', $date)->firstOfMonth()->format('Y - m - d')
         );
     }
 
@@ -575,7 +582,7 @@ class GrupoService extends AbstractService
             'Casa',
             auth()->user()->id,
             TipoGrupo::DESPESAS,
-            Carbon::createFromFormat('Y-m', $date)->firstOfMonth()->format('Y-m-d')
+            Carbon::createFromFormat('Y - m', $date)->firstOfMonth()->format('Y - m - d')
         );
     }
 
@@ -589,7 +596,7 @@ class GrupoService extends AbstractService
             'Dívidas',
             auth()->user()->id,
             TipoGrupo::DESPESAS,
-            Carbon::createFromFormat('Y-m', $date)->firstOfMonth()->format('Y-m-d')
+            Carbon::createFromFormat('Y - m', $date)->firstOfMonth()->format('Y - m - d')
         );
     }
 
