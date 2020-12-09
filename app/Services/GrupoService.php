@@ -500,7 +500,7 @@ class GrupoService extends AbstractService
                 'nome' => $grupo['nome'],
                 'user_id' => auth()->user()->id,
                 'tipo_grupo_id' => $grupo['tipo_grupo_id'],
-                'data' => Carbon::createFromFormat('Y - m', $mesAtual)->firstOfMonth()->format('Y - m - d')
+                'data' => Carbon::createFromFormat('Y - m', $mesAtual)->firstOfMonth()->format('Y-m-d')
             ];
             $id = parent::save($novoGrupo)->id;
             if ($grupo['items']) {
