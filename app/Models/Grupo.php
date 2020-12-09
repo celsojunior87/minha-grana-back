@@ -30,9 +30,13 @@ class Grupo extends Model
         if (Arr::has($params, 'date')) {
             $date = Arr::get($params, 'date');
             $newDate = Carbon::createFromFormat('Y-m', $date);
+
+            $first = $newDate->firstOfMonth()->format('Y-m-d');
+            $last = $newDate->lastOfMonth()->format('Y-m-d');
+
             $queryBuilder
                 ->whereBetween('data',
-                    [$newDate->firstOfMonth()->format('Y-m-d'), $newDate->lastOfMonth()->format('Y-m-d')]
+                    [$first, $last]
                 )
                 ->orderBy('created_at');
         }
