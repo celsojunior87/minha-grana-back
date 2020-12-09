@@ -467,7 +467,7 @@ class GrupoService extends AbstractService
              */
             $date = Arr::get($params, 'date');
 
-            $mesAnterior = Carbon::createFromFormat('Y - m', $date)->subMonth(1)->format('Y - m');
+            $mesAnterior = Carbon::createFromFormat('Y-m', $date)->subMonth(1)->format('Y-m');
 
             $gruposMesAnterior = $this->getAll(['date' => $mesAnterior]);
 
@@ -548,7 +548,7 @@ class GrupoService extends AbstractService
             'Receitas',
             auth()->user()->id,
             TipoGrupo::RECEITAS,
-            Carbon::createFromFormat('Y - m', $date)->firstOfMonth()->format('Y - m - d')
+            Carbon::createFromFormat('Y-m', $date)->firstOfMonth()->format('Y-m-d')
         );
     }
 
