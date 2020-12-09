@@ -346,7 +346,7 @@ class GrupoService extends AbstractService
 //    {
 //        $tipoGrupo = $itemMovimentacao->item()->first()->grupo()->first()->tipoGrupo()->first()->id;
 //        return ($tipoGrupo === TipoGrupo::RECEITAS ? 'green' : 'red');
-//    }
+//    }you
 
     /**
      * se o valor realizado for igual a 0 o saldo esperado deverá ser igual ao planejado
