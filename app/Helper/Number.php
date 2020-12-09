@@ -4,12 +4,12 @@ namespace App\Helper;
 
 class Number
 {
-    public static function formatCurrencyBr($money, $toDataBase = true)
+    public static function formatCurrencyBr($money, $toDataBase = true, $negativeNumber = true)
     {
         if (true === $toDataBase) {
             return self::moedaToDatabase($money);
         }
-        return self::moedaToView($money);
+        return self::moedaToView($money, $negativeNumber);
     }
 
     public static function getOnlyNumber($string)
@@ -41,9 +41,12 @@ class Number
      * @param $get_valor
      * @return mixed
      */
-    public static function moedaToView($get_valor)
+    public static function moedaToView($get_valor, $negativeNumber = true)
     {
-        return 'R$ ' . number_format($get_valor, 2, ',', '.');
+        if(true === $negativeNumber) {
+            return 'R$ ' . number_format($get_valor, 2, ',', '.');
+        }
+        return 'R$ ' . number_format(abs($get_valor), 2, ',', '.');
     }
 
     public static function phoneToView($phone)

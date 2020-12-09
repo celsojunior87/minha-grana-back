@@ -4,6 +4,7 @@
 namespace App\Services;
 
 
+use App\Helper\Number;
 use App\Models\ItemMovimentacao;
 use App\Models\Status;
 use App\Models\TipoGrupo;
@@ -136,7 +137,7 @@ class GrupoService extends AbstractService
         if ($totalReceita > $totalDespesa) {
             $total = $totalReceita - $totalDespesa;
 
-            $sobrando = 'Continue adicionando itens à movimentação. Você ainda tem R$' . $total . ' disponível.';
+            $sobrando = '<span>Continue adicionando itens à movimentação. Você ainda tem R$<span style="font-weight: bold">' . $total . '</span> disponível.</span>';
             return [
                 'frase' => $sobrando,
             ];
@@ -144,7 +145,8 @@ class GrupoService extends AbstractService
         if ($totalReceita < $totalDespesa) {
             $total = $totalReceita - $totalDespesa;
 
-            $frase = "Oops! Você planejou R$" . abs($total) . " a mais. Ajuste suas receitas ou suas despesas até seu orçamento ser igual a zero.";
+            $frase = "<span>Oops! Você planejou <span style='color: red; font-weight: bold'>" . Number::formatCurrencyBr($total, false, false) . "</span> a mais. 
+                        Ajuste suas receitas ou suas despesas até seu orçamento ser igual a zero. </span>";
 
             return [
                 'frase' => $frase,
@@ -163,7 +165,7 @@ class GrupoService extends AbstractService
 
         if ($totalMovimentacaoReceitas < $totalReceita) {
             $total = $totalReceita - $totalMovimentacaoReceitas;
-            $disponivel = 'Continue adicionando itens à movimentação. Você ainda tem R$ ' . $total . ' disponível';
+            $disponivel = '<span>Continue adicionando itens à movimentação. Você ainda tem R$ <span style="font-weight: bold">' . $total . '</span> disponível</span>';
             return [
                 'frase' => $disponivel
             ];
