@@ -127,20 +127,27 @@ class GrupoService extends AbstractService
         $totalDespesa = $this->getTotalDespesa($grupos);
 
 
+        if ($totalReceita != 0 && $totalDespesa == 0) {
+
+            return [
+                'frase' => ' Quando terminar de adicionar suas receitas, então comece a adicionar suas despesas.',
+            ];
+        }
         if ($totalReceita > $totalDespesa) {
             $total = $totalReceita - $totalDespesa;
+
+            $sobrando = 'Continue adicionando itens à movimentação. Você ainda tem R$' . $total . ' disponível.';
             return [
-                'frase' => ' Está sobrando',
-                'total' => $total,
-                'color' => '',
-                'class' => '',
+                'frase' => $sobrando,
             ];
         }
         if ($totalReceita < $totalDespesa) {
             $total = $totalReceita - $totalDespesa;
+
+            $frase = "Oops! Você planejou R$" . abs($total) . " a mais. Ajuste suas receitas ou suas despesas até seu orçamento ser igual a zero.";
+
             return [
-                'frase' => ' Você Ultrapassou',
-                'total' => $total,
+                'frase' => $frase,
                 'color' => 'red',
                 'class' => 'frase_ultrapassou',
             ];
@@ -155,19 +162,19 @@ class GrupoService extends AbstractService
         }
 
         if ($totalMovimentacaoReceitas < $totalReceita) {
-
             $total = $totalReceita - $totalMovimentacaoReceitas;
+            $disponivel = 'Continue adicionando itens à movimentação. Você ainda tem R$ ' . $total . ' disponível';
             return [
-                'frase' => ' VOCÊ AINDA TEM DISPONIVEL PARA PLANEJAR',
-                'total' => $total,
+                'frase' => $disponivel
             ];
 
         }
 
         if ($totalReceita == $totalDespesa && $totalMovimentacaoSaldoEsperado > 0) {
+            $planejar = ' Você Ainda Precisa Planejar R$ ' . $totalMovimentacaoSaldoEsperado;
             return [
-                'frase' => ' VOCÊ AINDA PRECISA PLANEJAR',
-                'total' => $totalMovimentacaoSaldoEsperado,
+                'frase' => $planejar,
+
             ];
         }
 
@@ -179,6 +186,8 @@ class GrupoService extends AbstractService
                 'class' => 'frase_ultrapassou'
             ];
         }
+
+
         if ($totalReceita == 0) {
             return [
                 'frase' => ' Comece adicionando todas as suas receitas . ',
@@ -312,7 +321,6 @@ class GrupoService extends AbstractService
                 $item = $this->itemService->find($itemsMovimentacao['item_id'])->toArray();
                 $grupo = $this->find($item['grupo_id']);
                 $arrItemsMovimentacao[$key]['tipo_grupo_id'] = $grupo->tipo_grupo_id;
-                $arrItemsMovimentacao[$key]['color'] = $this->definirCorPorTipoGrupo($itemMovimentacao);
             }
         }
 
@@ -334,11 +342,11 @@ class GrupoService extends AbstractService
         return $arrItemsMovimentacao;
     }
 
-    public function definirCorPorTipoGrupo(ItemMovimentacao $itemMovimentacao)
-    {
-        $tipoGrupo = $itemMovimentacao->item()->first()->grupo()->first()->tipoGrupo()->first()->id;
-        return ($tipoGrupo === TipoGrupo::RECEITAS ? 'green' : 'red');
-    }
+//    public function definirCorPorTipoGrupo(ItemMovimentacao $itemMovimentacao)
+//    {
+//        $tipoGrupo = $itemMovimentacao->item()->first()->grupo()->first()->tipoGrupo()->first()->id;
+//        return ($tipoGrupo === TipoGrupo::RECEITAS ? 'green' : 'red');
+//    }
 
     /**
      * se o valor realizado for igual a 0 o saldo esperado deverá ser igual ao planejado
