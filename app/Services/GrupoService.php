@@ -188,7 +188,7 @@ class GrupoService extends AbstractService
 
         if($totalReceita == $totalDespesa && $totalMovimentacaoReceitas > 0 && $totalMovimentacaoReceitas < $totalReceita && $totalMovimentacaoSaldoEsperado != 0){
 
-            $
+
         }
 
         if ($totalMovimentacaoReceitas > $totalReceita) {
