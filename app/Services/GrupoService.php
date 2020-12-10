@@ -124,9 +124,18 @@ class GrupoService extends AbstractService
         $totalMovimentacaoSaldoEsperado = $this->getMovimentacaoSaldoEsperado($grupos);
 
         $totalMovimentacaoReceitas = $this->somaTotalReceitaMovimentacao($grupos);
+        $totalMovimentacaoDespesa = $this->somaTotalDespesaMovimentacao($grupos);
         $totalReceita = $this->getTotalReceitas($grupos);
         $totalDespesa = $this->getTotalDespesa($grupos);
 
+
+        if ($totalReceita == 0) {
+            return [
+                'frase' => ' Comece adicionando todas as suas receitas . ',
+                'color' => 'green',
+                'class' => 'frase_inicial'
+            ];
+        }
 
         if ($totalReceita != 0 && $totalDespesa == 0) {
 
@@ -135,17 +144,18 @@ class GrupoService extends AbstractService
             ];
         }
 
-        if ($totalReceita == $totalDespesa) {
+        if ($totalReceita == $totalDespesa && $totalReceita != 0 && $totalDespesa = !0) {
 
             return [
                 'frase' => 'Bom trabalho! Agora adicione todos seus itens à movimentação. Especifique o dia e o valor.'
             ];
         }
 
-        if ($totalReceita > $totalDespesa) {
+        if ($totalReceita > $totalDespesa && $totalDespesa > 0) {
 
             $total = $totalReceita - $totalDespesa;
-            $planejar = ' <span>Você Ainda Tem R$ <span style="font-weight: bold"> </span>' . $total . ' para planejar ';
+            $planejar = "<span>Você Ainda Tem <b style=' font-weight: bold'>" . Number::formatCurrencyBr($total, false, false) . "</b> 
+                        para planejar </span>";
             return [
                 'frase' => $planejar,
 
@@ -157,7 +167,7 @@ class GrupoService extends AbstractService
             $total = $totalReceita - $totalDespesa;
 
             $frase = "<span>Oops! Você planejou <span style='color: red; font-weight: bold'>" . Number::formatCurrencyBr($total, false, false) . "</span> a mais. 
-                        Ajuste suas receitas ou suas despesas até seu orçamento ser igual a zero. </span>";
+                        Adicione mais receitas ou reduza suas despesas até seu orçamento ser igual a zero. </span>";
 
             return [
                 'frase' => $frase,
@@ -166,6 +176,7 @@ class GrupoService extends AbstractService
             ];
         }
 
+
         if ($totalMovimentacaoReceitas < $totalReceita) {
             $total = $totalReceita - $totalMovimentacaoReceitas;
             $disponivel = '<span>Continue adicionando itens à movimentação. Você ainda tem R$ <span style="font-weight: bold">' . $total . '</span> disponível</span>';
@@ -173,6 +184,11 @@ class GrupoService extends AbstractService
                 'frase' => $disponivel
             ];
 
+        }
+
+        if($totalReceita == $totalDespesa && $totalMovimentacaoReceitas > 0 && $totalMovimentacaoReceitas < $totalReceita && $totalMovimentacaoSaldoEsperado != 0){
+
+            $
         }
 
         if ($totalMovimentacaoReceitas > $totalReceita) {
@@ -238,6 +254,22 @@ class GrupoService extends AbstractService
         }
         return $somaReceitaMovimentacao;
     }
+
+    public function somaTotalDespesaMovimentacao($grupos)
+    {
+        $somaDespesaMovimentacao = 0;
+        foreach ($grupos as $grupo) {
+            if ($grupo['tipo_grupo']['id'] == TipoGrupo::DESPESAS) {
+                foreach ($grupo['items'] as $item) {
+                    foreach ($item['item_movimentacao'] as $movimentacao) {
+                        $somaDespesaMovimentacao += $movimentacao['vl_planejado'];
+                    }
+                }
+            }
+        }
+        return $somaDespesaMovimentacao;
+    }
+
 
     public function getTotalDespesa($grupos)
     {
