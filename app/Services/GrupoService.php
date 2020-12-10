@@ -134,14 +134,25 @@ class GrupoService extends AbstractService
                 'frase' => ' Quando terminar de adicionar suas receitas, então comece a adicionar suas despesas.',
             ];
         }
-        if ($totalReceita > $totalDespesa) {
-            $total = $totalReceita - $totalDespesa;
 
-            $sobrando = '<span>Continue adicionando itens à movimentação. Você ainda tem R$<span style="font-weight: bold">' . $total . '</span> disponível.</span>';
+        if ($totalReceita == $totalDespesa) {
+
             return [
-                'frase' => $sobrando,
+                'frase' => 'Bom trabalho! Agora adicione todos seus itens à movimentação. Especifique o dia e o valor.'
             ];
         }
+
+        if ($totalReceita > $totalDespesa) {
+
+            $total = $totalReceita - $totalDespesa;
+            $planejar = ' <span>Você Ainda Tem R$ <span style="font-weight: bold"> </span>' . $total . ' para planejar ';
+            return [
+                'frase' => $planejar,
+
+            ];
+        }
+
+
         if ($totalReceita < $totalDespesa) {
             $total = $totalReceita - $totalDespesa;
 
@@ -155,14 +166,6 @@ class GrupoService extends AbstractService
             ];
         }
 
-        if ($totalMovimentacaoReceitas > $totalReceita) {
-            $total = $totalMovimentacaoReceitas - $totalReceita;
-            return [
-                'total' => $total,
-                'frase' => ' Oops, você planejou  a mais! Ajuste suas receitas ou suas despesas até seu orçamento ser igual a zero. ',
-            ];
-        }
-
         if ($totalMovimentacaoReceitas < $totalReceita) {
             $total = $totalReceita - $totalMovimentacaoReceitas;
             $disponivel = '<span>Continue adicionando itens à movimentação. Você ainda tem R$ <span style="font-weight: bold">' . $total . '</span> disponível</span>';
@@ -172,13 +175,14 @@ class GrupoService extends AbstractService
 
         }
 
-        if ($totalReceita == $totalDespesa && $totalMovimentacaoSaldoEsperado > 0) {
-            $planejar = ' Você Ainda Precisa Planejar R$ ' . $totalMovimentacaoSaldoEsperado;
+        if ($totalMovimentacaoReceitas > $totalReceita) {
+            $total = $totalMovimentacaoReceitas - $totalReceita;
             return [
-                'frase' => $planejar,
-
+                'total' => $total,
+                'frase' => ' Oops, você planejou  a mais! Ajuste suas receitas ou suas despesas até seu orçamento ser igual a zero. ',
             ];
         }
+
 
         if ($totalReceita == $totalDespesa && $totalMovimentacaoSaldoEsperado < 0) {
             return [
@@ -201,7 +205,6 @@ class GrupoService extends AbstractService
         if ($totalReceita == $totalDespesa && $totalMovimentacaoSaldoEsperado == 0) {
             return [
                 'frase' => 'Parabéns! Você deu um propósito para todo o seu dinheiro',
-                'color' => 'green',
                 'class' => 'frase_parabens'
             ];
         }
