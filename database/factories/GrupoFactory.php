@@ -5,6 +5,7 @@
 use Faker\Generator as Faker;
 use Illuminate\Support\Str;
 use App\Models\Grupo;
+use App\Helper\Color;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,5 +24,6 @@ $factory->define(Grupo::class, function (Faker $faker) {
         'user_id' => 1,
         'tipo_grupo_id' =>2,
         'data' => now(),
+        'color' => Color::makeRandomColor()
     ];
 });

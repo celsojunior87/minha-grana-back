@@ -43,6 +43,10 @@ class GrupoRepository extends AbstractRepository
             $formatted['data'] = $params['data'];
         }
 
+        if (isset($params['color'])) {
+            $formatted['color'] = $params['color'];
+        }
+
         return $formatted;
     }
 

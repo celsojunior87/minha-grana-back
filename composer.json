@@ -47,7 +47,8 @@
         "files": [
             "app/Helper/Helper.php",
             "app/Helper/Number.php",
-            "app/Helper/Date.php"
+            "app/Helper/Date.php",
+            "app/Helper/Color.php"
         ]
     },
     "autoload-dev": {

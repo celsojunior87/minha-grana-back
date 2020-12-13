@@ -4,6 +4,7 @@
 namespace App\Services;
 
 
+use App\Helper\Color;
 use App\Helper\Number;
 use App\Models\ItemMovimentacao;
 use App\Models\Status;
@@ -467,6 +468,7 @@ class GrupoService extends AbstractService
     {
         $data['user_id'] = Auth::user()->id;
         $data['data'] = (!isset($data['date'])) ? Carbon::now() : $data['date'];
+        $data['color'] = Color::makeRandomColor();
         return parent::save($data);
     }
 
