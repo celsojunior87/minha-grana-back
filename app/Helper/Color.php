@@ -4,18 +4,17 @@ namespace App\Helper;
 
 class Color
 {
+    /**
+     * @return string
+     * Cores dos gráficos (em grupos)
+     */
     public static function makeRandomColor()
     {
         $color = [
-            'blue',
-            'red',
-            'orange',
-            'green',
-            'brown',
-            'yellow',
-            'pink',
-            'navy',
-            'black'
+            '#EC2500',
+            '#ECE100',
+            '#EC9800',
+            '#9EDE00',
         ];
         return $color[array_rand($color)];
     }

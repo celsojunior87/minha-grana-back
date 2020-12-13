@@ -67,15 +67,11 @@ class GrupoService extends AbstractService
                     $total_vl_recebido += $grupos[$key]['items'][$keyItems]['vl_recebido'];
                 }
             }
-
-
             $grupos[$key]['total_vl_esperado'] = $total_vl_esperado;
             $grupos[$key]['total_vl_planeje'] = $total_vl_planeje;
             $grupos[$key]['total_vl_recebido'] = $total_vl_recebido;
         };
-
         return $grupos;
-
     }
 
 
@@ -103,7 +99,6 @@ class GrupoService extends AbstractService
     {
         $objItem = $this->itemService->getRepository()->find($item['id']);
         $movimentacoes = $objItem->itemMovimentacao()->get()->toArray();
-
 
         $vl_recebido = 0;
         foreach ($movimentacoes as $movimentacoe) {
@@ -380,16 +375,9 @@ class GrupoService extends AbstractService
         return $arrItemsMovimentacao;
     }
 
-//    public function definirCorPorTipoGrupo(ItemMovimentacao $itemMovimentacao)
-//    {
-//        $tipoGrupo = $itemMovimentacao->item()->first()->grupo()->first()->tipoGrupo()->first()->id;
-//        return ($tipoGrupo === TipoGrupo::RECEITAS ? 'green' : 'red');
-//    }you
-
     /**
      * se o valor realizado for igual a 0 o saldo esperado deverá ser igual ao planejado
      */
-
     public function calculaSaldoEsperado(ItemMovimentacao $itemMovimentacao, $arrItemsMovimentacaoAnterior, $key)
     {
         if ($key == 0) {

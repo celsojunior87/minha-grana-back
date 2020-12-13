@@ -42,6 +42,7 @@ class DashboardService extends AbstractService
         foreach ($grupos as $key => $grupo) {
             $graph['names'][] = $grupo['nome'];
             $graph['values'][] = [$this->fazerCalculoPorcentagemPorGrupos($grupos, $grupo)];
+            $graph['colors'][] = $grupo['color'];
         }
         return $graph;
     }
