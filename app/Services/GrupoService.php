@@ -127,6 +127,13 @@ class GrupoService extends AbstractService
         $totalDespesa = $this->getTotalDespesa($grupos);
 
 
+        if ($totalReceita == 0 && $totalDespesa !== 0 ) {
+            return [
+                'frase' => ' Hmm... talvez seja melhor começar pelas receitas . ',
+                'color' => 'green',
+                'class' => 'frase_inicial'
+            ];
+        }
         if ($totalReceita == 0) {
             return [
                 'frase' => ' Comece adicionando todas as suas receitas . ',
@@ -134,6 +141,8 @@ class GrupoService extends AbstractService
                 'class' => 'frase_inicial'
             ];
         }
+
+
 
         if ($totalReceita != 0 && $totalDespesa == 0) {
 
@@ -158,17 +167,21 @@ class GrupoService extends AbstractService
 
 
 
-        if($totalReceita == $totalDespesa && $totalMovimentacaoReceitas > 0 && $totalMovimentacaoReceitas < $totalReceita && $totalMovimentacaoSaldoEsperado == 0)
+        if($totalReceita == $totalDespesa && $totalMovimentacaoReceitas > 0 && $totalMovimentacaoReceitas
+            < $totalReceita && $totalMovimentacaoSaldoEsperado == 0)
         {
-            //totalreceita - totalMovimentacaoReceitas
+            $total = $totalReceita - $totalMovimentacaoReceitas;
+
+            $caminhoCerto = "<span>Você está no caminho certo! Adicione mais receitas à movimentação.  Você ainda tem <b style=' font-weight: bold'>" . Number::formatCurrencyBr($total, false, false) . "</b> 
+                        para planejar </span>";
             return [
-              'frase' => 'Você está no caminho certo! Adicione mais receitas à movimentação. Você ainda tem R$ X,XX para adicionar.'
+              'frase' => $caminhoCerto
             ];
         }
 
         if($totalReceita == $totalDespesa && $totalMovimentacaoReceitas > $totalReceita){
 
-            //totalMovimentacaoReceita - totalReceita
+            $total = $totalMovimentacaoReceitas - $totalReceita;
             return [
               'frase' => 'Cuidado! Você adicionou R$ XXX a mais receitas à movimentação do que o planejado. Procure por valores negativos na coluna planeje no planejamento.'
             ];
