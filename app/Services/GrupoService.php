@@ -182,33 +182,42 @@ class GrupoService extends AbstractService
         if($totalReceita == $totalDespesa && $totalMovimentacaoReceitas > $totalReceita){
 
             $total = $totalMovimentacaoReceitas - $totalReceita;
+            $retorno = "<span>Cuidado!!Você adicionou <b style=' font-weight: bold'>" . Number::formatCurrencyBr($total, false, false) . "</b> 
+                        a mais receitas à movimentação do que o planejado. Procure por valores negativos na coluna planeje no planejamento. </span>";
             return [
-              'frase' => 'Cuidado! Você adicionou R$ XXX a mais receitas à movimentação do que o planejado. Procure por valores negativos na coluna planeje no planejamento.'
+              'frase' => $retorno
             ];
         }
 
         if($totalReceita == $totalDespesa && $totalMovimentacaoDespesa > $totalDespesa)
         {
-           //$teste =  $totalMovimentacaoDespesa - $totalDespesa;
+            $total =  $totalMovimentacaoDespesa - $totalDespesa;
+            $retorno = "<span>Cuidado!!Você adicionou <b style=' font-weight: bold'>" . Number::formatCurrencyBr($total, false, false) . "</b> 
+                        a mais despesas à movimentação do que o planejado. Procure por valores negativos na coluna planeje no planejamento. </span>";
             return [
-                'frase' => 'Cuidado! Você adicionou R$ XXX mais despesas à movimentação do que o planejado. Procure por valores negativos na coluna planeje no planejamento.'
-            ];
+                'frase' => $retorno
+                ];
         }
         if($totalReceita == $totalDespesa && $totalMovimentacaoReceitas > 0 && $totalMovimentacaoReceitas
             < $totalReceita && $totalMovimentacaoSaldoEsperado != 0){
 
-            //total movimentacao saldo esperado
+            $total = $totalMovimentacaoSaldoEsperado;
+
+            $retorno = "<span>Legal, você adicionou receitas à sua movimentação, agora especifique como você quer usar esse dinheiro. Você tem <b style=' font-weight: bold'>" . Number::formatCurrencyBr($total, false, false) . "</b> 
+                        para usar.</span>";
             return [
-                'frase'=> 'Legal, você adicionou receitas à sua movimentação, agora especifique como você quer usar esse dinheiro. Você tem R$ X,XX para usar. '
+                'frase'=> $retorno
             ];
         }
 
         if($totalReceita == $totalDespesa && $totalMovimentacaoReceitas == $totalReceita &&
             $totalMovimentacaoDespesa < $totalDespesa)
         {
-            //$totalmovimentacaosaldoesperado
+            $total = $totalMovimentacaoSaldoEsperado;
+            $retorno = "<span>Agora que você adicionou todas suas receitas à movimentação, adicione todas as suas despesas. Você tem <b style=' font-weight: bold'>" . Number::formatCurrencyBr($total, false, false) . "</b> 
+                       de despesas para adicionar.</span>";
             return [
-                'frase' =>'Agora que você adicionou todas suas receitas à movimentação, adicione todas as suas despesas. Você tem R$ x,xx de despesas para adicionar.'
+                'frase' => $retorno
             ];
         }
 
