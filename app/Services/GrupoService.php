@@ -172,7 +172,7 @@ class GrupoService extends AbstractService
         {
             $total = $totalReceita - $totalMovimentacaoReceitas;
 
-            $caminhoCerto = "<span>Você está no caminho certo! Adicione mais receitas à movimentação.  Você ainda tem <b style=' font-weight: bold'>" . Number::formatCurrencyBr($total, false, false) . "</b> 
+            $caminhoCerto = "<span>Você está no caminho certo! Adicione mais receitas à movimentação.  <br>Você ainda tem <b style=' font-weight: bold'>" . Number::formatCurrencyBr($total, false, false) . "</b> 
                         para planejar </span>";
             return [
               'frase' => $caminhoCerto
@@ -203,7 +203,7 @@ class GrupoService extends AbstractService
 
             $total = $totalMovimentacaoSaldoEsperado;
 
-            $retorno = "<span>Legal, você adicionou receitas à sua movimentação, agora especifique como você quer usar esse dinheiro. Você tem <b style=' font-weight: bold'>" . Number::formatCurrencyBr($total, false, false) . "</b> 
+            $retorno = "<span>Legal, você adicionou receitas à sua movimentação, agora especifique como você quer usar esse dinheiro. <br>Você tem <b style=' font-weight: bold'>" . Number::formatCurrencyBr($total, false, false) . "</b> 
                         para usar.</span>";
             return [
                 'frase'=> $retorno
@@ -214,7 +214,7 @@ class GrupoService extends AbstractService
             $totalMovimentacaoDespesa < $totalDespesa)
         {
             $total = $totalMovimentacaoSaldoEsperado;
-            $retorno = "<span>Agora que você adicionou todas suas receitas à movimentação, adicione todas as suas despesas. Você tem <b style=' font-weight: bold'>" . Number::formatCurrencyBr($total, false, false) . "</b> 
+            $retorno = "<span>Agora que você adicionou todas suas receitas à movimentação, adicione todas as suas despesas.<br> Você tem <b style=' font-weight: bold'>" . Number::formatCurrencyBr($total, false, false) . "</b> 
                        de despesas para adicionar.</span>";
             return [
                 'frase' => $retorno
