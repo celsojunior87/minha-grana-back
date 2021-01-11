@@ -243,7 +243,13 @@ class UserRepository extends AbstractRepository
         if (isset($params['respostas'])) {
             $formatted['respostas'] = $params['respostas'];
         }
+        if (isset($params['estado_civil'])) {
+            $formatted['estado_civil'] = $params['estado_civil'];
 
+        }
+        if (isset($params['assunto'])) {
+            $formatted['assunto'] = $params['assunto'];
+        }
         if ($actionByUser) {
             $formatted['password'] = bcrypt($params['password']);
         }
