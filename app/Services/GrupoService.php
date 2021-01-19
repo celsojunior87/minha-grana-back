@@ -198,8 +198,7 @@ class GrupoService extends AbstractService
                 'frase' => $retorno
                 ];
         }
-        if($totalReceita == $totalDespesa && $totalMovimentacaoReceitas > 0 && $totalMovimentacaoReceitas
-            < $totalReceita && $totalMovimentacaoSaldoEsperado != 0){
+        if($totalReceita == $totalDespesa && $totalMovimentacaoReceitas > $totalReceita){
 
             $total = $totalMovimentacaoSaldoEsperado;
 
@@ -513,7 +512,7 @@ class GrupoService extends AbstractService
             return [
                 'id' => Status::FEITO,
                 'nome' => Status::find(Status::FEITO)->nome,
-                'color' => 'green',
+                'color' => '6FCF97',
                 'text_color' => 'white'
             ];
         }
