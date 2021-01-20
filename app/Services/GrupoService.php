@@ -127,13 +127,13 @@ class GrupoService extends AbstractService
         $totalDespesa = $this->getTotalDespesa($grupos);
 
 
-        if ($totalReceita == 0 && $totalDespesa !== 0 ) {
-            return [
-                'frase' => ' Hmm... talvez seja melhor começar pelas receitas . ',
-                'color' => 'green',
-                'class' => 'frase_inicial'
-            ];
-        }
+//        if ($totalReceita == 0 && $totalDespesa !== 0 ) {
+//            return [
+//                'frase' => ' Hmm... talvez seja melhor começar pelas receitas . ',
+//                'color' => 'green',
+//                'class' => 'frase_inicial'
+//            ];
+//        }
         if ($totalReceita == 0) {
             return [
                 'frase' => ' Comece adicionando todas as suas receitas . ',
@@ -161,19 +161,17 @@ class GrupoService extends AbstractService
         if($totalReceita == $totalDespesa && $totalMovimentacaoReceitas == 0 && $totalMovimentacaoDespesa > 0){
 
             return [
-                'frase'=>'chegou aqui na regra'
+                'frase'=>'Hmm... talvez seja melhor começar pelas receitas'
             ];
         }
-
-
 
         if($totalReceita == $totalDespesa && $totalMovimentacaoReceitas > 0 && $totalMovimentacaoReceitas
             < $totalReceita && $totalMovimentacaoSaldoEsperado == 0)
         {
             $total = $totalReceita - $totalMovimentacaoReceitas;
 
-            $caminhoCerto = "<span>Você está no caminho certo! Adicione mais receitas à movimentação.  <br>Você ainda tem <b style=' font-weight: bold'>" . Number::formatCurrencyBr($total, false, false) . "</b> 
-                        para planejar </span>";
+            $caminhoCerto = "<span>Você está no caminho certo! Adicione mais receitas à movimentação. <br>Você ainda tem <b style=' font-weight: bold'>" . Number::formatCurrencyBr($total, false, false) . "</b> 
+                        para adicionar </span>";
             return [
               'frase' => $caminhoCerto
             ];
@@ -198,7 +196,15 @@ class GrupoService extends AbstractService
                 'frase' => $retorno
                 ];
         }
-        if($totalReceita == $totalDespesa && $totalMovimentacaoReceitas > $totalReceita){
+
+        if ($totalReceita == $totalDespesa && $totalMovimentacaoSaldoEsperado < 0) {
+            return [
+                'frase' => ' A ordem da sua movimentacão é importante. Adicione mais receitas antes do último item da movimentação . ',
+            ];
+        }
+
+        if($totalReceita == $totalDespesa && $totalMovimentacaoReceitas > 0
+            && $totalMovimentacaoReceitas < $totalReceita && $totalMovimentacaoSaldoEsperado != 0){
 
             $total = $totalMovimentacaoSaldoEsperado;
 
@@ -225,7 +231,7 @@ class GrupoService extends AbstractService
         if ($totalReceita > $totalDespesa && $totalDespesa > 0) {
 
             $total = $totalReceita - $totalDespesa;
-            $planejar = "<span>Você Ainda Tem <b style=' font-weight: bold'>" . Number::formatCurrencyBr($total, false, false) . "</b> 
+            $planejar = "<span>Você ainda tem <b style=' font-weight: bold'>" . Number::formatCurrencyBr($total, false, false) . "</b> 
                         para planejar </span>";
             return [
                 'frase' => $planejar,
@@ -284,6 +290,8 @@ class GrupoService extends AbstractService
                 'class' => 'frase_inicial'
             ];
         }
+
+
 
         if ($totalReceita == $totalDespesa && $totalMovimentacaoReceitas == $totalReceita && $totalMovimentacaoDespesa == $totalDespesa && $totalMovimentacaoSaldoEsperado == 0) {
             return [
