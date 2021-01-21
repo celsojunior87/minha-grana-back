@@ -404,6 +404,7 @@ class GrupoService extends AbstractService
                     $arrItem['item_id'] = $item['id'];
                     $arrItem['ordenacao'] = $movimentacao['ordenacao'];
                     $arrItem['data'] = $movimentacao['data'];
+                    $arrItem['data_formatted'] = $movimentacao['data_formatted'];
                     $arrItem['movimentacao_id'] = $movimentacao['id'];
                     $arrItem['nome'] = $item['nome'];
                     $arrItem['vl_planejado'] = $movimentacao['vl_planejado'];

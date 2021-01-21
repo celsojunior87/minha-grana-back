@@ -189,7 +189,7 @@ class ItemService extends AbstractService
         }
 
         if (Number::formatCurrencyBr($valorTotalAjustes) > $vlAjusteP) {
-            throw new \Exception('O valor do ajuste é diferente do valor total"');
+            throw new \Exception('O valor do ajuste é diferente do valor total');
         }
 
     }
