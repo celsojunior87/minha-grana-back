@@ -503,7 +503,7 @@ class GrupoService extends AbstractService
             return [
                 'id' => Status::FEITO,
                 'nome' => Status::find(Status::FEITO)->nome,
-                'color' => '6FCF97',
+                'color' => '#6FCF97',
                 'text_color' => 'white'
             ];
         }
