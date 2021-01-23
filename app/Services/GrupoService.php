@@ -640,7 +640,13 @@ class GrupoService extends AbstractService
         $this->criarReceitas($date);
         $this->criarDoacoes($date);
         $this->criarEconomias($date);
-        $this->criarCasa($date);
+        $this->criarMoradia($date);
+        $this->criarTransportes($date);
+        $this->criarAlimentacao($date);
+        $this->criarPessoal($date);
+        $this->criarEstiloDeVida($date);
+        $this->criarSaude($date);
+        $this->criarSeguros($date);
         $this->criarDividas($date);
     }
 
@@ -650,11 +656,19 @@ class GrupoService extends AbstractService
      */
     public function criarReceitas($date)
     {
-        $this->criarGrupoAbstract(
+        $grupo = $this->criarGrupoAbstract(
             'Receitas',
             auth()->user()->id,
             TipoGrupo::RECEITAS,
             $date
+        );
+        $this->criarItemAbstract(
+            'Salário 1',
+            $grupo->id
+        );
+        $this->criarItemAbstract(
+            'Salário 2',
+            $grupo->id
         );
     }
 
@@ -664,11 +678,19 @@ class GrupoService extends AbstractService
      */
     public function criarDoacoes($date)
     {
-        $this->criarGrupoAbstract(
-            'Doacoes',
+        $grupo = $this->criarGrupoAbstract(
+            'Doação',
             auth()->user()->id,
             TipoGrupo::DESPESAS,
             $date
+        );
+        $this->criarItemAbstract(
+            'Igreja',
+            $grupo->id
+        );
+        $this->criarItemAbstract(
+            'Caridade',
+            $grupo->id
         );
     }
 
@@ -678,25 +700,205 @@ class GrupoService extends AbstractService
      */
     public function criarEconomias($date)
     {
-        $this->criarGrupoAbstract(
+        $grupo = $this->criarGrupoAbstract(
             'Economias',
             auth()->user()->id,
             TipoGrupo::DESPESAS,
             $date
         );
+        $this->criarItemAbstract(
+            'Fundo de emergência',
+            $grupo->id
+        );
     }
 
     /**
-     * Criar casas
+     * Criar Moradir
      * @param $date
      */
-    public function criarCasa($date)
+    public function criarMoradia($date)
     {
-        $this->criarGrupoAbstract(
-            'Casa',
+        $grupo = $this->criarGrupoAbstract(
+            'Moradia',
             auth()->user()->id,
             TipoGrupo::DESPESAS,
             $date
+        );
+        $this->criarItemAbstract(
+            'Financiamento/Aluguel',
+            $grupo->id
+        );
+        $this->criarItemAbstract(
+            'Água',
+            $grupo->id
+        );
+        $this->criarItemAbstract(
+            'Luz',
+            $grupo->id
+        );
+        $this->criarItemAbstract(
+            'Gás',
+            $grupo->id
+        );
+        $this->criarItemAbstract(
+            'TV',
+            $grupo->id
+        );
+    }
+
+    /**
+     * Criar Transporte
+     * @param $date
+     */
+    public function criarTransportes($date)
+    {
+        $grupo = $this->criarGrupoAbstract(
+            'Transporte',
+            auth()->user()->id,
+            TipoGrupo::DESPESAS,
+            $date
+        );
+        $this->criarItemAbstract(
+            'Gasolina',
+            $grupo->id
+        );
+        $this->criarItemAbstract(
+            'Manutenção',
+            $grupo->id
+        );
+    }
+
+    /**
+     * Criar Alimentação
+     * @param $date
+     */
+    public function criarAlimentacao($date)
+    {
+        $grupo = $this->criarGrupoAbstract(
+            'Alimentação',
+            auth()->user()->id,
+            TipoGrupo::DESPESAS,
+            $date
+        );
+        $this->criarItemAbstract(
+            'Mercado',
+            $grupo->id
+        );
+        $this->criarItemAbstract(
+            'Restaurantes',
+            $grupo->id
+        );
+    }
+
+    /**
+     * Criar Pessoal
+     * @param $date
+     */
+    public function criarPessoal($date)
+    {
+        $grupo = $this->criarGrupoAbstract(
+            'Pessoal',
+            auth()->user()->id,
+            TipoGrupo::DESPESAS,
+            $date
+        );
+        $this->criarItemAbstract(
+            'Roupa',
+            $grupo->id
+        );
+        $this->criarItemAbstract(
+            'Telefone',
+            $grupo->id
+        );
+        $this->criarItemAbstract(
+            'Diversão',
+            $grupo->id
+        );
+        $this->criarItemAbstract(
+            'Cabelo/Cosmético',
+            $grupo->id
+        );
+        $this->criarItemAbstract(
+            'Mensalidades',
+            $grupo->id
+        );
+    }
+
+    /**
+     * Criar Estilo de vida
+     * @param $date
+     */
+    public function criarEstiloDeVida($date)
+    {
+        $grupo = $this->criarGrupoAbstract(
+            'Estilo de vida',
+            auth()->user()->id,
+            TipoGrupo::DESPESAS,
+            $date
+        );
+        $this->criarItemAbstract(
+            'Creche',
+            $grupo->id
+        );
+        $this->criarItemAbstract(
+            'Entretenimento',
+            $grupo->id
+        );
+        $this->criarItemAbstract(
+            'Outros',
+            $grupo->id
+        );
+    }
+
+    /**
+     * Criar Saúde
+     * @param $date
+     */
+    public function criarSaude($date)
+    {
+        $grupo = $this->criarGrupoAbstract(
+            'Saúde',
+            auth()->user()->id,
+            TipoGrupo::DESPESAS,
+            $date
+        );
+        $this->criarItemAbstract(
+            'Academia',
+            $grupo->id
+        );
+        $this->criarItemAbstract(
+            'Remédios/Vitaminas',
+            $grupo->id
+        );
+    }
+
+    /**
+     * Criar Saúde
+     * @param $date
+     */
+    public function criarSeguros($date)
+    {
+        $grupo = $this->criarGrupoAbstract(
+            'Seguros',
+            auth()->user()->id,
+            TipoGrupo::DESPESAS,
+            $date
+        );
+        $this->criarItemAbstract(
+            'Convenios',
+            $grupo->id
+        );
+        $this->criarItemAbstract(
+            'Seguro de vida',
+            $grupo->id
+        );
+        $this->criarItemAbstract(
+            'Seguro de carro',
+            $grupo->id
+        );
+        $this->criarItemAbstract(
+            'Seguro aluguel',
+            $grupo->id
         );
     }
 
@@ -706,11 +908,27 @@ class GrupoService extends AbstractService
      */
     public function criarDividas($date)
     {
-        $this->criarGrupoAbstract(
+        $grupo = $this->criarGrupoAbstract(
             'Dívidas',
             auth()->user()->id,
             TipoGrupo::DESPESAS,
             $date
+        );
+        $this->criarItemAbstract(
+            'Cartão de crédito',
+            $grupo->id
+        );
+        $this->criarItemAbstract(
+            'Financiamento do carro',
+            $grupo->id
+        );
+        $this->criarItemAbstract(
+            'Financiamento estudantil',
+            $grupo->id
+        );
+        $this->criarItemAbstract(
+            'Empréstimo pessoal',
+            $grupo->id
         );
     }
 
@@ -728,7 +946,16 @@ class GrupoService extends AbstractService
             'tipo_grupo_id' => $tipoGrupoId,
             'date' => $date
         ];
-        $this->save($grupo);
+        return $this->save($grupo);
+    }
+
+    public function criarItemAbstract($nomeItem, $grupoId)
+    {
+        $item = [
+            'nome' => $nomeItem,
+            'grupo_id' => $grupoId
+        ];
+        return $this->itemService->save($item);
     }
 
     /**
