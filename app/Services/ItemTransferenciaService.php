@@ -58,7 +58,7 @@ class ItemTransferenciaService extends AbstractService
     public function transferir(array $transferencia)
     {
         $itemDe = $this->itemService->find($transferencia['item_id_de']);
-        $itemPara = $this->itemService->find($transferencia['item_id_para']);
+        $itemPara = $this->itemService->find($transferencia['item_id_para']['id']);
         $vlTransferencia = $transferencia['vl_transferencia'];
         $vlSaldoFinal = $itemDe->getVlSaldoFinalAttribute();
 
