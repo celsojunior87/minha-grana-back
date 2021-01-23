@@ -518,8 +518,26 @@ class GrupoService extends AbstractService
     {
         $data['user_id'] = Auth::user()->id;
         $data['data'] = (!isset($data['date'])) ? Carbon::now() : $data['date'];
-        $data['color'] = Color::makeRandomColor();
+        $data['color'] = $this->definirCor($data);
         return parent::save($data);
+    }
+
+    public function definirCor($params)
+    {
+        $search = [
+            'user_id' => $params['user_id'],
+            'date' => $params['data']
+        ];
+        $grupos = $this->getAll($search);
+        $key = 0;
+        if(count($grupos) > 0) {
+            $key = count($grupos) - 1;
+            if(count($grupos) > 10) {
+                $key = count($grupos) - 11;
+            }
+        }
+        $cor = Color::buscarCores()[$key];
+        return $cor;
     }
 
     /**
@@ -539,7 +557,6 @@ class GrupoService extends AbstractService
      */
     public function criarMes($params)
     {
-
         if (empty($params['date'])) {
             throw new \Exception('A data é obrigatória');
         }
@@ -637,7 +654,7 @@ class GrupoService extends AbstractService
             'Receitas',
             auth()->user()->id,
             TipoGrupo::RECEITAS,
-            Carbon::createFromFormat('Y-m', $date)->firstOfMonth()->format('Y-m-d')
+            $date
         );
     }
 
@@ -651,7 +668,7 @@ class GrupoService extends AbstractService
             'Doacoes',
             auth()->user()->id,
             TipoGrupo::DESPESAS,
-            Carbon::createFromFormat('Y - m', $date)->firstOfMonth()->format('Y-m-d')
+            $date
         );
     }
 
@@ -665,7 +682,7 @@ class GrupoService extends AbstractService
             'Economias',
             auth()->user()->id,
             TipoGrupo::DESPESAS,
-            Carbon::createFromFormat('Y - m', $date)->firstOfMonth()->format('Y-m-d')
+            $date
         );
     }
 
@@ -679,7 +696,7 @@ class GrupoService extends AbstractService
             'Casa',
             auth()->user()->id,
             TipoGrupo::DESPESAS,
-            Carbon::createFromFormat('Y - m', $date)->firstOfMonth()->format('Y-m-d')
+            $date
         );
     }
 
@@ -693,7 +710,7 @@ class GrupoService extends AbstractService
             'Dívidas',
             auth()->user()->id,
             TipoGrupo::DESPESAS,
-            Carbon::createFromFormat('Y - m', $date)->firstOfMonth()->format('Y-m-d')
+            $date
         );
     }
 

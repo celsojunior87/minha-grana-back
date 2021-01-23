@@ -20,35 +20,35 @@ class GrupoTableSeeder extends Seeder
             'tipo_grupo_id' => 1,
             'nome' => 'Receitas',
             'data' => Carbon::now(),
-            'color' => Color::makeRandomColor()
+            'color' => Color::buscarCores()[0]
         ]);
         Grupo::create([
             'user_id' => 1,
             'tipo_grupo_id' => 2,
             'nome' => 'Doação',
             'data' => Carbon::now(),
-            'color' => Color::makeRandomColor()
+            'color' => Color::buscarCores()[0]
         ]);
         Grupo::create([
             'user_id' => 1,
             'tipo_grupo_id' => 2,
             'nome' => 'Economias',
             'data' => Carbon::now(),
-            'color' => Color::makeRandomColor()
+            'color' => Color::buscarCores()[1]
         ]);
         Grupo::create([
             'user_id' => 1,
             'tipo_grupo_id' => 2,
             'nome' => 'Casa',
             'data' => Carbon::now(),
-            'color' => Color::makeRandomColor()
+            'color' => Color::buscarCores()[2]
         ]);
         Grupo::create([
             'user_id' => 1,
             'tipo_grupo_id' => 2,
             'nome' => 'Dívidas',
             'data' => Carbon::now(),
-            'color' => Color::makeRandomColor()
+            'color' => Color::buscarCores()[3]
         ]);
     }
 }

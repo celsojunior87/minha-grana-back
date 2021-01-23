@@ -23,7 +23,6 @@ $factory->define(Grupo::class, function (Faker $faker) {
         'nome' => $faker->word,
         'user_id' => 1,
         'tipo_grupo_id' =>2,
-        'data' => now(),
-        'color' => Color::makeRandomColor()
+        'data' => now()
     ];
 });
