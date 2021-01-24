@@ -148,21 +148,21 @@ class GrupoService extends AbstractService
         if ($totalReceita != 0 && $totalDespesa == 0) {
 
             return [
-                'frase' => 'Quando terminar de adicionar suas receitas, então comece a adicionar suas despesas.',
+                'frase' => 'Quando terminar de adicionar as suas receitas, comece a adicionar as suas despesas.',
             ];
         }
 
         if ($totalReceita == $totalDespesa && $totalMovimentacaoReceitas == 0 && $totalMovimentacaoDespesa == 0) {
 
             return [
-                'frase' => 'Bom trabalho! Agora adicione todos seus itens à movimentação. Especifique o dia e o valor.'
+                'frase' => 'Bom trabalho! Agora adicione todos seus itens à movimentação. Especifique o dia e o valor.  Dica: comece pelas receitas.'
             ];
         }
 
         if($totalReceita == $totalDespesa && $totalMovimentacaoReceitas == 0 && $totalMovimentacaoDespesa > 0){
 
             return [
-                'frase'=>'Hmm... talvez seja melhor começar pelas receitas'
+                'frase'=>'Se você começar pelas suas despesas, o seu orçamento vai ficar negativo. Que tal começar incluindo as suas receitas?'
             ];
         }
 
@@ -181,8 +181,8 @@ class GrupoService extends AbstractService
         if($totalReceita == $totalDespesa && $totalMovimentacaoReceitas > $totalReceita){
 
             $total = $totalMovimentacaoReceitas - $totalReceita;
-            $retorno = "<span>Cuidado!!Você adicionou <b style=' font-weight: bold'>" . Number::formatCurrencyBr($total, false, false) . "</b> 
-                        a mais receitas à movimentação do que o planejado. Procure por valores negativos na coluna planeje no planejamento. </span>";
+            $retorno = "<span>Cuidado! Você adicionou <b style=' font-weight: bold'>" . Number::formatCurrencyBr($total, false, false) . "</b> 
+                        a mais na sua movimentação do que o planejado para as suas receitas. Volte ao Planejamento e procure por valores negativos na coluna Planeje. </span>";
             return [
               'frase' => $retorno
             ];
@@ -191,8 +191,8 @@ class GrupoService extends AbstractService
         if($totalReceita == $totalDespesa && $totalMovimentacaoDespesa > $totalDespesa)
         {
             $total =  $totalMovimentacaoDespesa - $totalDespesa;
-            $retorno = "<span>Cuidado!!Você adicionou <b style=' font-weight: bold'>" . Number::formatCurrencyBr($total, false, false) . "</b> 
-                        a mais despesas à movimentação do que o planejado. Procure por valores negativos na coluna planeje no planejamento. </span>";
+            $retorno = "<span>Cuidado! Você adicionou <b style=' font-weight: bold'>" . Number::formatCurrencyBr($total, false, false) . "</b> 
+                        a mais na sua movimentação do que o planejado para as suas despesas. Volte ao Planejamento e procure por valores negativos na coluna Planeje. </span>";
             return [
                 'frase' => $retorno
                 ];
@@ -200,7 +200,7 @@ class GrupoService extends AbstractService
 
         if ($totalReceita == $totalDespesa && $totalMovimentacaoSaldoEsperado < 0) {
             return [
-                'frase' => 'A ordem da sua movimentacão é importante. Adicione mais receitas antes do último item da movimentação . ',
+                'frase' => 'Você adicionou as suas despesas, mas as receitas ainda estão insuficientes. Tente adicionar mais receitas antes de continuar.',
             ];
         }
 
@@ -209,8 +209,8 @@ class GrupoService extends AbstractService
 
             $total = $totalMovimentacaoSaldoEsperado;
 
-            $retorno = "<span>Legal, você adicionou receitas à sua movimentação, agora especifique como você quer usar esse dinheiro. <br>Você tem <b style=' font-weight: bold'>" . Number::formatCurrencyBr($total, false, false) . "</b> 
-                        para usar.</span>";
+            $retorno = "<span>Legal! Você adicionou receitas à sua movimentação. Ainda faltam <b style=' font-weight: bold'>" . Number::formatCurrencyBr($total, false, false) . "</b> 
+                        de receita para incluir.</span>";
             return [
                 'frase'=> $retorno
             ];
@@ -220,7 +220,7 @@ class GrupoService extends AbstractService
             $totalMovimentacaoDespesa < $totalDespesa)
         {
             $total = $totalMovimentacaoSaldoEsperado;
-            $retorno = "<span>Agora que você adicionou todas suas receitas à movimentação, adicione todas as suas despesas.<br> Você tem <b style=' font-weight: bold'>" . Number::formatCurrencyBr($total, false, false) . "</b> 
+            $retorno = "<span>Agora que você adicionou todas suas receitas à movimentação, insira também todas as suas despesas..<br> Você tem <b style=' font-weight: bold'>" . Number::formatCurrencyBr($total, false, false) . "</b> 
                        de despesas para adicionar.</span>";
             return [
                 'frase' => $retorno
@@ -244,8 +244,8 @@ class GrupoService extends AbstractService
         if ($totalReceita < $totalDespesa) {
             $total = $totalReceita - $totalDespesa;
 
-            $frase = "<span>Oops! Você planejou <span style='color: red; font-weight: bold'>" . Number::formatCurrencyBr($total, false, false) . "</span> a mais. 
-                        Adicione mais receitas ou reduza suas despesas até seu orçamento ser igual a zero. </span>";
+            $frase = "<span>Oops! Você cadastrou <span style='color: red; font-weight: bold'>" . Number::formatCurrencyBr($total, false, false) . "</span> a mais do que a sua receita.. 
+                        Adicione mais receitas ou reduza as suas despesas para que o seu orçamento seja igual a zero. </span>";
 
             return [
                 'frase' => $frase,
@@ -285,7 +285,7 @@ class GrupoService extends AbstractService
 
         if ($totalReceita == $totalDespesa && $totalMovimentacaoReceitas == $totalReceita && $totalMovimentacaoDespesa == $totalDespesa && $totalMovimentacaoSaldoEsperado == 0) {
             return [
-                'frase' => 'Parabéns, seu orçamento está completo!',
+                'frase' => 'Parabéns, seu orçamento deste mês está completo!',
                 'class' => 'frase_parabens'
             ];
         }

@@ -12,13 +12,19 @@ class StatusTableSeeder extends Seeder
      */
     public function run()
     {
+        /**
+         * Antes era AJUSTE
+         */
         Status::create([
             'id' => 1,
-            'nome' => 'Ajuste',
+            'nome' => 'Ajustar',
         ]);
+        /**
+         * Antes era FEITO
+         */
         Status::create([
             'id' => 2,
-            'nome' => 'Feito',
+            'nome' => 'Concluída',
         ]);
         Status::create([
             'id' => 3,
