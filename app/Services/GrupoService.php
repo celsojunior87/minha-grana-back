@@ -894,7 +894,7 @@ class GrupoService extends AbstractService
             $date
         );
         $this->criarItemAbstract(
-            'Convenios',
+            'Convênios',
             $grupo->id
         );
         $this->criarItemAbstract(
