@@ -5,6 +5,7 @@ namespace App\Repositories;
 
 
 use App\Models\Grupo;
+use Carbon\Carbon;
 
 class GrupoRepository extends AbstractRepository
 {
@@ -40,7 +41,12 @@ class GrupoRepository extends AbstractRepository
         }
 
         if (isset($params['data'])) {
-            $formatted['data'] = $params['data'];
+            if(Carbon::hasFormat($params['data'], 'Y-m')) {
+                $formatted['data'] = Carbon::createFromFormat('Y-m', $params['data'])->firstOfMonth()->format('Y-m-d');
+            }
+            if(Carbon::hasFormat($params['data'], 'Y-m-d')) {
+                $formatted['data'] = Carbon::createFromFormat('Y-m-d', $params['data'])->firstOfMonth()->format('Y-m-d');
+            }
         }
 
         if (isset($params['color'])) {

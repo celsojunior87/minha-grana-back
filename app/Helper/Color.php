@@ -5,25 +5,21 @@ namespace App\Helper;
 class Color
 {
     /**
-     * @return string
-     * Cores dos gráficos (em grupos)
+     * @return string[]
      */
-    public static function makeRandomColor()
+    public static function buscarCores()
     {
-        $color = [
-
-            '#63E1A8',
-            '#FFCE7E',
-            '#FF8F60',
-            '#E66160',
+        return [
             '#73DBE7',
+            '#E66160',
+            '#FFCE7E',
+            '#63E1A8',
             '#8B97DA',
-            '#E8B0CC',
+            '#95CDC0',
+            '#FF8F60',
             '#D0D4CC',
-            '#F0CBAD',
-            '#95CDC0'
-
+            '#E8B0CC',
+            '#F0CBAD'
         ];
-        return $color[array_rand($color)];
     }
 }
