@@ -25,13 +25,13 @@ class GrupoController extends AbstractController
     public function criarMes(Request $request)
     {
         $this->service->criarMes($request->all());
-        return $this->success('Operação realizada com com sucesso');
+        return $this->success('Operação realizada com sucesso');
     }
 
     public function limparMes($date)
     {
         $this->service->limparMes(['date' => $date]);
-        return $this->success('Operação realizada com com sucesso');
+        return $this->success('Operação realizada com sucesso');
     }
 
     public function getFrases($date)
