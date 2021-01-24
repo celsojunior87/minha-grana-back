@@ -60,7 +60,15 @@ class GrupoService extends AbstractService
                 foreach ($grupo['items'] as $keyItems => $item) {
                     $grupos[$key]['items'][$keyItems]['vl_recebido'] = $this->somatoriaValorRealizadoItem($item);
                     $grupos[$key]['items'][$keyItems]['vl_planeje'] = $this->calculaPlaneje($item);
-                    $grupos[$key]['items'][$keyItems]['class_vl_planeje'] = ($grupos[$key]['items'][$keyItems]['vl_planeje'] < 0) ? 'item_vl valor_negativo' : 'item_vl valor_positivo';
+                    $grupos[$key]['items'][$keyItems]['class_vl_planeje'] = ($grupos[$key]['items'][$keyItems]['vl_planeje'] );
+                    $vl_planeje = $grupos[$key]['items'][$keyItems]['class_vl_planeje'];
+
+                    if($vl_planeje === 0){
+                        'item_vl valor_normal';
+                    }if($vl_planeje > 0){
+                        'item_vl valor_positivo';
+                    }
+
                     $grupos[$key]['items'][$keyItems]['vl_gasto'] = $this->somatoriaValorRealizadoItem($item);
                     $total_vl_esperado += $item['vl_esperado'];
                     $total_vl_planeje += $grupos[$key]['items'][$keyItems]['vl_planeje'];
@@ -74,7 +82,7 @@ class GrupoService extends AbstractService
         return $grupos;
     }
 
-
+    //; ? 'item_vl valor_negativo' : 'item_vl valor_positivo';
     /**
      *  O valor esperado menos a soma do planejado
      */
