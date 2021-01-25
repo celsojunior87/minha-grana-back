@@ -155,7 +155,9 @@ class GrupoService extends AbstractService
         if ($totalReceita == $totalDespesa && $totalMovimentacaoReceitas == 0 && $totalMovimentacaoDespesa == 0) {
 
             return [
-                'frase' => 'Bom trabalho! Agora adicione todos seus itens à movimentação. Especifique o dia e o valor.  Dica: comece pelas receitas.'
+                'frase' => "<span>
+                    Bom trabalho! Agora adicione todos seus itens à movimentação. Especifique o dia e o valor.  <b style=' font-weight: bold'>Dica</b>: comece pelas receitas.
+                    </span>"
             ];
         }
 
@@ -209,8 +211,10 @@ class GrupoService extends AbstractService
 
             $total = $totalMovimentacaoSaldoEsperado;
 
-            $retorno = "<span>Legal! Você adicionou receitas à sua movimentação. Ainda faltam <b style=' font-weight: bold'>" . Number::formatCurrencyBr($total, false, false) . "</b> 
-                        de receita para incluir.</span>";
+            $retorno = "<span>Legal! Você adicionou receitas à sua movimentação.
+                Agora especifique como você quer usar esse dinheiro.
+                Você tem <b style=' font-weight: bold'>" . Number::formatCurrencyBr($total, false, false) . "</b> 
+                para usar.</span>";
             return [
                 'frase'=> $retorno
             ];
@@ -233,7 +237,7 @@ class GrupoService extends AbstractService
 
             $total = $totalReceita - $totalDespesa;
             $planejar = "<span>Você ainda tem <b style=' font-weight: bold'>" . Number::formatCurrencyBr($total, false, false) . "</b> 
-                        para planejar </span>";
+                        para planejar. Continue adicionando despesas. </span>";
             return [
                 'frase' => $planejar,
 
@@ -245,7 +249,7 @@ class GrupoService extends AbstractService
             $total = $totalReceita - $totalDespesa;
 
             $frase = "<span>Oops! Você cadastrou <span style='color: red; font-weight: bold'>" . Number::formatCurrencyBr($total, false, false) . "</span> a mais do que a sua receita.. 
-                        Adicione mais receitas ou reduza as suas despesas para que o seu orçamento seja igual a zero. </span>";
+                        Adicione mais receitas ou reduza as suas despesas para que o seu orçamento seja igual a zero </span>";
 
             return [
                 'frase' => $frase,
