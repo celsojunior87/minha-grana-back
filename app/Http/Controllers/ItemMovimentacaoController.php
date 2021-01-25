@@ -26,7 +26,7 @@ class ItemMovimentacaoController extends AbstractController
             DB::beginTransaction();
             $response = $this->service->criarItemMovimentacao($idItem);
             DB::commit();
-            return $this->success('Operação realizada com com sucesso', ['response' => $response]);
+            return $this->success('Operação realizada com sucesso', ['response' => $response]);
         } catch (\Exception | ValidationException $e) {
             DB::rollBack();
             if ($e instanceof ValidationException) {
