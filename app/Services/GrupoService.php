@@ -430,7 +430,6 @@ class GrupoService extends AbstractService
                 $arrItemsMovimentacao[$key]['tipo_grupo_id'] = $grupo->tipo_grupo_id;
             }
         }
-
         return $arrItemsMovimentacao;
     }
 
@@ -458,7 +457,10 @@ class GrupoService extends AbstractService
             if ($itemMovimentacao->vl_realizado == '0.00') {
                 return $itemMovimentacao->vl_planejado;
             }
-            return $itemMovimentacao->vl_realizado;
+            if($itemMovimentacao->item()->first()->grupo()->first()->tipoGrupo()->first()->id == TipoGrupo::RECEITAS){
+                return $itemMovimentacao->vl_realizado;
+            }
+            return -abs($itemMovimentacao->vl_realizado);
         }
 
         if ($itemMovimentacao->item()->first()->grupo()->first()->tipoGrupo()->first()->id == TipoGrupo::RECEITAS) {
