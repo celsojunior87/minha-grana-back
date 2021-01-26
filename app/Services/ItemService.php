@@ -246,7 +246,7 @@ class ItemService extends AbstractService
                 $arr['grupos'][$key]['nome'] = $grupo['nome'];
                 foreach ($grupo['items'] as $keyItems => $item) {
                     $arr['grupos'][$key]['items'][$keyItems]['id'] = $item['id'];
-                    $arr['grupos'][$key]['items'][$keyItems]['color'] = ($grupo['tipo_grupo']['id'] == TipoGrupo::RECEITAS) ? 'green' : 'red';
+                    $arr['grupos'][$key]['items'][$keyItems]['color'] = ($grupo['tipo_grupo']['id'] == TipoGrupo::RECEITAS) ? '#6FCF97' : '#F57077';
                     $arr['grupos'][$key]['items'][$keyItems]['nome'] = $item['nome'];
                 }
             }
