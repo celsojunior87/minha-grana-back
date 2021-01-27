@@ -248,7 +248,7 @@ class GrupoService extends AbstractService
         if ($totalReceita < $totalDespesa) {
             $total = $totalReceita - $totalDespesa;
 
-            $frase = "<span>Oops! Você cadastrou <span style='color: red; font-weight: bold'>" . Number::formatCurrencyBr($total, false, false) . "</span> a mais do que a sua receita.. 
+            $frase = "<span>Oops! Você cadastrou <span style='color: red; font-weight: bold'>" . Number::formatCurrencyBr($total, false, false) . "</span> a mais do que a sua receita. 
                         Adicione mais receitas ou reduza as suas despesas para que o seu orçamento seja igual a zero </span>";
 
             return [
