@@ -46,7 +46,7 @@ class MailResetPasswordNotification extends Notification
 
         return (new MailMessage)
             ->view('mail.reset', ['link' => $link])
-            ->from('info@example.com')
+            ->from(env('MAIL_FROM_ADDRESS'))
             ->subject('Esqueceu Senha')
             ->line("Hey, We've successfully changed the text ")
             ->action('Reset Password', $link)

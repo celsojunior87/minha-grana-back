@@ -30,7 +30,7 @@
         <br>
 
         <a href="{{$link}}">
-            <button class="btn btn-primary"></button>
+            <button class="btn btn-primary"> Recuperar senha</button>
         </a>
 
 
