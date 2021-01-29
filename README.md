@@ -23,7 +23,9 @@ Estrutura
     > composer install
 
 - No banco de dados, crie um banco com o seguinte comando:
-    > create database maria_amelia_doces;
+    > create database 
+  > 
+  maria_amelia_doces;
 
 - Criar um arquivo .env & ajustar user e password
     > sudo cp .env.example .env && sudo chmod 777 -R .env

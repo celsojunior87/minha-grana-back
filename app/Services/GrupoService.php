@@ -138,7 +138,7 @@ class GrupoService extends AbstractService
         if ($totalReceita == 0) {
             return [
                 'frase' => 'Comece adicionando todas as suas receitas . ',
-                'color' => 'green',
+                'color' => '#6FCF97',
                 'class' => 'frase_inicial'
             ];
         }
@@ -248,12 +248,12 @@ class GrupoService extends AbstractService
         if ($totalReceita < $totalDespesa) {
             $total = $totalReceita - $totalDespesa;
 
-            $frase = "<span>Oops! Você cadastrou <span style='color: red; font-weight: bold'>" . Number::formatCurrencyBr($total, false, false) . "</span> a mais do que a sua receita.. 
+            $frase = "<span>Oops! Você cadastrou <span style='color: red; font-weight: bold'>" . Number::formatCurrencyBr($total, false, false) . "</span> a mais do que a sua receita. 
                         Adicione mais receitas ou reduza as suas despesas para que o seu orçamento seja igual a zero </span>";
 
             return [
                 'frase' => $frase,
-                'color' => 'red',
+                'color' => '#F57077',
                 'class' => 'frase_ultrapassou',
             ];
         }
@@ -271,7 +271,7 @@ class GrupoService extends AbstractService
             return [
                 'frase' => 'Oops! Você planejou  a mais. Ajuste suas receitas ou suas despesas até seu orçamento ser igual a zero.',
                 'total' => $totalMovimentacaoSaldoEsperado * -1,
-                'color' => 'red',
+                'color' => '#F57077',
                 'class' => 'frase_ultrapassou'
             ];
         }
@@ -280,7 +280,7 @@ class GrupoService extends AbstractService
         if ($totalReceita == 0) {
             return [
                 'frase' => 'Comece adicionando todas as suas receitas . ',
-                'color' => 'green',
+                'color' => '#6FCF97',
                 'class' => 'frase_inicial'
             ];
         }
@@ -430,7 +430,6 @@ class GrupoService extends AbstractService
                 $arrItemsMovimentacao[$key]['tipo_grupo_id'] = $grupo->tipo_grupo_id;
             }
         }
-
         return $arrItemsMovimentacao;
     }
 
@@ -458,7 +457,10 @@ class GrupoService extends AbstractService
             if ($itemMovimentacao->vl_realizado == '0.00') {
                 return $itemMovimentacao->vl_planejado;
             }
-            return $itemMovimentacao->vl_realizado;
+            if($itemMovimentacao->item()->first()->grupo()->first()->tipoGrupo()->first()->id == TipoGrupo::RECEITAS){
+                return $itemMovimentacao->vl_realizado;
+            }
+            return -abs($itemMovimentacao->vl_realizado);
         }
 
         if ($itemMovimentacao->item()->first()->grupo()->first()->tipoGrupo()->first()->id == TipoGrupo::RECEITAS) {

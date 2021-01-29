@@ -14,8 +14,12 @@ class ItemService extends AbstractService
 {
     protected $repository;
     protected $itemMovimentacaoService;
+    protected $itemTransferenciaService;
 
-    public function __construct(ItemRepository $repository, ItemMovimentacaoService $itemMovimentacaoService)
+    public function __construct(
+        ItemRepository $repository,
+        ItemMovimentacaoService $itemMovimentacaoService
+    )
     {
         $this->repository = $repository;
         $this->itemMovimentacaoService = $itemMovimentacaoService;
@@ -37,8 +41,27 @@ class ItemService extends AbstractService
         $item = $this->repository->find($id);
         parent::delete($id);
 
+        $this->removerTransferencia($item);
         $this->reordenarItensOnDelete($item);
         $this->reordenarItensMovimentacaoOnDelete($item);
+    }
+
+    /**
+     * Ao remover um item que é transferencia
+     * fazer as regras de devolucao e abatimento de valores
+     * @param Item $item
+     * @throws \Exception
+     */
+    public function removerTransferencia(Item $item)
+    {
+        if(!empty($item->transferencia_id)) {
+            $itemTransferenciaService = app(ItemTransferenciaService::class);
+            $transferencia = $itemTransferenciaService->find($item->transferencia_id);
+            $itemTransferenciaService->delete($transferencia->id);
+            $itemIdPara = $this->find($transferencia->item_id_para);
+            $itemIdPara->vl_esperado += $transferencia->vl_transferencia;
+            $this->update($itemIdPara->id, $itemIdPara);
+        }
     }
 
     public function reordenarItensOnDelete(Item $item)
@@ -223,7 +246,7 @@ class ItemService extends AbstractService
                 $arr['grupos'][$key]['nome'] = $grupo['nome'];
                 foreach ($grupo['items'] as $keyItems => $item) {
                     $arr['grupos'][$key]['items'][$keyItems]['id'] = $item['id'];
-                    $arr['grupos'][$key]['items'][$keyItems]['color'] = ($grupo['tipo_grupo']['id'] == TipoGrupo::RECEITAS) ? 'green' : 'red';
+                    $arr['grupos'][$key]['items'][$keyItems]['color'] = ($grupo['tipo_grupo']['id'] == TipoGrupo::RECEITAS) ? '#6FCF97' : '#F57077';
                     $arr['grupos'][$key]['items'][$keyItems]['nome'] = $item['nome'];
                 }
             }
