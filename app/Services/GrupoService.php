@@ -454,17 +454,18 @@ class GrupoService extends AbstractService
     public function calculaSaldoEsperado(ItemMovimentacao $itemMovimentacao, $arrItemsMovimentacaoAnterior, $key)
     {
         if ($key == 0) {
-            //todo Verificar essa regra!
-//            Essa regra parece não fazer sentido no sistema!
-//            if ($itemMovimentacao->vl_realizado == '0.00') {
-//                return $itemMovimentacao->vl_planejado;
-//            }
+            if ($itemMovimentacao->vl_realizado == '0.00') {
+                if($itemMovimentacao->item()->first()->grupo()->first()->tipoGrupo()->first()->id == TipoGrupo::RECEITAS) {
+                    return $itemMovimentacao->vl_planejado;
+                }
+                //Se for despesa
+                return -abs($itemMovimentacao->vl_planejado);
+            }
             if($itemMovimentacao->item()->first()->grupo()->first()->tipoGrupo()->first()->id == TipoGrupo::RECEITAS){
                 return $itemMovimentacao->vl_realizado;
             }
-            if($itemMovimentacao->item()->first()->grupo()->first()->tipoGrupo()->first()->id == TipoGrupo::DESPESAS) {
-                return -abs($itemMovimentacao->vl_realizado);
-            }
+            //Se for despesa
+            return -abs($itemMovimentacao->vl_realizado);
         }
 
         if ($itemMovimentacao->item()->first()->grupo()->first()->tipoGrupo()->first()->id == TipoGrupo::RECEITAS) {
