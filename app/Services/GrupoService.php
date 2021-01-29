@@ -64,7 +64,7 @@ class GrupoService extends AbstractService
                         $grupos[$key]['items'][$keyItems]['class_vl_planeje'] = 'item_vl valor_negativo';
                     }
                     if($grupos[$key]['items'][$keyItems]['vl_planeje'] == 0){
-                        $grupos[$key]['items'][$keyItems]['class_vl_planeje'] = 'item_vl valor_normal';
+                        $grupos[$key]['items'][$keyItems]['class_vl_planeje'] ='item_vl valor_normal';
                     }
                     if($grupos[$key]['items'][$keyItems]['vl_planeje'] > 0){
                         $grupos[$key]['items'][$keyItems]['class_vl_planeje'] = 'item_vl valor_positivo';
