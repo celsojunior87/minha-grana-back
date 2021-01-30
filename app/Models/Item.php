@@ -10,6 +10,10 @@ class Item extends Model
 
     public $fillable = ['ordenacao'];
     protected $appends = ['vl_saldo_final', 'vl_gasto'];
+    protected $casts = [
+        'vl_saldo_inicial' => 'float',
+        'vl_esperado' => 'float'
+    ];
 
 
     public function grupo()
