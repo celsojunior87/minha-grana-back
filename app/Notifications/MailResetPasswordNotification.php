@@ -49,7 +49,7 @@ class MailResetPasswordNotification extends Notification
                 [
                     'link' => $link,
                     'logo' => [
-                        'path' => 'https://i.imgur.com/v0xNfkc.png',
+                        'path' => 'https://i.imgur.com/3Jzs3qL.png',
                         'width' => '100px',
                         'height' => '100px'
                     ],
