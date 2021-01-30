@@ -60,7 +60,7 @@ class MailResetPasswordNotification extends Notification
                 ]
             )
             ->from(env('MAIL_FROM_ADDRESS'))
-            ->subject('Esqueceu Senha')
+            ->subject('Recuperação de senha')
             ->line("Hey, We've successfully changed the text ")
             ->action('Reset Password', $link)
             ->line('Thank you!');
