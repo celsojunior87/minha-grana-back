@@ -45,7 +45,20 @@ class MailResetPasswordNotification extends Notification
         $link = env('APP_URL_FRONT') . '/password/reset/' . $this->token . '?email=' . $notifiable->email;
 
         return (new MailMessage)
-            ->view('mail.reset', ['link' => $link])
+            ->view('mail.reset',
+                [
+                    'link' => $link,
+                    'logo' => [
+                        'path' => 'https://i.imgur.com/v0xNfkc.png',
+                        'width' => '100px',
+                        'height' => '100px'
+                    ],
+                    'colors' => [
+                        'highlight' => '#6FCF97',
+                        'button'    => '#6FCF97',
+                    ],
+                ]
+            )
             ->from(env('MAIL_FROM_ADDRESS'))
             ->subject('Esqueceu Senha')
             ->line("Hey, We've successfully changed the text ")

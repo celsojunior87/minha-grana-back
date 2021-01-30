@@ -1,43 +1,37 @@
-<!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml"
-      xmlns:o="urn:schemas-microsoft-com:office:office">
-<head>
-    <link
-            rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
-    />
-    <meta charset="utf-8"> <!-- utf-8 works for most cases -->
-    <meta name="viewport" content="width=device-width"> <!-- Forcing initial-scale shouldn't be necessary -->
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"> <!-- Use the latest (edge) version of IE rendering engine -->
-    <meta name="x-apple-disable-message-reformatting">  <!-- Disable auto-scale in iOS 10 Mail entirely -->
-    <meta name="format-detection" content="telephone=no,address=no,email=no,date=no,url=no">
-    <!-- Tell iOS not to automatically link certain text strings. -->
-    <meta name="color-scheme" content="light">
-    <meta name="supported-color-schemes" content="light">
-    <title></title> <!--   The title tag shows in email notifications, like Android 4.4. -->
-</head>
-<body>
-<div class="wrapper fadeInDown">
-    <div id="formContent">
-        <!-- Tabs Titles -->
-        <!-- <h2 class="active" style="color:silver">Caa</h2>
-     -->
-        <img style="width: 200px" src="https://i.imgur.com/v0xNfkc.png">
-        <h3 style="color: #01995a">Minha Grana</h3>
+@extends('beautymail::templates.sunny')
 
-        <p style="color: #0d0d0d">Clique no botão abaixo para redefinir a senha de login no app Minha Grana APP com sua
-            conta:</p>
-        <br>
+@section('content')
 
-        <a href="{{$link}}">
-            <button class="btn btn-primary"> Recuperar senha</button>
-        </a>
+    @include ('beautymail::templates.sunny.heading' , [
+        'heading' => 'Minha grana',
+        'level' => 'h1',
+    ])
 
+    @include('beautymail::templates.sunny.contentStart')
 
-        <p style="color: #0d0d0d">Se Você não solicitou a redefinição da sua senha , ignore este e-mail</p>
-        <p style="color: #0d0d0d">Obrigado,</p>
-        <p style="color: #0d0d0d">Equipe do Minha Grana APP.</p>
-    </div>
-</div>
-<br/>
-</body>
+    <p>Clique no botão abaixo para redefinir a senha de login no app Minha Grana.</p>
+
+    @include('beautymail::templates.sunny.contentEnd')
+
+    <tr>
+        <td class="w50" width="50"></td>
+        <td class="w560" width="560">
+            <table class="w560" border="0" cellpadding="0" cellspacing="0" width="560">
+                <tbody>
+                <tr class="large_only"><td class="w560" height="15" width="560"></td></tr>
+                <tr>
+                    <td class="w560" width="560">
+                        <div class="button-content" align="center">
+                            <a href="{{ $link }}" class="button" style="background: #6fcf97 !important;">
+                                Recuperar senha
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="w50" width="50"></td>
+    </tr>
+
+@stop
