@@ -12,7 +12,8 @@ class Item extends Model
     protected $appends = ['vl_saldo_final', 'vl_gasto'];
     protected $casts = [
         'vl_saldo_inicial' => 'float',
-        'vl_esperado' => 'float'
+        'vl_esperado' => 'float',
+        'vl_saldo_final' => 'float',
     ];
 
 
