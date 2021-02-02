@@ -15,6 +15,8 @@ class Item extends Model
         'vl_esperado' => 'float',
         'vl_saldo_final_economia' => 'float',
         'vl_saldo_final_divida' => 'float',
+        'juros_multas' => 'float',
+        'vl_planejado' => 'float'
     ];
 
 
