@@ -13,7 +13,8 @@ class Item extends Model
     protected $casts = [
         'vl_saldo_inicial' => 'float',
         'vl_esperado' => 'float',
-        'vl_saldo_final' => 'float',
+        'vl_saldo_final_economia' => 'float',
+        'vl_saldo_final_divida' => 'float',
     ];
 
 
@@ -35,6 +36,17 @@ class Item extends Model
     public function getVlSaldoFinalAttribute()
     {
         $result = ($this->vl_saldo_inicial + $this->vl_esperado) - $this->vl_gasto;
+        return $result;
+    }
+
+    /**
+     * saldo final (não editavel)
+     * (Saldo inicial + Planejado desse mês ) -
+     * (gasto nesse mês) (disabled sempre )
+     */
+    public function getVlSaldoFinalDividaAttribute()
+    {
+        $result = ($this->vl_saldo_inicial + $this->juros_multas) - $this->vl_esperado;
         return $result;
     }
 

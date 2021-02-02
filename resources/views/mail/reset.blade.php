@@ -3,13 +3,13 @@
 @section('content')
 
     @include ('beautymail::templates.sunny.heading' , [
-        'heading' => 'Minha grana',
+        'heading' => 'Redefinição de senha',
         'level' => 'h1',
     ])
 
     @include('beautymail::templates.sunny.contentStart')
 
-    <p>Clique no botão abaixo para redefinir a senha de login no app Minha Grana.</p>
+    <p>Redefina sua senha clicando no botão abaixo.</p>
 
     @include('beautymail::templates.sunny.contentEnd')
 
@@ -22,7 +22,7 @@
                 <tr>
                     <td class="w560" width="560">
                         <div class="button-content" align="center">
-                            <a href="{{ $link }}" class="button" style="background: #6fcf97 !important;">
+                            <a href="{{ $link }}" class="button" style="background: #00995A !important;">
                                 Recuperar senha
                             </a>
                         </div>
