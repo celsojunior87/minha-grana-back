@@ -23,7 +23,7 @@
                     <td class="w560" width="560">
                         <div class="button-content" align="center">
                             <a href="{{ $link }}" class="button" style="background: #00995A !important;">
-                                Recuperar senha
+                                Redefinir senha
                             </a>
                         </div>
                     </td>
