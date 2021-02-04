@@ -38,6 +38,7 @@ class ItemService extends AbstractService
 
     public function delete($id)
     {
+
         $item = $this->repository->find($id);
         parent::delete($id);
 
@@ -54,12 +55,13 @@ class ItemService extends AbstractService
      */
     public function removerTransferencia(Item $item)
     {
+
         if(!empty($item->transferencia_id)) {
             $itemTransferenciaService = app(ItemTransferenciaService::class);
             $transferencia = $itemTransferenciaService->find($item->transferencia_id);
             $itemTransferenciaService->delete($transferencia->id);
             $itemIdPara = $this->find($transferencia->item_id_para);
-            $itemIdPara->vl_esperado += $transferencia->vl_transferencia;
+            $itemIdPara->vl_esperado -= $transferencia->vl_transferencia;
             $this->update($itemIdPara->id, $itemIdPara);
         }
     }
