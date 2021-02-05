@@ -38,7 +38,36 @@ class ItemTransferenciaService extends AbstractService
             'vl_total_objetivo' => $params['vl_total_objetivo'],
             'tipo_item_id' => TipoItem::ECONOMIA,
         ];
-        $this->itemService->update($item['id'], $item);
+        $item = $this->itemService->update($item['id'], $item);
+        $this->atualizarMesSeguinte($item);
+    }
+
+    public function atualizarMesSeguinte(Item $item)
+    {
+        $dataDoItem = $item->grupo()->first()->data;
+        $mesSeguinte = Carbon::createFromFormat('Y-m-d', $dataDoItem)->addMonth(1)->format('Y-m');
+        $search = [
+            'date' => $mesSeguinte,
+            'nome' => $item->nome
+        ];
+        $grupos = $this->grupoService->getAll($search);
+        foreach($grupos as $grupo) {
+            $itemUpdate[] = array_filter($grupo['items'], function($itemArray) use ($item) {
+                return $itemArray['nome'] == $item->nome;
+            });
+        }
+        $itemSearch = [];
+        foreach($itemUpdate as $update) {
+            if(!empty($update)) {
+                $itemSearch = $update[0];
+            }
+        }
+
+        if(!empty($itemSearch)) {
+            $itemModel = $this->itemService->find($itemSearch['id']);
+            $itemModel->vl_saldo_inicial = $item->toArray()['vl_saldo_final'];
+            $this->itemService->update($itemModel->id, $itemModel);
+        }
     }
 
     public function divida($params)
@@ -129,7 +158,7 @@ class ItemTransferenciaService extends AbstractService
 
     public function preRequisite(int $id)
     {
-        $item = $this->itemService->find($id, ['grupo'])->toArray();
+        $item = $this->itemService->find($id, ['grupo']);
         $selectOption = $this
             ->itemService
             ->getRepository()

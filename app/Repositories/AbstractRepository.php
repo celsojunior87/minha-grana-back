@@ -88,6 +88,7 @@ abstract class AbstractRepository extends RepositoryInterface
     public function update(Model $entity, $data)
     {
         $entity->forceFill($this->formatParams($data))->save();
+        return $this->find($entity->id);
     }
 
     /**
