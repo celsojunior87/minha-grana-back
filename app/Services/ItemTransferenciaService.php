@@ -50,12 +50,14 @@ class ItemTransferenciaService extends AbstractService
             'date' => $mesSeguinte,
             'nome' => $item->nome
         ];
+        $itemUpdate = [];
         $grupos = $this->grupoService->getAll($search);
         foreach($grupos as $grupo) {
             $itemUpdate[] = array_filter($grupo['items'], function($itemArray) use ($item) {
                 return $itemArray['nome'] == $item->nome;
             });
         }
+
         $itemSearch = [];
         foreach($itemUpdate as $update) {
             if(!empty($update)) {
