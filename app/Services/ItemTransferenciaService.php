@@ -64,9 +64,9 @@ class ItemTransferenciaService extends AbstractService
         }
 
         if(!empty($itemSearch)) {
-            $itemModel = $this->itemService->find($itemSearch['id']);
-            $itemModel->vl_saldo_inicial = $item->toArray()['vl_saldo_final'];
-            $this->itemService->update($itemModel->id, $itemModel);
+            $itemModel = $this->itemService->buscarItem($itemSearch['id']);
+            $itemModel['vl_saldo_inicial'] = $item['vl_saldo_final'];
+            $this->itemService->update($itemModel['id'], $itemModel);
         }
     }
 
@@ -158,7 +158,7 @@ class ItemTransferenciaService extends AbstractService
 
     public function preRequisite(int $id)
     {
-        $item = $this->itemService->find($id, ['grupo']);
+        $item = $this->itemService->find($id, ['grupo'])->toArray();
         $selectOption = $this
             ->itemService
             ->getRepository()
