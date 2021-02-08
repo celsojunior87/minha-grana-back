@@ -57,9 +57,9 @@ class ItemRepository extends AbstractRepository
 
         if (isset($params['vl_saldo_inicial'])) {
             $formatted['vl_saldo_inicial'] = $params['vl_saldo_inicial'];
-            if(isset($params['tipo_item_id']) && $params['tipo_item_id'] == TipoItem::DIVIDA) {
-                $formatted['vl_saldo_inicial'] = -abs($params['vl_saldo_inicial']);
-            }
+//            if(isset($params['tipo_item_id']) && $params['tipo_item_id'] == TipoItem::DIVIDA) {
+//                $formatted['vl_saldo_inicial'] = -abs($params['vl_saldo_inicial']);
+//            }
         }
 
         if (isset($params['vl_total_objetivo'])) {
@@ -79,7 +79,7 @@ class ItemRepository extends AbstractRepository
         }
 
         if (isset($params['juros_multas'])) {
-            $formatted['juros_multas'] = -abs($params['juros_multas']);
+            $formatted['juros_multas'] = $params['juros_multas'];
         }
 
         if (isset($params['tipo_item_id'])) {
