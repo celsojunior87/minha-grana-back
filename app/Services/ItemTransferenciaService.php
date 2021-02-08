@@ -42,6 +42,21 @@ class ItemTransferenciaService extends AbstractService
         $this->atualizarMesSeguinte($item);
     }
 
+    public function divida($params)
+    {
+        $item = [
+            'id' => $params['item_id'],
+            'vl_saldo_inicial' => $params['vl_saldo_inicial'],
+            'vl_esperado' => $params['vl_esperado'],
+            'pagamento_minimo' => $params['pagamento_minimo'],
+            'juros_multas' => $params['juros_multas'],
+            'tipo_item_id' => TipoItem::DIVIDA,
+        ];
+
+        $item = $this->itemService->update($item['id'], $item);
+        $this->atualizarMesSeguinte($item);
+    }
+
     public function atualizarMesSeguinte(Item $item)
     {
         $dataDoItem = $item->grupo()->first()->data;
@@ -61,6 +76,7 @@ class ItemTransferenciaService extends AbstractService
         $itemSearch = [];
         foreach($itemUpdate as $update) {
             if(!empty($update)) {
+                sort($update);
                 $itemSearch = $update[0];
             }
         }
@@ -70,20 +86,6 @@ class ItemTransferenciaService extends AbstractService
             $itemModel['vl_saldo_inicial'] = $item['vl_saldo_final'];
             $this->itemService->update($itemModel['id'], $itemModel);
         }
-    }
-
-    public function divida($params)
-    {
-        $item = [
-            'id' => $params['item_id'],
-            'vl_saldo_inicial' => $params['vl_saldo_inicial'],
-            'vl_esperado' => $params['vl_esperado'],
-            'pagamento_minimo' => $params['pagamento_minimo'],
-            'juros_multas' => $params['juros_multas'],
-            'tipo_item_id' => TipoItem::DIVIDA,
-        ];
-
-        $this->itemService->update($item['id'], $item);
     }
 
     public function transferir(array $transferencia)
