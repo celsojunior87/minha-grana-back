@@ -634,6 +634,7 @@ class GrupoService extends AbstractService
                         'vl_esperado' => $item['vl_esperado'],
                         'vl_planejado' => $item['vl_planejado'],
                         'vl_recebido' => $item['vl_recebido'],
+                        'tipo_item_id' => $item['tipo_item_id'],
                         'grupo_id' => $id
                     ];
                     if (!empty($item['vl_saldo_inicial'])) {

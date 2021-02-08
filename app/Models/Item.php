@@ -38,6 +38,9 @@ class Item extends Model
     public function getVlSaldoFinalAttribute()
     {
         $result = ($this->vl_saldo_inicial + $this->vl_esperado) - $this->vl_gasto;
+        if($this->tipo_item_id === TipoItem::DIVIDA) {
+            $result = ($this->vl_saldo_inicial + $this->juros_multas) - $this->vl_esperado;
+        }
         return $result;
     }
 
