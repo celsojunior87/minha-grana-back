@@ -21,6 +21,7 @@ class ItemMovimentacaoService extends AbstractService
     public function criarItemMovimentacao($idItem)
     {
         $data['item_id'] = $idItem;
+        $data['data'] = Carbon::now();
         $this->save($data);
     }
 

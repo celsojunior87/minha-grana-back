@@ -17,8 +17,7 @@ class ItemTransferenciaController extends AbstractController
     }
 
     public function itemTransferencia($id)
-    {
-        return $this->itemService->buscarItem($id);
+    {        return $this->itemService->buscarItem($id);
     }
 
     public function economiaTransferencia(Request $request)
