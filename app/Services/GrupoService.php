@@ -637,9 +637,8 @@ class GrupoService extends AbstractService
                         'tipo_item_id' => $item['tipo_item_id'],
                         'grupo_id' => $id
                     ];
-                    if (!empty($item['vl_saldo_inicial'])) {
-                        $novoItem['vl_saldo_inicial'] = ($item['vl_saldo_inicial'] + $item['vl_esperado']) - $item['vl_gasto'];
-                    }
+                    
+                    $novoItem['vl_saldo_inicial'] = $this->itemService->buscarItem($item['id'])['vl_saldo_final'];
 
                     if (!empty($item['tipo_item_id'])) {
                         $novoItem['tipo_item_id'] = $item['tipo_item_id'];
