@@ -25,6 +25,10 @@ class ItemService extends AbstractService
         $this->itemMovimentacaoService = $itemMovimentacaoService;
     }
 
+    /**
+     * Busca Item do mes posterior
+     *
+     */
     public function buscarItem(int $id)
     {
         $item = parent::find($id);
@@ -45,6 +49,7 @@ class ItemService extends AbstractService
         $itemSearch = [];
         foreach($itemUpdate as $update) {
             if(!empty($update)) {
+                sort($update);
                 $itemSearch = $update[0];
             }
         }
