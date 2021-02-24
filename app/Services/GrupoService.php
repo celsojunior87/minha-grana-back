@@ -301,7 +301,7 @@ class GrupoService extends AbstractService
 
         if (!empty($movimentacoes)) {
             $ultimoElemento = end($movimentacoes);
-            return number_format(round($ultimoElemento['vl_saldo_esperado'],3),5);
+            return number_format($ultimoElemento['vl_saldo_esperado'],20);
         }
         return 0;
     }
