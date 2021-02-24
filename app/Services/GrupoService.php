@@ -199,11 +199,12 @@ class GrupoService extends AbstractService
                 ];
         }
 
-        if ($totalReceita == $totalDespesa && $totalMovimentacaoSaldoEsperado > 0) {
-            return [
-                'frase' => 'Você adicionou as suas despesas, mas as receitas ainda estão insuficientes. Tente adicionar mais receitas antes de continuar.',
-            ];
-        }
+//        if ($totalReceita == $totalDespesa && $totalMovimentacaoSaldoEsperado < 0) {
+//
+//            return [
+//                'frase' => 'Você adicionou as suas despesas, mas as receitas ainda estão insuficientes. Tente adicionar mais receitas antes de continuar.',
+//            ];
+//        }
 
         if($totalReceita == $totalDespesa && $totalMovimentacaoReceitas > 0
             && $totalMovimentacaoReceitas < $totalReceita && $totalMovimentacaoSaldoEsperado != 0){
@@ -219,17 +220,10 @@ class GrupoService extends AbstractService
             ];
         }
 
-        if ($totalReceita == $totalDespesa && $totalMovimentacaoReceitas == $totalReceita
-            && $totalMovimentacaoDespesa == $totalDespesa && $totalMovimentacaoSaldoEsperado == 0) {
-            return [
-                'frase' => 'Parabéns, seu orçamento deste mês está completo!',
-            ];
-        }
 
         if($totalReceita == $totalDespesa && $totalMovimentacaoReceitas == $totalReceita &&
-            $totalMovimentacaoDespesa < $totalDespesa )
+            $totalMovimentacaoDespesa < $totalDespesa && $totalMovimentacaoSaldoEsperado != 0 )
         {
-
             $total = $totalMovimentacaoSaldoEsperado;
             $retorno = "<span>Agora que você adicionou todas suas receitas à movimentação, insira também todas as suas despesas..<br> Você tem <b style=' font-weight: bold'>" . Number::formatCurrencyBr($total, false, false) . "</b> 
                        de despesas para adicionar.</span>";
@@ -272,14 +266,23 @@ class GrupoService extends AbstractService
         }
 
 
-        if ($totalReceita == $totalDespesa && $totalMovimentacaoSaldoEsperado < 0) {
+        if ($totalReceita == $totalDespesa && $totalMovimentacaoReceitas == $totalReceita
+            && $totalMovimentacaoDespesa == $totalDespesa && $totalMovimentacaoSaldoEsperado == 0) {
+
             return [
-                'frase' => 'Oops! Você planejou  a mais. Ajuste suas receitas ou suas despesas até seu orçamento ser igual a zero.',
-                'total' => $totalMovimentacaoSaldoEsperado * -1,
-                'color' => '#F57077',
-                'class' => 'frase_ultrapassou'
+                'frase' => 'Parabéns, seu orçamento deste mês está completo!',
             ];
         }
+
+
+//        if ($totalReceita == $totalDespesa && $totalMovimentacaoSaldoEsperado < 0) {
+//            return [
+//                'frase' => 'Oops! Você planejou  a mais. Ajuste suas receitas ou suas despesas até seu orçamento ser igual a zero.',
+//                'total' => $totalMovimentacaoSaldoEsperado * -1,
+//                'color' => '#F57077',
+//                'class' => 'frase_ultrapassou'
+//            ];
+//        }
 
 
         if ($totalReceita == 0) {
@@ -291,10 +294,6 @@ class GrupoService extends AbstractService
         }
 
 
-
-
-
-
     }
 
     public function getMovimentacaoSaldoEsperado($grupos)
@@ -303,7 +302,7 @@ class GrupoService extends AbstractService
 
         if (!empty($movimentacoes)) {
             $ultimoElemento = end($movimentacoes);
-            return round($ultimoElemento['vl_saldo_esperado'],1);
+            return round($ultimoElemento['vl_saldo_esperado'],2);
 
         }
 
