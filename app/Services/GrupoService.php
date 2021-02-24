@@ -227,7 +227,7 @@ class GrupoService extends AbstractService
         }
 
         if($totalReceita == $totalDespesa && $totalMovimentacaoReceitas == $totalReceita &&
-            $totalMovimentacaoDespesa < $totalDespesa && $totalMovimentacaoSaldoEsperado > 0)
+            $totalMovimentacaoDespesa < $totalDespesa )
         {
 
             $total = $totalMovimentacaoSaldoEsperado;
@@ -303,7 +303,8 @@ class GrupoService extends AbstractService
 
         if (!empty($movimentacoes)) {
             $ultimoElemento = end($movimentacoes);
-            return $ultimoElemento['vl_saldo_esperado'];
+            return round($ultimoElemento['vl_saldo_esperado'],1);
+
         }
 
         return 0;
