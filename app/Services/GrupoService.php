@@ -268,7 +268,6 @@ class GrupoService extends AbstractService
 
         if ($totalReceita == $totalDespesa && $totalMovimentacaoReceitas == $totalReceita
             && $totalMovimentacaoDespesa == $totalDespesa && $totalMovimentacaoSaldoEsperado == 0) {
-
             return [
                 'frase' => 'Parabéns, seu orçamento deste mês está completo!',
             ];
@@ -302,7 +301,7 @@ class GrupoService extends AbstractService
 
         if (!empty($movimentacoes)) {
             $ultimoElemento = end($movimentacoes);
-            return number_format($ultimoElemento['vl_saldo_esperado'],2);
+            return number_format(round($ultimoElemento['vl_saldo_esperado'],3),5);
         }
         return 0;
     }
