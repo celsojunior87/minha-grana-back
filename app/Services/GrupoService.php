@@ -126,6 +126,7 @@ class GrupoService extends AbstractService
         $grupos = $this->getAll($params);
 
         $totalMovimentacaoSaldoEsperado = $this->getMovimentacaoSaldoEsperado($grupos);
+//        dd($totalMovimentacaoSaldoEsperado);
 
         $totalMovimentacaoReceitas = $this->somaTotalReceitaMovimentacao($grupos);
         $totalMovimentacaoDespesa = $this->somaTotalDespesaMovimentacao($grupos);
@@ -301,7 +302,7 @@ class GrupoService extends AbstractService
 
         if (!empty($movimentacoes)) {
             $ultimoElemento = end($movimentacoes);
-            return number_format($ultimoElemento['vl_saldo_esperado'],20);
+            return number_format($ultimoElemento['vl_saldo_esperado']);
         }
         return 0;
     }
