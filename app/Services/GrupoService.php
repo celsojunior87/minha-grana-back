@@ -181,7 +181,6 @@ class GrupoService extends AbstractService
         }
 
         if($totalReceita == $totalDespesa && $totalMovimentacaoReceitas > $totalReceita){
-
             $total = $totalMovimentacaoReceitas - $totalReceita;
             $retorno = "<span>Cuidado! Você adicionou <b style=' font-weight: bold'>" . Number::formatCurrencyBr($total, false, false) . "</b> 
                         a mais na sua movimentação do que o planejado para as suas receitas. Volte ao Planejamento e procure por valores negativos na coluna Planeje. </span>";
@@ -200,7 +199,7 @@ class GrupoService extends AbstractService
                 ];
         }
 
-        if ($totalReceita == $totalDespesa && $totalMovimentacaoSaldoEsperado < 0) {
+        if ($totalReceita == $totalDespesa && $totalMovimentacaoSaldoEsperado > 0) {
             return [
                 'frase' => 'Você adicionou as suas despesas, mas as receitas ainda estão insuficientes. Tente adicionar mais receitas antes de continuar.',
             ];
@@ -220,9 +219,17 @@ class GrupoService extends AbstractService
             ];
         }
 
+        if ($totalReceita == $totalDespesa && $totalMovimentacaoReceitas == $totalReceita
+            && $totalMovimentacaoDespesa == $totalDespesa && $totalMovimentacaoSaldoEsperado == 0) {
+            return [
+                'frase' => 'Parabéns, seu orçamento deste mês está completo!',
+            ];
+        }
+
         if($totalReceita == $totalDespesa && $totalMovimentacaoReceitas == $totalReceita &&
-            $totalMovimentacaoDespesa < $totalDespesa)
+            $totalMovimentacaoDespesa < $totalDespesa && $totalMovimentacaoSaldoEsperado > 0)
         {
+
             $total = $totalMovimentacaoSaldoEsperado;
             $retorno = "<span>Agora que você adicionou todas suas receitas à movimentação, insira também todas as suas despesas..<br> Você tem <b style=' font-weight: bold'>" . Number::formatCurrencyBr($total, false, false) . "</b> 
                        de despesas para adicionar.</span>";
@@ -230,8 +237,6 @@ class GrupoService extends AbstractService
                 'frase' => $retorno
             ];
         }
-
-
 
         if ($totalReceita > $totalDespesa && $totalDespesa > 0) {
 
@@ -287,12 +292,7 @@ class GrupoService extends AbstractService
 
 
 
-        if ($totalReceita == $totalDespesa && $totalMovimentacaoReceitas == $totalReceita && $totalMovimentacaoDespesa == $totalDespesa && $totalMovimentacaoSaldoEsperado == 0) {
-            return [
-                'frase' => 'Parabéns, seu orçamento deste mês está completo!',
-                'class' => 'frase_parabens'
-            ];
-        }
+
 
 
     }
