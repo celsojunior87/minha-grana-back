@@ -126,14 +126,13 @@ class GrupoService extends AbstractService
         $grupos = $this->getAll($params);
 
         $totalMovimentacaoSaldoEsperado = $this->getMovimentacaoSaldoEsperado($grupos);
-//        dd($totalMovimentacaoSaldoEsperado);
-
         $totalMovimentacaoReceitas = $this->somaTotalReceitaMovimentacao($grupos);
         $totalMovimentacaoDespesa = $this->somaTotalDespesaMovimentacao($grupos);
-
-
         $totalReceita = $this->getTotalReceitas($grupos);
         $totalDespesa = $this->getTotalDespesa($grupos);
+
+
+
 
 
         if ($totalReceita == 0) {
@@ -267,8 +266,8 @@ class GrupoService extends AbstractService
         }
 
 
-        if ($totalReceita == $totalDespesa && $totalMovimentacaoReceitas == $totalReceita
-            && $totalMovimentacaoDespesa == $totalDespesa && $totalMovimentacaoSaldoEsperado == 0) {
+        if($totalMovimentacaoSaldoEsperado  == 0 && $totalReceita == $totalDespesa
+            && $totalMovimentacaoReceitas == $totalReceita && (string)$totalMovimentacaoDespesa == (string)$totalDespesa){
             return [
                 'frase' => 'Parabéns, seu orçamento deste mês está completo!',
             ];
@@ -302,7 +301,10 @@ class GrupoService extends AbstractService
 
         if (!empty($movimentacoes)) {
             $ultimoElemento = end($movimentacoes);
-            return number_format($ultimoElemento['vl_saldo_esperado']);
+            $numFormat = round($ultimoElemento['vl_saldo_esperado']);
+            $numRedondo = abs($numFormat);
+
+             return  $numRedondo;
         }
         return 0;
     }
@@ -340,7 +342,6 @@ class GrupoService extends AbstractService
 
     public function getTotalDespesa($grupos)
     {
-
         $totalDespesa = 0;
         foreach ($grupos as $grupo) {
             if ($grupo['tipo_grupo']['id'] == TipoGrupo::DESPESAS) {
